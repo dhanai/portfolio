@@ -32,10 +32,23 @@ function validateImage(file: File) {
   }
 }
 
+function useBlobStorage() {
+  return (
+    Boolean(process.env.BLOB_READ_WRITE_TOKEN) ||
+    process.env.VERCEL === "1"
+  );
+}
+
 async function saveToFilesystem(
   buffer: Buffer,
   filename: string,
 ): Promise<string> {
+  if (process.env.VERCEL === "1") {
+    throw new Error(
+      "File uploads require Vercel Blob. Connect a Blob store in the Vercel project settings and redeploy.",
+    );
+  }
+
   const dir = path.join(process.cwd(), "public", "assets", "work");
   await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, filename), buffer);
@@ -51,6 +64,9 @@ async function saveToBlob(
     access: "public",
     addRandomSuffix: false,
     contentType,
+    ...(process.env.BLOB_READ_WRITE_TOKEN
+      ? { token: process.env.BLOB_READ_WRITE_TOKEN }
+      : {}),
   });
   return blob.url;
 }
@@ -71,7 +87,7 @@ export async function saveWorkPreviewImage(
   const safeSlug = slugify(slug || "preview") || "preview";
   const filename = `${safeSlug}.${ext}`;
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (useBlobStorage()) {
     return saveToBlob(buffer, filename, mime);
   }
 
