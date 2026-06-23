@@ -2,6 +2,10 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { put } from "@vercel/blob";
 import { compressImageBuffer } from "@/lib/admin/compress-image";
+import {
+  getBlobPutAuthOptions,
+  hasBlobStorage,
+} from "@/lib/admin/blob-credentials";
 
 const MAX_INPUT_BYTES = 12 * 1024 * 1024;
 const MAX_OUTPUT_BYTES = 2 * 1024 * 1024;
@@ -48,10 +52,7 @@ function toBlobBody(buffer: Buffer): Buffer {
 }
 
 function useBlobStorage() {
-  return (
-    Boolean(process.env.BLOB_READ_WRITE_TOKEN) ||
-    process.env.VERCEL === "1"
-  );
+  return hasBlobStorage() || process.env.VERCEL === "1";
 }
 
 async function saveToFilesystem(
@@ -75,13 +76,18 @@ async function saveToBlob(
   filename: string,
   contentType: string,
 ): Promise<string> {
+  const auth = getBlobPutAuthOptions();
+  if (!auth.token && !auth.storeId) {
+    throw new Error(
+      "Blob credentials missing. In Vercel, link your public Blob store or set BLOB_READ_WRITE_TOKEN / PUBBLOB_READ_WRITE_TOKEN.",
+    );
+  }
+
   const blob = await put(`work/${filename}`, toBlobBody(buffer), {
     access: "public",
     addRandomSuffix: false,
     contentType,
-    ...(process.env.BLOB_READ_WRITE_TOKEN
-      ? { token: process.env.BLOB_READ_WRITE_TOKEN }
-      : {}),
+    ...auth,
   });
   return blob.url;
 }
