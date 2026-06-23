@@ -37,6 +37,22 @@ async function main() {
       console.log(`Skipped content block: ${block.key} (exists)`);
     }
   }
+
+  const diagramBackfill: Record<string, string> = {
+    margenie: "/assets/diagrams/margenie-agent-flow.svg",
+    parfade: "/assets/diagrams/parfade-loop.svg",
+    "fulfillment-portal": "/assets/diagrams/fulfillment-flow.svg",
+  };
+
+  for (const [slug, diagram] of Object.entries(diagramBackfill)) {
+    const updated = await prisma.work.updateMany({
+      where: { slug },
+      data: { diagram },
+    });
+    if (updated.count > 0) {
+      console.log(`Set diagram for ${slug}`);
+    }
+  }
 }
 
 main()

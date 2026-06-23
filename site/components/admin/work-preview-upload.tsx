@@ -75,7 +75,7 @@ export function WorkPreviewUpload({
       </span>
 
       {displaySrc && (
-        <div className="relative mt-3 aspect-[16/10] max-w-md overflow-hidden border border-white/10 bg-[#0a0a0a]">
+        <div className="relative mt-3 aspect-[4/5] max-w-xs overflow-hidden border border-white/10 bg-[#0a0a0a]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={displaySrc}

@@ -95,7 +95,7 @@ export function ProjectCard({
             className="absolute left-0 top-0 h-full w-px scale-y-0 bg-[var(--card-accent)] transition-transform duration-500 group-hover:scale-y-100"
             aria-hidden="true"
           />
-          <div className="relative aspect-[16/10] overflow-hidden bg-[#0a0a0a]">
+          <div className="relative aspect-[4/5] overflow-hidden bg-[#0a0a0a]">
             {image ? (
               <>
                 {isExternalImage ? (

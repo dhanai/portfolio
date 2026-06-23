@@ -1,4 +1,5 @@
 import type { CaseStudy, CaseStudySection } from "@/lib/case-studies";
+import { getCaseStudyDiagram } from "@/lib/case-studies";
 import type { Project } from "@/lib/projects";
 import {
   defaultAboutContent,
@@ -98,6 +99,21 @@ export async function getWorkById(id: string) {
   return prisma.work.findUnique({ where: { id } });
 }
 
+function resolveDiagram(slug: string, diagram: string | null): string | undefined {
+  const staticDiagram = getCaseStudyDiagram(slug);
+  const trimmed = diagram?.trim();
+
+  if (trimmed?.startsWith("http://") || trimmed?.startsWith("https://")) {
+    return trimmed;
+  }
+
+  if (trimmed?.endsWith(".svg")) {
+    return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  }
+
+  return staticDiagram;
+}
+
 function workToCaseStudy(work: {
   slug: string;
   title: string;
@@ -118,7 +134,7 @@ function workToCaseStudy(work: {
     year: work.year,
     role: work.role,
     externalUrl: work.externalUrl ?? undefined,
-    diagram: work.diagram ?? undefined,
+    diagram: resolveDiagram(work.slug, work.diagram),
     sections: parseJson<CaseStudySection[]>(work.sections, []),
     reflection: work.reflection,
   };
