@@ -34,10 +34,20 @@ Add these in Vercel → Project → Settings → Environment Variables:
 Set `DATABASE_URL` to `file:./dev.db` for the build. The site falls back to static content when the DB is empty. Admin CMS **will not persist** on serverless (SQLite is ephemeral).
 
 **Option B — Full CMS on Vercel (recommended)**  
-1. Add [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres) or [Neon](https://neon.tech) (free tier)
-2. Change `site/prisma/schema.prisma` provider from `sqlite` to `postgresql`
-3. Set `DATABASE_URL` to the Postgres connection string
-4. From your machine: `cd site && npx prisma db push && npm run db:seed` (with prod `DATABASE_URL` in env)
+1. Add **Neon** + **Blob** in Vercel → Storage (you did this)
+2. Vercel injects `DATABASE_URL` (Neon) and `BLOB_READ_WRITE_TOKEN` (Blob) automatically
+3. Prisma uses **PostgreSQL** — from your machine once:
+
+```bash
+cd site
+# Paste Neon pooled connection string into .env as DATABASE_URL
+npx prisma db push
+npm run db:seed
+```
+
+4. Redeploy on Vercel
+
+Work preview uploads go to **Vercel Blob** in production; local dev still writes to `public/assets/work/` unless you set `BLOB_READ_WRITE_TOKEN` locally.
 
 ## 3. Deploy
 

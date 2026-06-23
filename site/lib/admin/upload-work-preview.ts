@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
+import { put } from "@vercel/blob";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED = new Set([
@@ -24,10 +25,7 @@ function slugify(input: string) {
     .replace(/^-|-$/g, "");
 }
 
-export async function saveWorkPreviewImage(
-  file: File,
-  slug: string,
-): Promise<string> {
+function validateImage(file: File) {
   if (!(file instanceof File) || file.size === 0) {
     throw new Error("No image selected");
   }
@@ -37,17 +35,42 @@ export async function saveWorkPreviewImage(
   if (file.size > MAX_BYTES) {
     throw new Error("Image must be under 5MB");
   }
+}
 
-  const safeSlug = slugify(slug || "preview") || "preview";
-  const ext = EXT[file.type] ?? "jpg";
-  const filename = `${safeSlug}.${ext}`;
+async function saveToFilesystem(
+  file: File,
+  filename: string,
+): Promise<string> {
   const dir = path.join(process.cwd(), "public", "assets", "work");
-
   await mkdir(dir, { recursive: true });
   await writeFile(
     path.join(dir, filename),
     Buffer.from(await file.arrayBuffer()),
   );
-
   return `/assets/work/${filename}`;
+}
+
+async function saveToBlob(file: File, filename: string): Promise<string> {
+  const blob = await put(`work/${filename}`, file, {
+    access: "public",
+    addRandomSuffix: false,
+  });
+  return blob.url;
+}
+
+export async function saveWorkPreviewImage(
+  file: File,
+  slug: string,
+): Promise<string> {
+  validateImage(file);
+
+  const safeSlug = slugify(slug || "preview") || "preview";
+  const ext = EXT[file.type] ?? "jpg";
+  const filename = `${safeSlug}.${ext}`;
+
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    return saveToBlob(file, filename);
+  }
+
+  return saveToFilesystem(file, filename);
 }

@@ -62,9 +62,9 @@ export function WorkPreviewUpload({
       />
 
       <p className="mt-1.5 text-xs text-[#525252]">
-        Upload saves to{" "}
-        <code className="text-[#ff453a]">/assets/work/[slug].jpg</code> on
-        save. Or paste a path/URL. Upload overrides the text field.
+        Upload on save. Production uses Vercel Blob; local dev saves to{" "}
+        <code className="text-[#ff453a]">public/assets/work/</code>. Or paste a
+        URL below — upload overrides the text field.
       </p>
     </div>
   );
