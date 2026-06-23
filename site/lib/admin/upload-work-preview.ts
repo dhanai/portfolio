@@ -32,6 +32,21 @@ function validateImage(file: File) {
   }
 }
 
+/** Node 22 / Vercel Blob reject SharedArrayBuffer-backed views. */
+function copyBytes(source: ArrayBuffer | Buffer): Buffer {
+  const view =
+    source instanceof Buffer ? source : new Uint8Array(source);
+  const copy = new Uint8Array(view.byteLength);
+  copy.set(view);
+  return Buffer.from(copy);
+}
+
+function toBlobBody(buffer: Buffer): Uint8Array {
+  const copy = new Uint8Array(buffer.byteLength);
+  copy.set(buffer);
+  return copy;
+}
+
 function useBlobStorage() {
   return (
     Boolean(process.env.BLOB_READ_WRITE_TOKEN) ||
@@ -60,7 +75,7 @@ async function saveToBlob(
   filename: string,
   contentType: string,
 ): Promise<string> {
-  const blob = await put(`work/${filename}`, buffer, {
+  const blob = await put(`work/${filename}`, toBlobBody(buffer), {
     access: "public",
     addRandomSuffix: false,
     contentType,
@@ -77,7 +92,7 @@ export async function saveWorkPreviewImage(
 ): Promise<string> {
   validateImage(file);
 
-  const input = Buffer.from(await file.arrayBuffer());
+  const input = copyBytes(await file.arrayBuffer());
   const { buffer, mime, ext } = await compressImageBuffer(input, file.type);
 
   if (buffer.length > MAX_OUTPUT_BYTES) {

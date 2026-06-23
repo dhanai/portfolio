@@ -9,7 +9,7 @@ export async function compressImageBuffer(
   mime: string,
 ): Promise<{ buffer: Buffer; mime: string; ext: string }> {
   if (mime === "image/gif") {
-    return { buffer: input, mime, ext: "gif" };
+    return { buffer: copyBuffer(input), mime, ext: "gif" };
   }
 
   let pipeline = sharp(input, { animated: false }).rotate();
@@ -26,12 +26,17 @@ export async function compressImageBuffer(
   }
 
   let quality = WEBP_QUALITY;
-  let buffer = await pipeline.webp({ quality }).toBuffer();
+  let buffer = copyBuffer(await pipeline.webp({ quality }).toBuffer());
 
   while (buffer.length > MAX_OUTPUT_BYTES && quality > 58) {
     quality -= 8;
-    buffer = await sharp(buffer).webp({ quality }).toBuffer();
+    buffer = copyBuffer(await sharp(buffer).webp({ quality }).toBuffer());
   }
 
   return { buffer, mime: "image/webp", ext: "webp" };
 }
+
+function copyBuffer(source: Buffer): Buffer {
+  const copy = new Uint8Array(source.byteLength);
+  copy.set(source);
+  return Buffer.from(copy);
