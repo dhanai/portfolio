@@ -7,10 +7,9 @@ Repo: [github.com/dhanai/portfolio](https://github.com/dhanai/portfolio)
 **Cause:** Vercel is building the repo root instead of `site/`, or the build failed (no deployment).
 
 **Fix:**
-1. Project → Settings → General → **Root Directory** → `site` → Save
-2. Or rely on root `vercel.json` (`"rootDirectory": "site"`) after pulling latest
-3. Settings → Environment Variables — add `DATABASE_URL`, `SESSION_SECRET`, `ADMIN_PASSWORD`
-4. Deployments → Redeploy latest (or push to `main`)
+1. Project → Settings → General → **Root Directory** → `site` → Save (required — cannot be set in `vercel.json`)
+2. Settings → Environment Variables — add `DATABASE_URL`, `SESSION_SECRET`, `ADMIN_PASSWORD`
+3. Deployments → Redeploy latest (or push to `main`)
 
 Do **not** set a custom Output Directory — Next.js on Vercel handles this automatically.
 
