@@ -1,21 +1,16 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { put } from "@vercel/blob";
+import { compressImageBuffer } from "@/lib/admin/compress-image";
 
-const MAX_BYTES = 5 * 1024 * 1024;
+const MAX_INPUT_BYTES = 12 * 1024 * 1024;
+const MAX_OUTPUT_BYTES = 2 * 1024 * 1024;
 const ALLOWED = new Set([
   "image/jpeg",
   "image/png",
   "image/webp",
   "image/gif",
 ]);
-
-const EXT: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-  "image/gif": "gif",
-};
 
 function slugify(input: string) {
   return input
@@ -32,28 +27,30 @@ function validateImage(file: File) {
   if (!ALLOWED.has(file.type)) {
     throw new Error("Use JPEG, PNG, WebP, or GIF");
   }
-  if (file.size > MAX_BYTES) {
-    throw new Error("Image must be under 5MB");
+  if (file.size > MAX_INPUT_BYTES) {
+    throw new Error("Image must be under 12MB before compression");
   }
 }
 
 async function saveToFilesystem(
-  file: File,
+  buffer: Buffer,
   filename: string,
 ): Promise<string> {
   const dir = path.join(process.cwd(), "public", "assets", "work");
   await mkdir(dir, { recursive: true });
-  await writeFile(
-    path.join(dir, filename),
-    Buffer.from(await file.arrayBuffer()),
-  );
+  await writeFile(path.join(dir, filename), buffer);
   return `/assets/work/${filename}`;
 }
 
-async function saveToBlob(file: File, filename: string): Promise<string> {
-  const blob = await put(`work/${filename}`, file, {
+async function saveToBlob(
+  buffer: Buffer,
+  filename: string,
+  contentType: string,
+): Promise<string> {
+  const blob = await put(`work/${filename}`, buffer, {
     access: "public",
     addRandomSuffix: false,
+    contentType,
   });
   return blob.url;
 }
@@ -64,13 +61,19 @@ export async function saveWorkPreviewImage(
 ): Promise<string> {
   validateImage(file);
 
+  const input = Buffer.from(await file.arrayBuffer());
+  const { buffer, mime, ext } = await compressImageBuffer(input, file.type);
+
+  if (buffer.length > MAX_OUTPUT_BYTES) {
+    throw new Error("Image is still too large after compression — try a smaller file");
+  }
+
   const safeSlug = slugify(slug || "preview") || "preview";
-  const ext = EXT[file.type] ?? "jpg";
   const filename = `${safeSlug}.${ext}`;
 
   if (process.env.BLOB_READ_WRITE_TOKEN) {
-    return saveToBlob(file, filename);
+    return saveToBlob(buffer, filename, mime);
   }
 
-  return saveToFilesystem(file, filename);
+  return saveToFilesystem(buffer, filename);
 }
