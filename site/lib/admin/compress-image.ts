@@ -40,3 +40,4 @@ function copyBuffer(source: Buffer): Buffer {
   const copy = new Uint8Array(source.byteLength);
   copy.set(source);
   return Buffer.from(copy);
+}

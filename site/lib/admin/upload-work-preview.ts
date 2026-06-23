@@ -41,10 +41,10 @@ function copyBytes(source: ArrayBuffer | Buffer): Buffer {
   return Buffer.from(copy);
 }
 
-function toBlobBody(buffer: Buffer): Uint8Array {
+function toBlobBody(buffer: Buffer): Buffer {
   const copy = new Uint8Array(buffer.byteLength);
   copy.set(buffer);
-  return copy;
+  return Buffer.from(copy);
 }
 
 function useBlobStorage() {
