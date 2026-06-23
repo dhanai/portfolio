@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Work {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  sortOrder   Int      @default(0)
+  published   Boolean  @default(true)
+  title       String
+  subtitle    String
+  tags        String   // JSON string[]
+  year        String
+  color       String   @default("#FF453A")
+  href        String?
+  image       String?
+  role        String
+  externalUrl String?
+  diagram     String?
+  reflection  String
+  sections    String   // JSON CaseStudySection[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContentBlock {
+  key       String   @id
+  data      String   // JSON
+  updatedAt DateTime @updatedAt
+}

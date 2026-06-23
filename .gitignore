@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnp.*
+
+# Next.js (when site is scaffolded)
+site/.next/
+site/out/
+
+# Env
+.env
+.env.*
+!.env.example
+site/.env
+site/.env.*
+!site/.env.example
+
+# Prisma
+site/prisma/*.db
+site/prisma/*.db-journal
+
+# Vercel / IDE
+.vercel
+.cursor
+
+# OS
+.DS_Store
+
+# Build outputs
+*.pdf.bak
+dist/
+
+# Large raw assets (optional — user may want to git LFS)
+# assets/**/*.psd
