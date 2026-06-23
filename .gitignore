@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 .pnp.*
+!site/package-lock.json
 
 # Next.js (when site is scaffolded)
 site/.next/
