@@ -14,7 +14,7 @@ Copy from [`content/WHY-ANTHROPIC.md`](./WHY-ANTHROPIC.md) — review for voice 
 
 ### Website field
 
-Deploy site to Vercel, then use preview URL or `dhanai.dev` if configured.
+Deploy site to Vercel, then use preview URL or `dhanai.net` if configured.
 
 ### Resume/CV
 

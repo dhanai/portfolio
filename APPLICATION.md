@@ -32,7 +32,7 @@
 | Relocation | User |
 | Work address | User city or "relocating" |
 | LinkedIn | User |
-| Cover letter (optional) | Optional — can expand Why Anthropic |
+| Cover letter (optional) | `content/COVER-LETTER.md` |
 
 ---
 
@@ -60,7 +60,7 @@
 ## Portfolio URL strategy
 
 Prefer a clean domain if available, e.g.:
-- `dhanai.dev` / personal domain
+- `dhanai.net` / personal domain
 - `*.vercel.app` preview is acceptable for first submit if custom domain pending
 
 Include portfolio URL in:

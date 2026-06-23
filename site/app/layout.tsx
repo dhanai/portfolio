@@ -33,6 +33,11 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: config.name,
       type: "website",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: config.title,
+      description: config.description,
+    },
   };
 }
 

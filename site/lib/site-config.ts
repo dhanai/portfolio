@@ -24,7 +24,7 @@ export const siteConfig: SiteConfigView = {
   title: "Dhanai Holtzclaw — Design Engineer",
   description:
     "Design engineer and founder. 20+ years in design & code. Takeout Order, Margenie, Parfade.",
-  url: "https://dhanai.dev",
+  url: "https://dhanai.net",
   oneLiner:
     "Design engineer and founder with 20+ years in design and front-end — scaled a hand-drawn brand to $3.8M, built production B2B tooling, and now ships agent-native ops in Next.js.",
   links: {

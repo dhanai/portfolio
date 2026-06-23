@@ -22,26 +22,30 @@ anthropic's role is brand web + internal tooling + craft. that's where i've live
 
 ## Final essay (polished)
 
-**Target:** 200–400 words · Read aloud once before submitting.
+**Target:** 200–400 words (Greenhouse) · **Current draft:** ~525 — trim before submit if field is strict · Read aloud once.
 
 ---
 
-I want to work at Anthropic because the problems I’ve been solving for twenty years — how something *looks*, how it *performs*, and whether the people running it can actually trust it — are the same problems your web and brand teams are solving at a scale I’ve only touched from the founder’s side.
+I want to work at Anthropic because the hard part of my last twenty years has been your stated reason for existing: building things people can actually trust. How something looks, how it performs, and whether the person running it can believe what it tells them. Most companies treat that last part as a compliance step. Anthropic treats it as the work. That's why I'm writing to you and not someone else.
 
-I didn’t start as an engineer. I spent a decade and a half in design and creative direction — DJcity, Ciplex, Hello Design — before I founded Takeout Order and hand-drew every design in the catalog myself. I also ran the marketing. Gross sales hit $3.8M since 2020. That taught me brand isn’t a mood board. It’s the ad that fatigues on Tuesday, the product page that converts or doesn’t, and the feeling that something was actually made by a person. When fulfillment outgrew spreadsheets, I didn’t buy software that almost fit. I built a printer portal — Shopify in, EasyPost labels out, a state machine operators could run without calling me — and kept it in production for years on a stack I could maintain solo. Unglamorous. Load-bearing. Shaped around how people really work.
+I didn't start as an engineer. I spent a decade and a half in design and creative direction (DJcity, Ciplex, Hello Design) before I founded Takeout Order, which I still run. I hand-draw every design in the catalog and own the marketing. Gross sales have hit $3.8M since 2020. That taught me brand isn't a mood board; it's the ad that fatigues on Tuesday, the product page that converts or doesn't, and the feeling that a real person made the thing.
 
-That’s the through-line to Margenie, which I’m building now in Next.js: agent playbooks, Meta diagnostics, generative creative for ad refresh (image and video via fal.ai), and approval flows where nothing goes live until a human says so. Margenie doesn’t auto-pause a campaign and hope you notice. It explains the mechanic — learning phase, overlap, breakdown — and waits. I use AI to move faster on implementation. The architecture, the craft, and the call on what ships are mine. That’s the kind of AI I want to help Anthropic express on the web: capable, inspectable, accountable.
+It also taught me to fix whatever was in front of me. When the print machine broke, I learned to split-crimp and run new wires. When it needed a teardown, I pulled a hundred screws and remembered where every one went. When fulfillment outgrew spreadsheets, I deciphered the EasyPost and Stripe APIs by hand — this was before AI, so it was me and the docs — and built a printer portal: Shopify in, labels out, a state machine operators run without calling me. I learned Liquid because the storefront needed it. None of this was glamorous. All of it was load-bearing, and it still runs in production on a stack I maintain alone.
 
-I also shipped Parfade — an iOS app for golfers to schedule rounds and play side games with friends. Smaller than a $3.8M brand, but the same muscle: prototype fast, design the interaction, ship, learn.
+That's the through-line to Margenie, which I'm building now in Next.js: agent playbooks, Meta diagnostics, generative creative for ad refresh (image and video via fal.ai), a shared Ops design system across Ad Ops and chat surfaces, and approval flows where nothing goes live until a human says so. Margenie doesn't auto-pause a campaign and hope you notice. It explains the mechanic (learning phase, overlap, breakdown) and waits. I use AI to move faster on implementation now, but I learned this work back when there was no AI to lean on — so the architecture, the craft, and the call on what ships are mine. That's the kind of AI I want to help Anthropic put on the web: capable, inspectable, accountable. The same posture your research takes toward models, applied to the surfaces people actually touch.
 
-The Design Engineer, Web role sits exactly where I operate — brand surfaces, internal tooling, and the infrastructure that lets creative teams move without breaking craft. I’d bring founder urgency, two decades of design sensibility, and production scars from integrations, legacy systems, and users who depend on uptime. I’d love to help anthropic.com and Claude’s web presence be as thoughtful in the codebase as they are in the research — and to build the tools that make that scale.
+I also build and maintain Parfade, a live iOS app for golfers to schedule rounds and play side games — proof I ship and maintain real software solo, not just prototypes.
+
+The Design Engineer, Web role sits exactly where I operate: brand surfaces, internal tooling, and the infrastructure that lets creative teams move fast without breaking craft. I'd bring founder urgency, two decades of design sensibility, and the habit of pulling the hundred screws myself when that's what the job needs. I want Anthropic.com and Claude's web presence to be as thoughtful in production React and Next.js as the research is on the page, and to build the tools that let that hold up at scale.
 
 ---
 
-**Word count (final):** ~340
+**Word count (final):** ~525
 
 ## Notes (don’t paste)
 
+- **Over Greenhouse target** — if the form caps at 400 words, cut the print-machine paragraph to one sentence or merge Parfade into the close (~80 words saved)
 - **Margenie generative creative:** fal.ai integration (Nano Banana 2, Seedance 2) — mention the *workflow* in essays; save model names for interview / case study
+- **Stripe** — only keep if you actually integrated it (Shopify/EasyPost is the portal story); fine if Takeout storefront used it
+- **“Stated reason for existing”** — strong if you can point to mission/safety language; otherwise soften to “what you’re building toward”
 - Greenhouse may want the polished version for word count; raw works if they allow brevity or you want maximum voice
-- To tighten final to ~250 words: drop Parfade paragraph + one agency sentence

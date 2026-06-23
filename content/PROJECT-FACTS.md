@@ -12,8 +12,8 @@
 | Location | Los Angeles, CA |
 | LinkedIn | https://linkedin.com/in/dhanai |
 | GitHub | https://github.com/dhanai |
-| Portfolio URL | (TBD — after Vercel deploy) |
-| Personal domain | dhanai.dev (TBD — confirm DNS) |
+| Portfolio URL | https://dhanai.net |
+| Personal domain | dhanai.net |
 
 ---
 
@@ -39,7 +39,7 @@
 | Codebase | `/Applications/MAMP/htdocs/dev/takeout-orders` |
 | Stack | AngularJS, Firebase, Cloud Functions, Shopify, EasyPost |
 | Production URL | takeoutorder.co (verify) |
-| Years in production | 2019 – present |
+| Years in production | 2020 – present |
 | # of printer partners | (TBD) |
 | Orders fulfilled (rough) | (TBD) |
 | Still running? | **Yes** — print partners use it daily |
@@ -64,7 +64,7 @@
 | App Store link | (TBD) |
 | Domain | parfade.com |
 | Stack | Expo/RN mobile, Next.js API, Drizzle, Neon, Ably |
-| Launched | 2023 |
+| Launched | 2026 |
 | Still active? | **Yes** — live on the App Store |
 
 ---

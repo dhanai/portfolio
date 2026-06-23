@@ -31,7 +31,7 @@ export const resumeData = {
     {
       company: "Margenie",
       role: "Founder · Design Engineer",
-      period: "2024 – Present",
+      period: "2026 – Present",
       bullets: [
         "Building agent-native ops platform for Shopify brands: profit metrics, Meta ad diagnostics, in-chat creative workflows",
         "Designed Ops design system (shared components, style guide) across Ad Ops and Supercomputer chat",
@@ -43,7 +43,7 @@ export const resumeData = {
     {
       company: "Takeout Order",
       role: "Founder · Designer · Operator",
-      period: "2020 – 2024",
+      period: "2020 – Present",
       bullets: [
         "$3,788,518.88 gross sales since Jan 2020 — hand-drew full catalog, owned marketing and DTC operations",
         "Directed brand identity across web, paid social, and email; iterative performance creative testing",
@@ -53,7 +53,7 @@ export const resumeData = {
     {
       company: "Fulfillment portal",
       role: "Product · Engineering",
-      period: "2019 – 2024",
+      period: "2020 – Present",
       bullets: [
         "B2B web portal for print partners — Shopify ingest, EasyPost labels, order state machine",
         "Production on AngularJS + Firebase; maintained while shipping greenfield Next.js products",
@@ -62,7 +62,7 @@ export const resumeData = {
     {
       company: "Parfade",
       role: "Founder · Product · iOS",
-      period: "2023 – Present",
+      period: "2026 – Present",
       bullets: [
         "iOS app for golfers — round scheduling, side games, real-time chat, push notifications",
         "Stack: Expo, React Native, Next.js API, Drizzle, Neon Postgres, Ably",

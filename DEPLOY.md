@@ -58,7 +58,7 @@ git push origin main
 
 ## 4. After deploy
 
-- Set custom domain (e.g. `dhanai.dev`) in Vercel → Domains
+- Set custom domain (e.g. `dhanai.net`) in Vercel → Domains
 - Run `npm run db:seed` against production DB if using Postgres
 - Upload work preview images via `/admin` (or commit files under `site/public/assets/work/`)
 
