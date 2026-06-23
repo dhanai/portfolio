@@ -15,8 +15,8 @@ const border = "#E5E5E5";
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 30,
-    paddingBottom: 26,
+    paddingTop: 32,
+    paddingBottom: 32,
     paddingHorizontal: 46,
     fontFamily: "Helvetica",
     fontSize: 9.5,
@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
   header: {
     borderBottomWidth: 0.5,
     borderBottomColor: border,
-    paddingBottom: 10,
-    marginBottom: 11,
+    paddingBottom: 12,
+    marginBottom: 14,
   },
   accentBar: {
     height: 1.5,
     backgroundColor: accent,
     width: 44,
-    marginBottom: 9,
+    marginBottom: 10,
   },
   name: {
     fontSize: 22,
@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     textTransform: "uppercase",
     color: light,
-    marginBottom: 5,
+    marginBottom: 6,
   },
   summary: {
-    fontSize: 9.5,
-    lineHeight: 1.48,
+    fontSize: 11,
+    lineHeight: 1.52,
     color: "#262626",
-    marginBottom: 12,
+    marginBottom: 16,
   },
   columns: {
     flexDirection: "row",
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
   colMain: { flex: 1.55 },
   colSide: { flex: 1 },
   jobBlock: {
-    marginBottom: 8,
-    paddingBottom: 8,
+    marginBottom: 10,
+    paddingBottom: 10,
     borderBottomWidth: 0.5,
     borderBottomColor: border,
   },
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   jobTitle: { fontSize: 10, fontFamily: "Helvetica-Bold", flex: 1 },
   jobRole: { fontFamily: "Helvetica", color: muted, fontSize: 9 },
   jobPeriod: { fontSize: 7.5, color: light, marginLeft: 4 },
-  bulletRow: { flexDirection: "row", alignItems: "flex-start", marginTop: 2.5 },
+  bulletRow: { flexDirection: "row", alignItems: "flex-start", marginTop: 3.5 },
   bulletDash: {
     width: 10,
     height: 1,
@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginRight: 6,
   },
-  bulletText: { flex: 1, fontSize: 8.5, lineHeight: 1.4, color: "#404040" },
-  sideSection: { marginBottom: 12 },
-  earlierNote: { fontSize: 8, color: light, marginBottom: 4 },
+  bulletText: { flex: 1, fontSize: 8.5, lineHeight: 1.45, color: "#404040" },
+  sideSection: { marginBottom: 14 },
+  earlierNote: { fontSize: 8, color: light, marginBottom: 5 },
   earlierRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 2.5,
+    paddingVertical: 3.5,
     borderBottomWidth: 0.5,
     borderBottomColor: border,
   },
@@ -117,9 +117,9 @@ const styles = StyleSheet.create({
   skillCell: {
     borderWidth: 0.5,
     borderColor: border,
-    paddingVertical: 5,
+    paddingVertical: 6,
     paddingHorizontal: 6,
-    marginBottom: 5,
+    marginBottom: 6,
   },
   skillCategory: {
     fontSize: 6.5,

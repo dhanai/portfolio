@@ -23,14 +23,14 @@ export const caseStudies: CaseStudy[] = [
     title: "Takeout Order",
     subtitle: "Hand-drawn apparel brand scaled to $3.8M since 2020",
     tags: ["Brand", "Hand-drawn design", "DTC", "Growth"],
-    year: "2020–2024",
+    year: "2020–present",
     role: "Founder · Designer · Marketer · Operator",
     sections: [
       {
         heading: "Overview",
         paragraphs: [
-          "Takeout Order was a direct-to-consumer apparel brand I founded and ran end-to-end. Every design in the catalog was hand-drawn by me — no agency, no stock art. I owned product design, paid social, email, and day-to-day operations as the brand grew to $3,788,518.88 in gross sales since January 2020.",
-          "The work sat at the intersection of craft and performance: creative that had to convert, refresh before it fatigued, and stay true to a hand-made identity in a crowded DTC market.",
+          "Takeout Order is a direct-to-consumer apparel brand I founded and still run end-to-end. Every design in the catalog is hand-drawn by me — no agency, no stock art. I own product design, paid social, email, and day-to-day operations as the brand has grown to $3,788,518.88 in gross sales since January 2020.",
+          "The work sits at the intersection of craft and performance: creative that has to convert, refresh before it fatigues, and stay true to a hand-made identity in a crowded DTC market.",
         ],
       },
       {
@@ -54,7 +54,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Outcome",
         paragraphs: [
-          "$3,788,518.88 in gross sales since January 2020. The brand taught me that creative work isn't abstract — it's the ad that fatigues, the product page that converts or doesn't, and the trust people feel when something feels made by hand. That lens directly informs how I think about Margenie's Ad Ops and refresh recommendations today.",
+          "$3,788,518.88 in gross sales since January 2020 — and still running. The brand taught me that creative work isn't abstract — it's the ad that fatigues, the product page that converts or doesn't, and the trust people feel when something feels made by hand. That lens directly informs how I think about Margenie's Ad Ops and refresh recommendations today.",
         ],
       },
     ],
@@ -66,14 +66,14 @@ export const caseStudies: CaseStudy[] = [
     title: "Fulfillment portal",
     subtitle: "B2B tooling for third-party print partners",
     tags: ["B2B", "AngularJS", "Firebase", "Shopify", "EasyPost"],
-    year: "2019–2024",
+    year: "2019–present",
     role: "Sole builder · Product · Engineering",
     diagram: "/assets/diagrams/fulfillment-flow.svg",
     sections: [
       {
         heading: "Overview",
         paragraphs: [
-          "When Takeout Order outgrew email chains and spreadsheets, I built the tool my print partners actually used every day — a B2B web portal for receiving jobs, printing, packing, and shipping order volume without engineering support.",
+          "When Takeout Order outgrew email chains and spreadsheets, I built the tool my print partners use every day — a B2B web portal for receiving jobs, printing, packing, and shipping order volume without engineering support.",
         ],
       },
       {
@@ -97,13 +97,13 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Stack & honesty",
         paragraphs: [
-          "The portal ran in production for years on AngularJS and Firebase because it was reliable and I could maintain it solo. My greenfield work is TypeScript and Next.js — I'm not precious about frameworks, I'm precise about systems that don't break when an operator misses a click.",
+          "The portal runs in production on AngularJS and Firebase because it is reliable and I can maintain it solo. My greenfield work is TypeScript and Next.js — I'm not precious about frameworks, I'm precise about systems that don't break when an operator misses a click.",
         ],
       },
       {
         heading: "Outcome",
         paragraphs: [
-          "Print partners used the portal daily for fulfillment. It reduced manual coordination between brand, printers, and carriers — unglamorous, load-bearing software shaped around how people actually work.",
+          "Print partners use the portal daily for fulfillment. It reduces manual coordination between brand, printers, and carriers — unglamorous, load-bearing software shaped around how people actually work.",
         ],
       },
     ],
@@ -113,7 +113,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "margenie",
     title: "Margenie",
-    subtitle: "Agent-native brand operations for Shopify merchants",
+    subtitle: "Agent-native brand operations · work in progress",
     tags: ["Next.js", "Agents", "Design system", "Meta", "Shopify"],
     year: "2024–present",
     role: "Founder · Design Engineer",
@@ -123,7 +123,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Margenie is the ops brain I wished I had running Takeout Order — agent-native, approval-first, and design-system driven. It's a Next.js platform for Shopify brands juggling profit metrics, Meta ad diagnostics, creative refresh, and shipping across scattered tools.",
+          "Margenie is the ops brain I wished I had running Takeout Order — agent-native, approval-first, and design-system driven. I'm building it as a Next.js platform for Shopify brands juggling profit metrics, Meta ad diagnostics, creative refresh, and shipping across scattered tools.",
         ],
       },
       {
@@ -154,7 +154,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Outcome",
         paragraphs: [
-          "Production SaaS at margenie.co. Closest analog to Claude-powered workflows + design system code + MCP-style tools — steerable automation where humans stay accountable.",
+          "Active development at margenie.co — production SaaS with more surface area shipping regularly. Closest analog to Claude-powered workflows + design system code + MCP-style tools — steerable automation where humans stay accountable.",
         ],
       },
     ],
@@ -174,7 +174,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Golf is social; coordination and side games shouldn't live in group texts. Parfade is an iOS app I built for golfers to schedule rounds with friends, run side games during play, and share lightweight social updates.",
+          "Golf is social; coordination and side games shouldn't live in group texts. Parfade is a live iOS app I built and maintain for golfers to schedule rounds with friends, run side games during play, and share lightweight social updates.",
         ],
       },
       {
@@ -198,7 +198,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Stack",
         paragraphs: [
-          "Expo / React Native for iOS, Next.js API backend with Drizzle ORM and Neon Postgres. Shipped to TestFlight and App Store — prototype quickly, design the interaction, ship, learn.",
+          "Expo / React Native for iOS, Next.js API backend with Drizzle ORM and Neon Postgres. Live on the App Store — prototype quickly, design the interaction, ship, learn.",
         ],
       },
       {

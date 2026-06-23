@@ -22,10 +22,10 @@
 | Field | Value |
 |-------|-------|
 | Brand URL | (TBD) |
-| Years active | Jan 2020 – 2024 (confirm end / still active?) |
+| Years active | Jan 2020 – present |
 | Revenue | **$3,788,518.88 gross sales since Jan 1, 2020** |
 | Role | Founder, designer, marketer, operator |
-| Still active? | (TBD) |
+| Still active? | **Yes** — still running |
 | Design count | (TBD) |
 | Primary channels | (TBD — Meta, email, organic, etc.) |
 | Storefront codebase | `../takeout-next` (Next.js — confirm) |
@@ -39,10 +39,10 @@
 | Codebase | `/Applications/MAMP/htdocs/dev/takeout-orders` |
 | Stack | AngularJS, Firebase, Cloud Functions, Shopify, EasyPost |
 | Production URL | takeoutorder.co (verify) |
-| Years in production | (TBD) |
+| Years in production | 2019 – present |
 | # of printer partners | (TBD) |
 | Orders fulfilled (rough) | (TBD) |
-| Still running? | (TBD) |
+| Still running? | **Yes** — print partners use it daily |
 
 ---
 
@@ -51,7 +51,7 @@
 | Field | Value |
 |-------|-------|
 | Live URL | https://www.margenie.co |
-| OK to show in portfolio? | (TBD — confirm public screenshots) |
+| Status | **Work in progress** — active development, production SaaS |
 | Demo store slug | (TBD — sanitized) |
 | Generative creative | fal.ai — Nano Banana 2 (image), Seedance 2 (video); in-app, approval-first |
 
@@ -65,6 +65,7 @@
 | Domain | parfade.com |
 | Stack | Expo/RN mobile, Next.js API, Drizzle, Neon, Ably |
 | Launched | 2023 |
+| Still active? | **Yes** — live on the App Store |
 
 ---
 
