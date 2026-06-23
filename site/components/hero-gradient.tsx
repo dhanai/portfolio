@@ -16,7 +16,6 @@ export function HeroGradient() {
         <div className="hero-gradient__blob hero-gradient__blob--3" />
         <div className="hero-gradient__vignette" />
         <div className="hero-gradient__grain" />
-        <div className="hero-gradient__text-shade" />
       </div>
     </>
   );
