@@ -15,9 +15,6 @@ export function ResumeActions() {
         Download PDF
         <span className="text-accent">↓</span>
       </a>
-      <p className="text-xs text-muted">
-        One-page PDF · built with React PDF
-      </p>
     </div>
   );
 }
