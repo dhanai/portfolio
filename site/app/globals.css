@@ -57,6 +57,14 @@ body::before {
   text-transform: uppercase;
 }
 
+.hero-copy .text-muted {
+  color: #ababab;
+}
+
+.hero-copy h1 .text-muted {
+  color: #c4c4c4;
+}
+
 /* Hero — grainy flowy gradient */
 .hero-gradient {
   isolation: isolate;
@@ -135,7 +143,128 @@ body::before {
   background-size: 180px 180px;
 }
 
-/* Hero portrait — bg image, out of document flow */
+.hero-gradient__text-shade {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .hero-gradient__vignette {
+    background:
+      radial-gradient(
+        ellipse 56% 46% at 13% 19%,
+        rgba(2, 2, 3, 0.78) 0%,
+        rgba(3, 3, 4, 0.32) 52%,
+        transparent 68%
+      ),
+      radial-gradient(ellipse 120% 80% at 50% 0%, transparent 35%, rgba(3, 3, 4, 0.55) 100%),
+      radial-gradient(ellipse 90% 70% at 100% 20%, rgba(3, 3, 4, 0.45) 0%, transparent 55%);
+  }
+
+  .hero-gradient__text-shade {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 54% 42% at 12% 20%,
+      rgba(1, 1, 2, 0.58) 0%,
+      rgba(3, 3, 4, 0.2) 46%,
+      transparent 64%
+    );
+  }
+}
+
+/* Hero portrait — mobile backdrop behind text */
+.hero-portrait-mobile {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-portrait-mobile::before {
+  content: "";
+  position: absolute;
+  right: -12%;
+  bottom: -8%;
+  width: 92%;
+  height: 100%;
+  background-image: url("/assets/hero/dhanai-headshot.png");
+  background-repeat: no-repeat;
+  background-position: 72% 100%;
+  background-size: contain;
+  filter: grayscale(1) brightness(0.52);
+  opacity: 1;
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 88% at 62% 52%,
+    #000 12%,
+    rgba(0, 0, 0, 0.55) 42%,
+    transparent 70%
+  );
+  mask-image: radial-gradient(
+    ellipse 80% 88% at 62% 52%,
+    #000 12%,
+    rgba(0, 0, 0, 0.55) 42%,
+    transparent 70%
+  );
+}
+
+.hero-portrait-mobile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 32%,
+      rgba(5, 5, 5, 0.28) 52%,
+      rgba(5, 5, 5, 0.48) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(5, 5, 5, 0.35) 0%,
+      transparent 38%,
+      rgba(5, 5, 5, 0.4) 100%
+    );
+}
+
+@media (max-width: 1023px) {
+  .hero-gradient__vignette {
+    background:
+      radial-gradient(
+        ellipse 90% 75% at 16% 26%,
+        rgba(2, 2, 3, 0.72) 0%,
+        rgba(3, 3, 4, 0.35) 42%,
+        transparent 72%
+      ),
+      radial-gradient(ellipse 120% 80% at 50% 0%, transparent 35%, rgba(3, 3, 4, 0.55) 100%),
+      radial-gradient(ellipse 90% 70% at 100% 20%, rgba(3, 3, 4, 0.45) 0%, transparent 55%);
+  }
+
+  .hero-gradient__blob--1 {
+    width: 95%;
+    height: 62%;
+    left: -28%;
+    bottom: -18%;
+    opacity: 1;
+  }
+
+  .hero-gradient__blob--2 {
+    width: 72%;
+    height: 55%;
+    left: 8%;
+    bottom: 4%;
+    opacity: 1;
+  }
+
+  .hero-gradient__blob--3 {
+    width: 58%;
+    height: 46%;
+    right: -18%;
+    top: 8%;
+    opacity: 0.9;
+  }
+}
+
+/* Hero portrait — desktop, out of document flow */
 .hero-portrait {
   position: absolute;
   right: max(1.5rem, calc((100vw - 72rem) / 2));

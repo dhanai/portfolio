@@ -15,7 +15,7 @@ export default async function HomePage() {
       <section className="relative overflow-hidden border-b border-border">
         <HeroGradient />
         <HeroPortrait />
-        <div className="relative z-10 mx-auto max-w-6xl px-6 py-24 md:py-32 lg:py-36">
+        <div className="hero-copy relative z-10 mx-auto max-w-6xl px-6 py-24 md:py-32 lg:py-36">
           <FadeIn>
             <p className="label-caps text-muted">{site.hero.label}</p>
             <h1 className="mt-6 max-w-4xl text-balance text-4xl font-medium leading-[1.08] tracking-[-0.03em] text-foreground md:text-6xl lg:text-7xl lg:max-w-3xl">
