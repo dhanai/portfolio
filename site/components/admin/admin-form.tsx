@@ -119,16 +119,14 @@ export function AdminForm({
       setIsPreparing(true);
       try {
         await prepareSubmit(form);
+        formAction(new FormData(form));
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Could not prepare save";
         toastError(message);
-        return;
       } finally {
         setIsPreparing(false);
       }
-
-      formAction(new FormData(form));
     },
     [formAction, prepareSubmit, toastError],
   );

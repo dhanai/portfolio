@@ -42,9 +42,11 @@ function newItem(): CreativeShowcaseItem {
 function MediaPreview({
   item,
   localSrc,
+  mediaType,
 }: {
   item: CreativeShowcaseItem;
   localSrc: string | null;
+  mediaType: "image" | "video";
 }) {
   const src = localSrc ?? item.src;
   if (!src) {
@@ -55,7 +57,7 @@ function MediaPreview({
     );
   }
 
-  if (item.type === "video") {
+  if (mediaType === "video") {
     return (
       <video
         src={src}
@@ -79,15 +81,45 @@ function MediaPreview({
   );
 }
 
+type ItemMedia = { src: string; type: "image" | "video" };
+
+function initMediaByItemId(items: CreativeShowcaseItem[]): Record<string, ItemMedia> {
+  return Object.fromEntries(
+    items.map((item) => [item.id, { src: item.src, type: item.type }]),
+  );
+}
+
+function syncMediaFieldsToForm(
+  form: HTMLFormElement,
+  items: CreativeShowcaseItem[],
+  mediaByItemId: Record<string, ItemMedia>,
+) {
+  for (const item of items) {
+    const media = mediaByItemId[item.id] ?? { src: item.src, type: item.type };
+    const srcInput = form.querySelector<HTMLInputElement>(
+      `[data-creative-src="${item.id}"]`,
+    );
+    const typeInput = form.querySelector<HTMLInputElement>(
+      `[data-creative-type="${item.id}"]`,
+    );
+    if (srcInput) srcInput.value = media.src;
+    if (typeInput) typeInput.value = media.type;
+  }
+}
+
 function CreativeItemFields({
   item,
   index,
+  media,
+  onMediaChange,
   onRemove,
   drag,
   onPendingVideo,
 }: {
   item: CreativeShowcaseItem;
   index: number;
+  media: ItemMedia;
+  onMediaChange: (itemId: string, patch: Partial<ItemMedia>) => void;
   onRemove: () => void;
   drag: ReturnType<typeof useDragReorder>;
   onPendingVideo: (itemId: string, file: File | null) => void;
@@ -95,10 +127,8 @@ function CreativeItemFields({
   const mediaRef = useRef<HTMLInputElement>(null);
   const posterRef = useRef<HTMLInputElement>(null);
   const pendingVideoRef = useRef<File | null>(null);
-  const [mediaSrc, setMediaSrc] = useState(item.src);
   const [localMedia, setLocalMedia] = useState<string | null>(null);
   const [localPoster, setLocalPoster] = useState<string | null>(null);
-  const [mediaType, setMediaType] = useState<"image" | "video">(item.type);
   const [uploadNote, setUploadNote] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [compressing, setCompressing] = useState(false);
@@ -111,7 +141,7 @@ function CreativeItemFields({
     };
   }, [localMedia, localPoster]);
 
-  async function onMediaChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function onMediaFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -119,12 +149,11 @@ function CreativeItemFields({
     setUploadNote(null);
 
     if (file.type.startsWith("video/")) {
-      setMediaType("video");
+      onMediaChange(item.id, { type: "video" });
       pendingVideoRef.current = file;
       onPendingVideo(item.id, file);
       if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
       setLocalMedia(URL.createObjectURL(file));
-      setMediaSrc("");
       setUploadNote(`Video ready (${formatBytes(file.size)}) — uploads when you save`);
       notifyFormChanged(mediaRef.current);
       return;
@@ -141,7 +170,7 @@ function CreativeItemFields({
         transfer.items.add(compressed);
         mediaRef.current.files = transfer.files;
       }
-      setMediaType("image");
+      onMediaChange(item.id, { type: "image" });
       if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
       setLocalMedia(URL.createObjectURL(compressed));
       setUploadNote(
@@ -213,19 +242,23 @@ function CreativeItemFields({
       <input
         type="hidden"
         name={`${prefix}type`}
-        value={mediaType}
+        value={media.type}
         data-creative-type={item.id}
       />
       <input
         type="hidden"
         name={`${prefix}src`}
-        value={mediaSrc}
+        value={media.src}
         data-creative-src={item.id}
       />
       <input type="hidden" name={`${prefix}poster`} value={item.poster ?? ""} />
 
       <div className="mt-4 grid gap-6 lg:grid-cols-[180px_1fr]">
-        <MediaPreview item={{ ...item, type: mediaType }} localSrc={localMedia} />
+        <MediaPreview
+          item={{ ...item, src: media.src }}
+          localSrc={localMedia}
+          mediaType={media.type}
+        />
 
         <div className="grid gap-4">
           <label className="block">
@@ -235,7 +268,6 @@ function CreativeItemFields({
             <input
               name={`${prefix}title`}
               defaultValue={item.title}
-              required
               placeholder="Campaign name or piece title"
               className="mt-1.5 w-full border border-white/10 bg-[#0a0a0a] px-3 py-2 text-sm text-white outline-none focus:border-[#ff453a]"
             />
@@ -261,10 +293,10 @@ function CreativeItemFields({
             <input
               ref={mediaRef}
               type="file"
-              name={mediaType === "image" ? `${prefix}media` : undefined}
+              name={media.type === "image" ? `${prefix}media` : undefined}
               data-creative-media={item.id}
               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
-              onChange={onMediaChange}
+              onChange={onMediaFileChange}
               disabled={compressing}
               className="mt-1.5 block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
             />
@@ -283,7 +315,7 @@ function CreativeItemFields({
             </p>
           </label>
 
-          {mediaType === "video" && (
+          {media.type === "video" && (
             <label className="block">
               <span className="text-xs uppercase tracking-wider text-[#737373]">
                 Video poster (optional)
@@ -322,6 +354,23 @@ export const CreativeShowcaseEditor = forwardRef<
   const [items, setItems] = useState<CreativeShowcaseItem[]>(
     initialItems.length > 0 ? initialItems : [],
   );
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+
+  const [mediaByItemId, setMediaByItemId] = useState<Record<string, ItemMedia>>(
+    () => initMediaByItemId(initialItems),
+  );
+  const mediaByItemIdRef = useRef(mediaByItemId);
+  mediaByItemIdRef.current = mediaByItemId;
+
+  const updateMedia = useCallback((itemId: string, patch: Partial<ItemMedia>) => {
+    setMediaByItemId((prev) => {
+      const current = prev[itemId] ?? { src: "", type: "image" as const };
+      const next = { ...prev, [itemId]: { ...current, ...patch } };
+      mediaByItemIdRef.current = next;
+      return next;
+    });
+  }, []);
 
   const setPendingVideo = useCallback((itemId: string, file: File | null) => {
     if (file) pendingVideosRef.current.set(itemId, file);
@@ -330,30 +379,34 @@ export const CreativeShowcaseEditor = forwardRef<
 
   useImperativeHandle(ref, () => ({
     async uploadPendingVideos(form: HTMLFormElement) {
+      syncMediaFieldsToForm(form, itemsRef.current, mediaByItemIdRef.current);
+
       const pending = [...pendingVideosRef.current.entries()];
       if (pending.length === 0) return;
 
       for (const [itemId, file] of pending) {
-        const srcInput = form.querySelector<HTMLInputElement>(
-          `[data-creative-src="${itemId}"]`,
-        );
-        const typeInput = form.querySelector<HTMLInputElement>(
-          `[data-creative-type="${itemId}"]`,
-        );
         const mediaInput = form.querySelector<HTMLInputElement>(
           `[data-creative-media="${itemId}"]`,
         );
 
         try {
           const url = await uploadCreativeVideoToBlob(file, itemId);
-          if (srcInput) srcInput.value = url;
-          if (typeInput) typeInput.value = "video";
+          const nextMedia: ItemMedia = { src: url, type: "video" };
+          mediaByItemIdRef.current = {
+            ...mediaByItemIdRef.current,
+            [itemId]: nextMedia,
+          };
+          setMediaByItemId((prev) => ({ ...prev, [itemId]: nextMedia }));
+          syncMediaFieldsToForm(form, itemsRef.current, mediaByItemIdRef.current);
           pendingVideosRef.current.delete(itemId);
         } catch (err) {
           if (process.env.NODE_ENV === "development" && mediaInput) {
             const transfer = new DataTransfer();
             transfer.items.add(file);
             mediaInput.files = transfer.files;
+            const srcInput = form.querySelector<HTMLInputElement>(
+              `[data-creative-src="${itemId}"]`,
+            );
             mediaInput.name = srcInput?.name.replace(/src$/, "media") ?? "";
             pendingVideosRef.current.delete(itemId);
             continue;
@@ -380,12 +433,26 @@ export const CreativeShowcaseEditor = forwardRef<
   }, [items]);
 
   function addItem() {
-    setItems((prev) => [...prev, newItem()]);
+    const item = newItem();
+    setItems((prev) => [...prev, item]);
+    setMediaByItemId((prev) => {
+      const next = { ...prev, [item.id]: { src: "", type: "image" as const } };
+      mediaByItemIdRef.current = next;
+      return next;
+    });
   }
 
   function removeItem(index: number) {
     const item = items[index];
-    if (item) pendingVideosRef.current.delete(item.id);
+    if (item) {
+      pendingVideosRef.current.delete(item.id);
+      setMediaByItemId((prev) => {
+        const next = { ...prev };
+        delete next[item.id];
+        mediaByItemIdRef.current = next;
+        return next;
+      });
+    }
     setItems((prev) => prev.filter((_, i) => i !== index));
   }
 
@@ -408,6 +475,8 @@ export const CreativeShowcaseEditor = forwardRef<
           key={item.id}
           item={item}
           index={index}
+          media={mediaByItemId[item.id] ?? { src: item.src, type: item.type }}
+          onMediaChange={updateMedia}
           onRemove={() => removeItem(index)}
           drag={drag}
           onPendingVideo={setPendingVideo}

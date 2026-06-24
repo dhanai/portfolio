@@ -34,6 +34,8 @@ export async function parseCreativeShowcaseForm(
     let poster = String(formData.get(`${prefix}poster`) ?? "").trim() || undefined;
 
     const mediaFile = formData.get(`${prefix}media`);
+    const hasMediaFile = mediaFile instanceof File && mediaFile.size > 0;
+
     if (mediaFile instanceof File && mediaFile.size > 0) {
       try {
         const uploaded = await saveCreativeMedia(mediaFile, id);
@@ -57,12 +59,16 @@ export async function parseCreativeShowcaseForm(
       }
     }
 
-    if (!itemTitle) {
-      return { error: `Item ${i + 1}: title is required` };
+    if (!itemTitle && !src && !hasMediaFile) {
+      continue;
     }
 
-    if (!src) {
-      return { error: `Item ${i + 1}: upload media or paste a URL` };
+    if (!itemTitle) {
+      return { error: `Piece ${i + 1}: title is required` };
+    }
+
+    if (!src && !hasMediaFile) {
+      return { error: `"${itemTitle}": add media or keep the existing upload` };
     }
 
     items.push({
