@@ -34,6 +34,11 @@ export default async function AdminDashboardPage() {
             </Link>
           </li>
           <li>
+            <Link href="/admin/creative" className="hover:text-white">
+              Edit creative showcase (9×16 gallery)
+            </Link>
+          </li>
+          <li>
             <Link href="/admin/resume" className="hover:text-white">
               Edit resume (JSON)
             </Link>

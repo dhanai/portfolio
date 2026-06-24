@@ -20,6 +20,5 @@ export function parseWorkFormData(
     reflection: String(formData.get("reflection")),
     sectionsJson: String(formData.get("sectionsJson")),
     published: formData.get("published") === "on",
-    sortOrder: Number(formData.get("sortOrder") ?? 0),
   };
 }

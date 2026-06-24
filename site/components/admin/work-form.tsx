@@ -20,12 +20,10 @@ const defaultSections = `[
 
 export function WorkForm({
   work,
-  sortOrder = 0,
   action,
   removeAction,
 }: {
   work?: Work;
-  sortOrder?: number;
   action: (formData: FormData) => Promise<ActionResult | void>;
   removeAction?: () => Promise<void>;
 }) {
@@ -38,7 +36,6 @@ export function WorkForm({
     <AdminForm
       action={action}
       alwaysEnableSubmit={!work}
-      encType="multipart/form-data"
       className="mt-8 space-y-6"
     >
       {work?.id && <input type="hidden" name="id" value={work.id} />}
@@ -52,7 +49,6 @@ export function WorkForm({
         <AdminField label="Accent color" name="color" defaultValue={work?.color ?? "#FF453A"} />
         <AdminField label="Card link (optional)" name="href" defaultValue={work?.href ?? ""} hint="External URL skips case study page" />
         <WorkPreviewUpload defaultImage={work?.image} />
-        <AdminField label="Sort order" name="sortOrder" type="number" defaultValue={String(work?.sortOrder ?? sortOrder)} />
         <AdminCheckbox label="Published" name="published" defaultChecked={work?.published ?? true} />
       </AdminSection>
 

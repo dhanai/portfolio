@@ -37,6 +37,14 @@ export async function ResumeWeb({ data }: { data?: ResumeContentData }) {
             {contact.linkedin}
           </a>
           <a
+            href={`https://${contact.github}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground transition-colors hover:text-accent"
+          >
+            {contact.github}
+          </a>
+          <a
             href={`https://${contact.portfolio}`}
             className="text-foreground transition-colors hover:text-accent"
           >
@@ -81,7 +89,9 @@ export async function ResumeWeb({ data }: { data?: ResumeContentData }) {
       <section className="mt-16">
         <h2 className="label-caps text-muted">Earlier career</h2>
         <p className="mt-2 text-sm text-muted">
-          20+ years across agencies and product teams
+          {"earlierCareerIntro" in resume && resume.earlierCareerIntro
+            ? resume.earlierCareerIntro
+            : "20+ years across agencies and product teams"}
         </p>
         <ul className="mt-6 divide-y divide-border border-y border-border">
           {resume.earlierCareer.map((job) => (

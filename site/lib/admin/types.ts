@@ -19,5 +19,4 @@ export type WorkFormData = {
   reflection: string;
   sectionsJson: string;
   published: boolean;
-  sortOrder: number;
 };

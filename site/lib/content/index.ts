@@ -8,10 +8,15 @@ import {
   type AboutContentData,
   type SiteContentData,
 } from "@/lib/defaults/seed-data";
+import {
+  defaultCreativeShowcase,
+  type CreativeShowcaseData,
+  type CreativeShowcaseItem,
+} from "@/lib/defaults/creative-showcase";
 import type { resumeData as ResumeDataType } from "@/lib/resume-data";
 import { prisma } from "@/lib/prisma";
 
-export type { SiteContentData, AboutContentData };
+export type { SiteContentData, AboutContentData, CreativeShowcaseData };
 export type ResumeContentData = typeof ResumeDataType;
 
 function parseJson<T>(raw: string, fallback: T): T {
@@ -42,6 +47,41 @@ export async function getResumeContent(): Promise<ResumeContentData> {
   const block = await prisma.contentBlock.findUnique({ where: { key: "resume" } });
   if (!block) return defaultResumeContent;
   return parseJson(block.data, defaultResumeContent);
+}
+
+export async function getCreativeShowcase(): Promise<CreativeShowcaseData> {
+  const block = await prisma.contentBlock.findUnique({
+    where: { key: "creative" },
+  });
+  if (!block) return defaultCreativeShowcase;
+  const parsed = parseJson(block.data, defaultCreativeShowcase);
+  const items = Array.isArray(parsed.items)
+    ? parsed.items.map((item) =>
+        normalizeCreativeItem(item as Record<string, unknown>),
+      )
+    : [];
+  return {
+    ...defaultCreativeShowcase,
+    ...parsed,
+    items,
+  };
+}
+
+function normalizeCreativeItem(raw: Record<string, unknown>): CreativeShowcaseItem {
+  const title =
+    String(raw.title ?? raw.caption ?? "").trim() ||
+    String(raw.alt ?? "Creative work");
+  const direction = String(raw.direction ?? "").trim() || undefined;
+  return {
+    id: String(raw.id ?? `creative-${Math.random().toString(36).slice(2, 9)}`),
+    type: raw.type === "video" ? "video" : "image",
+    src: String(raw.src ?? ""),
+    poster: raw.poster ? String(raw.poster) : undefined,
+    title,
+    direction,
+    alt: String(raw.alt ?? title),
+    caption: raw.caption ? String(raw.caption) : undefined,
+  };
 }
 
 export async function getProjects(): Promise<Project[]> {

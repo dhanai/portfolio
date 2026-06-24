@@ -50,9 +50,9 @@ export const defaultSiteContent: SiteContentData = {
   oneLiner: siteConfig.oneLiner,
   links: { ...siteConfig.links },
   hero: {
-    label: "Design Engineer · Los Angeles",
-    title: "Craft, code, and systems",
-    titleMuted: "that scale.",
+    label: "Los Angeles",
+    title: "Designer, Director,",
+    titleMuted: "Degenerate",
   },
   now: {
     label: "Now",

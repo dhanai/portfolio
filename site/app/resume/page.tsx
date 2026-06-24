@@ -15,7 +15,7 @@ export default function ResumePage() {
           <div>
             <p className="label-caps text-muted">Resume</p>
             <p className="mt-1 text-sm text-muted">
-              Full experience below · PDF export is a condensed one-pager
+              Full experience below · PDF is your designed one-pager
             </p>
           </div>
           <ResumeActions />

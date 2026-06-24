@@ -6,6 +6,7 @@ const nav = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/site", label: "Site & Hero" },
   { href: "/admin/work", label: "Work" },
+  { href: "/admin/creative", label: "Creative" },
   { href: "/admin/about", label: "About" },
   { href: "/admin/resume", label: "Resume" },
 ];

@@ -2,6 +2,7 @@ import { saveResumeContent } from "@/lib/admin/actions";
 import { AdminForm } from "@/components/admin/admin-form";
 import { AdminSection, AdminSubmit, AdminTextarea } from "@/components/admin/form";
 import { getResumeContent } from "@/lib/content";
+import { RESUME_PDF_FILENAME } from "@/lib/resume-data";
 
 export default async function AdminResumePage() {
   const resume = await getResumeContent();
@@ -22,8 +23,10 @@ export default async function AdminResumePage() {
     <div>
       <h1 className="text-2xl font-medium">Resume</h1>
       <p className="mt-2 text-sm text-[#737373]">
-        Full resume for web + PDF. After saving, run{" "}
-        <code className="text-[#ff453a]">npm run resume:pdf</code> or rebuild to refresh the PDF file.
+        Web resume content (JSON below). The downloadable PDF is a separate file
+        at{" "}
+        <code className="text-[#ff453a]">public/assets/resume/{RESUME_PDF_FILENAME}</code>
+        — replace that file when you update the designed PDF.
       </p>
       <AdminForm action={action} successMessage="Resume saved" className="mt-8 space-y-6">
         <AdminSection title="Resume JSON">

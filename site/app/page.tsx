@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { HeroGradient } from "@/components/hero-gradient";
 import { HeroPortrait } from "@/components/hero-portrait";
+import { CreativeShowcaseSection } from "@/components/creative-showcase-section";
 import { ProjectCard, FadeIn } from "@/components/project-card";
-import { getProjects, getSiteContent } from "@/lib/content";
+import { getCreativeShowcase, getProjects, getSiteContent } from "@/lib/content";
 
 export default async function HomePage() {
-  const [projects, site] = await Promise.all([
+  const [projects, site, showcase] = await Promise.all([
     getProjects(),
     getSiteContent(),
+    getCreativeShowcase(),
   ]);
 
   return (
@@ -69,6 +71,8 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      <CreativeShowcaseSection showcase={showcase} />
 
       <section className="border-t border-border">
         <div className="mx-auto max-w-6xl px-6 py-24">

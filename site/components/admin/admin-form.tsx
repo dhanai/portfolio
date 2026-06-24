@@ -33,7 +33,6 @@ type AdminFormProps = {
   successMessage?: string;
   unchangedMessage?: string;
   alwaysEnableSubmit?: boolean;
-  encType?: "multipart/form-data" | "application/x-www-form-urlencoded";
   className?: string;
   children: React.ReactNode;
 };
@@ -43,7 +42,6 @@ export function AdminForm({
   successMessage = "Saved",
   unchangedMessage = "No changes to save",
   alwaysEnableSubmit = false,
-  encType,
   className,
   children,
 }: AdminFormProps) {
@@ -112,7 +110,6 @@ export function AdminForm({
         ref={formRef}
         action={formAction}
         className={className}
-        encType={encType}
         onInput={syncDirty}
         onChange={syncDirty}
       >

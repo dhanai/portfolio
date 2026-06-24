@@ -5,6 +5,7 @@ import {
   defaultResumeContent,
   defaultSiteContent,
 } from "@/lib/defaults/seed-data";
+import { defaultCreativeShowcase } from "@/lib/defaults/creative-showcase";
 
 async function main() {
   const workCount = await prisma.work.count();
@@ -22,6 +23,7 @@ async function main() {
     { key: "site", data: defaultSiteContent },
     { key: "about", data: defaultAboutContent },
     { key: "resume", data: defaultResumeContent },
+    { key: "creative", data: defaultCreativeShowcase },
   ];
 
   for (const block of blocks) {
