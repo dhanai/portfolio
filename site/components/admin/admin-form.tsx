@@ -111,22 +111,21 @@ export function AdminForm({
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      const form = formRef.current;
-      if (!form) return;
+      if (!prepareSubmit) return;
 
-      if (prepareSubmit) {
-        setIsPreparing(true);
-        try {
-          await prepareSubmit(form);
-        } catch (err) {
-          const message =
-            err instanceof Error ? err.message : "Could not prepare save";
-          toastError(message);
-          return;
-        } finally {
-          setIsPreparing(false);
-        }
+      event.preventDefault();
+      const form = event.currentTarget;
+
+      setIsPreparing(true);
+      try {
+        await prepareSubmit(form);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Could not prepare save";
+        toastError(message);
+        return;
+      } finally {
+        setIsPreparing(false);
       }
 
       formAction(new FormData(form));
@@ -140,6 +139,7 @@ export function AdminForm({
     >
       <form
         ref={formRef}
+        action={formAction}
         onSubmit={handleSubmit}
         className={className}
         onInput={syncDirty}
