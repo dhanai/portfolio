@@ -1,8 +1,9 @@
 "use client";
 
-import { upload } from "@vercel/blob/client";
+import { put } from "@vercel/blob/client";
 
 const MAX_VIDEO_BYTES = 80 * 1024 * 1024;
+const BLOB_UPLOAD_URL = "/api/admin/blob-upload";
 
 const VIDEO_TYPES = new Set([
   "video/mp4",
@@ -28,6 +29,45 @@ function extForVideo(file: File) {
   return ".mp4";
 }
 
+async function fetchClientToken(
+  pathname: string,
+  itemId: string,
+): Promise<string> {
+  const response = await fetch(BLOB_UPLOAD_URL, {
+    method: "POST",
+    credentials: "include",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      type: "blob.generate-client-token",
+      payload: {
+        pathname,
+        clientPayload: JSON.stringify({ itemId }),
+        multipart: true,
+      },
+    }),
+  });
+
+  let payload: { clientToken?: string; error?: string } = {};
+  try {
+    payload = (await response.json()) as typeof payload;
+  } catch {
+    payload = {};
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      payload.error ||
+        `Upload authorization failed (${response.status}). Sign in to admin and ensure Blob READ_WRITE_TOKEN is set in Vercel.`,
+    );
+  }
+
+  if (!payload.clientToken) {
+    throw new Error("Upload authorization did not return a client token");
+  }
+
+  return payload.clientToken;
+}
+
 export async function uploadCreativeVideoToBlob(
   file: File,
   itemId: string,
@@ -44,11 +84,11 @@ export async function uploadCreativeVideoToBlob(
   }
 
   const pathname = `creative/${slugify(itemId)}${extForVideo(file)}`;
+  const clientToken = await fetchClientToken(pathname, itemId);
 
-  const result = await upload(pathname, file, {
+  const result = await put(pathname, file, {
     access: "public",
-    handleUploadUrl: "/api/admin/blob-upload",
-    clientPayload: JSON.stringify({ itemId }),
+    token: clientToken,
     multipart: true,
     contentType: file.type || undefined,
     onUploadProgress: onProgress
