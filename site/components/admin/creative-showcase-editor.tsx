@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CreativeShowcaseItem } from "@/lib/defaults/creative-showcase";
 import { compressImageForUpload } from "@/lib/admin/compress-image-client";
+import { uploadCreativeVideoToBlob } from "@/lib/admin/upload-creative-blob-client";
 import { notifyFormChanged, reorderList } from "@/lib/admin/reorder-list";
 import {
   DragHandle,
@@ -93,6 +94,7 @@ function CreativeItemFields({
 }) {
   const mediaRef = useRef<HTMLInputElement>(null);
   const posterRef = useRef<HTMLInputElement>(null);
+  const [mediaSrc, setMediaSrc] = useState(item.src);
   const [localMedia, setLocalMedia] = useState<string | null>(null);
   const [localPoster, setLocalPoster] = useState<string | null>(null);
   const [mediaType, setMediaType] = useState<"image" | "video">(item.type);
@@ -117,10 +119,34 @@ function CreativeItemFields({
 
     if (file.type.startsWith("video/")) {
       setMediaType("video");
-      if (localMedia) URL.revokeObjectURL(localMedia);
-      const url = URL.createObjectURL(file);
-      setLocalMedia(url);
-      setUploadNote(`Video ready (${formatBytes(file.size)})`);
+      setCompressing(true);
+      try {
+        const url = await uploadCreativeVideoToBlob(file, item.id, (percent) => {
+          setUploadNote(`Uploading… ${Math.round(percent)}%`);
+        });
+        if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
+        setMediaSrc(url);
+        setLocalMedia(url);
+        if (mediaRef.current) mediaRef.current.value = "";
+        setUploadNote(`Uploaded (${formatBytes(file.size)})`);
+        notifyFormChanged(mediaRef.current);
+      } catch (err) {
+        if (process.env.NODE_ENV === "development") {
+          if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
+          const preview = URL.createObjectURL(file);
+          setLocalMedia(preview);
+          setUploadNote(
+            `Video ready (${formatBytes(file.size)}) — will upload on save (local only)`,
+          );
+        } else {
+          setUploadError(
+            err instanceof Error ? err.message : "Video upload failed",
+          );
+          e.target.value = "";
+        }
+      } finally {
+        setCompressing(false);
+      }
       return;
     }
 
@@ -133,7 +159,7 @@ function CreativeItemFields({
         mediaRef.current.files = transfer.files;
       }
       setMediaType("image");
-      if (localMedia) URL.revokeObjectURL(localMedia);
+      if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
       setLocalMedia(URL.createObjectURL(compressed));
       setUploadNote(
         compressed.size < file.size
@@ -196,7 +222,7 @@ function CreativeItemFields({
 
       <input type="hidden" name={`${prefix}id`} value={item.id} />
       <input type="hidden" name={`${prefix}type`} value={mediaType} />
-      <input type="hidden" name={`${prefix}src`} value={item.src} />
+      <input type="hidden" name={`${prefix}src`} value={mediaSrc} />
       <input type="hidden" name={`${prefix}poster`} value={item.poster ?? ""} />
 
       <div className="mt-4 grid gap-6 lg:grid-cols-[180px_1fr]">
@@ -243,7 +269,9 @@ function CreativeItemFields({
               className="mt-1.5 block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
             />
             {compressing && (
-              <p className="mt-1 text-xs text-[#737373]">Processing…</p>
+              <p className="mt-1 text-xs text-[#737373]">
+                {mediaType === "video" ? "Uploading video…" : "Processing…"}
+              </p>
             )}
             {uploadNote && !compressing && (
               <p className="mt-1 text-xs text-[#737373]">{uploadNote}</p>
@@ -252,7 +280,8 @@ function CreativeItemFields({
               <p className="mt-1 text-xs text-[#ff453a]">{uploadError}</p>
             )}
             <p className="mt-1 text-xs text-[#525252]">
-              9×16 image or video. Images compress to WebP; videos up to 80MB.
+              9×16 image or video. Images compress to WebP; videos upload directly
+              to storage (up to 80MB).
             </p>
           </label>
 
