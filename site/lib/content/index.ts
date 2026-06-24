@@ -192,7 +192,6 @@ export async function getSiteConfigFromCms() {
     oneLiner: site.oneLiner,
     links: site.links,
     nav: [
-      { href: "/work", label: "Work" },
       { href: "/about", label: "About" },
       { href: "/resume", label: "Resume" },
     ],

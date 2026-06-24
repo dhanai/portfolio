@@ -37,7 +37,6 @@ export const siteConfig: SiteConfigView = {
     parfade: "https://www.parfade.com",
   },
   nav: [
-    { href: "/work", label: "Work" },
     { href: "/about", label: "About" },
     { href: "/resume", label: "Resume" },
   ],
