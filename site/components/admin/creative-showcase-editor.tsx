@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import type { CreativeShowcaseItem } from "@/lib/defaults/creative-showcase";
 import { compressImageForUpload } from "@/lib/admin/compress-image-client";
 import { uploadCreativeVideoToBlob } from "@/lib/admin/upload-creative-blob-client";
@@ -10,6 +17,10 @@ import {
   SortableDropRow,
   useDragReorder,
 } from "@/components/admin/drag-reorder";
+
+export type CreativeShowcaseEditorHandle = {
+  uploadPendingVideos: (form: HTMLFormElement) => Promise<void>;
+};
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -44,24 +55,11 @@ function MediaPreview({
     );
   }
 
-  if (item.type === "video" && !localSrc?.startsWith("blob:")) {
+  if (item.type === "video") {
     return (
       <video
         src={src}
         poster={item.poster}
-        className="aspect-[9/16] w-full max-w-[180px] object-cover border border-white/10"
-        muted
-        playsInline
-        loop
-        autoPlay
-      />
-    );
-  }
-
-  if (item.type === "video" && localSrc) {
-    return (
-      <video
-        src={localSrc}
         className="aspect-[9/16] w-full max-w-[180px] object-cover border border-white/10"
         muted
         playsInline
@@ -86,14 +84,17 @@ function CreativeItemFields({
   index,
   onRemove,
   drag,
+  onPendingVideo,
 }: {
   item: CreativeShowcaseItem;
   index: number;
   onRemove: () => void;
   drag: ReturnType<typeof useDragReorder>;
+  onPendingVideo: (itemId: string, file: File | null) => void;
 }) {
   const mediaRef = useRef<HTMLInputElement>(null);
   const posterRef = useRef<HTMLInputElement>(null);
+  const pendingVideoRef = useRef<File | null>(null);
   const [mediaSrc, setMediaSrc] = useState(item.src);
   const [localMedia, setLocalMedia] = useState<string | null>(null);
   const [localPoster, setLocalPoster] = useState<string | null>(null);
@@ -105,7 +106,7 @@ function CreativeItemFields({
 
   useEffect(() => {
     return () => {
-      if (localMedia) URL.revokeObjectURL(localMedia);
+      if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
       if (localPoster) URL.revokeObjectURL(localPoster);
     };
   }, [localMedia, localPoster]);
@@ -119,36 +120,18 @@ function CreativeItemFields({
 
     if (file.type.startsWith("video/")) {
       setMediaType("video");
-      setCompressing(true);
-      try {
-        const url = await uploadCreativeVideoToBlob(file, item.id, (percent) => {
-          setUploadNote(`Uploading… ${Math.round(percent)}%`);
-        });
-        if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
-        setMediaSrc(url);
-        setLocalMedia(url);
-        if (mediaRef.current) mediaRef.current.value = "";
-        setUploadNote(`Uploaded (${formatBytes(file.size)})`);
-        notifyFormChanged(mediaRef.current);
-      } catch (err) {
-        if (process.env.NODE_ENV === "development") {
-          if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
-          const preview = URL.createObjectURL(file);
-          setLocalMedia(preview);
-          setUploadNote(
-            `Video ready (${formatBytes(file.size)}) — will upload on save (local only)`,
-          );
-        } else {
-          setUploadError(
-            err instanceof Error ? err.message : "Video upload failed",
-          );
-          e.target.value = "";
-        }
-      } finally {
-        setCompressing(false);
-      }
+      pendingVideoRef.current = file;
+      onPendingVideo(item.id, file);
+      if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
+      setLocalMedia(URL.createObjectURL(file));
+      setMediaSrc("");
+      setUploadNote(`Video ready (${formatBytes(file.size)}) — uploads when you save`);
+      notifyFormChanged(mediaRef.current);
       return;
     }
+
+    pendingVideoRef.current = null;
+    onPendingVideo(item.id, null);
 
     setCompressing(true);
     try {
@@ -194,6 +177,12 @@ function CreativeItemFields({
     }
   }
 
+  function handleRemove() {
+    pendingVideoRef.current = null;
+    onPendingVideo(item.id, null);
+    onRemove();
+  }
+
   return (
     <SortableDropRow
       index={index}
@@ -213,7 +202,7 @@ function CreativeItemFields({
         </div>
         <button
           type="button"
-          onClick={onRemove}
+          onClick={handleRemove}
           className="text-xs text-[#ff453a] hover:text-white"
         >
           Remove
@@ -221,8 +210,18 @@ function CreativeItemFields({
       </div>
 
       <input type="hidden" name={`${prefix}id`} value={item.id} />
-      <input type="hidden" name={`${prefix}type`} value={mediaType} />
-      <input type="hidden" name={`${prefix}src`} value={mediaSrc} />
+      <input
+        type="hidden"
+        name={`${prefix}type`}
+        value={mediaType}
+        data-creative-type={item.id}
+      />
+      <input
+        type="hidden"
+        name={`${prefix}src`}
+        value={mediaSrc}
+        data-creative-src={item.id}
+      />
       <input type="hidden" name={`${prefix}poster`} value={item.poster ?? ""} />
 
       <div className="mt-4 grid gap-6 lg:grid-cols-[180px_1fr]">
@@ -262,16 +261,15 @@ function CreativeItemFields({
             <input
               ref={mediaRef}
               type="file"
-              name={`${prefix}media`}
+              name={mediaType === "image" ? `${prefix}media` : undefined}
+              data-creative-media={item.id}
               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
               onChange={onMediaChange}
               disabled={compressing}
               className="mt-1.5 block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
             />
             {compressing && (
-              <p className="mt-1 text-xs text-[#737373]">
-                {mediaType === "video" ? "Uploading video…" : "Processing…"}
-              </p>
+              <p className="mt-1 text-xs text-[#737373]">Processing…</p>
             )}
             {uploadNote && !compressing && (
               <p className="mt-1 text-xs text-[#737373]">{uploadNote}</p>
@@ -280,8 +278,8 @@ function CreativeItemFields({
               <p className="mt-1 text-xs text-[#ff453a]">{uploadError}</p>
             )}
             <p className="mt-1 text-xs text-[#525252]">
-              9×16 image or video. Images compress to WebP; videos upload directly
-              to storage (up to 80MB).
+              9×16 image or video. Images compress to WebP; videos upload when
+              you save (up to 80MB).
             </p>
           </label>
 
@@ -315,15 +313,56 @@ function CreativeItemFields({
   );
 }
 
-export function CreativeShowcaseEditor({
-  initialItems,
-}: {
-  initialItems: CreativeShowcaseItem[];
-}) {
+export const CreativeShowcaseEditor = forwardRef<
+  CreativeShowcaseEditorHandle,
+  { initialItems: CreativeShowcaseItem[] }
+>(function CreativeShowcaseEditor({ initialItems }, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const pendingVideosRef = useRef(new Map<string, File>());
   const [items, setItems] = useState<CreativeShowcaseItem[]>(
     initialItems.length > 0 ? initialItems : [],
   );
+
+  const setPendingVideo = useCallback((itemId: string, file: File | null) => {
+    if (file) pendingVideosRef.current.set(itemId, file);
+    else pendingVideosRef.current.delete(itemId);
+  }, []);
+
+  useImperativeHandle(ref, () => ({
+    async uploadPendingVideos(form: HTMLFormElement) {
+      const pending = [...pendingVideosRef.current.entries()];
+      if (pending.length === 0) return;
+
+      for (const [itemId, file] of pending) {
+        const srcInput = form.querySelector<HTMLInputElement>(
+          `[data-creative-src="${itemId}"]`,
+        );
+        const typeInput = form.querySelector<HTMLInputElement>(
+          `[data-creative-type="${itemId}"]`,
+        );
+        const mediaInput = form.querySelector<HTMLInputElement>(
+          `[data-creative-media="${itemId}"]`,
+        );
+
+        try {
+          const url = await uploadCreativeVideoToBlob(file, itemId);
+          if (srcInput) srcInput.value = url;
+          if (typeInput) typeInput.value = "video";
+          pendingVideosRef.current.delete(itemId);
+        } catch (err) {
+          if (process.env.NODE_ENV === "development" && mediaInput) {
+            const transfer = new DataTransfer();
+            transfer.items.add(file);
+            mediaInput.files = transfer.files;
+            mediaInput.name = srcInput?.name.replace(/src$/, "media") ?? "";
+            pendingVideosRef.current.delete(itemId);
+            continue;
+          }
+          throw err;
+        }
+      }
+    },
+  }));
 
   const onReorder = useCallback((fromIndex: number, toIndex: number) => {
     setItems((prev) => reorderList(prev, fromIndex, toIndex));
@@ -345,6 +384,8 @@ export function CreativeShowcaseEditor({
   }
 
   function removeItem(index: number) {
+    const item = items[index];
+    if (item) pendingVideosRef.current.delete(item.id);
     setItems((prev) => prev.filter((_, i) => i !== index));
   }
 
@@ -369,6 +410,7 @@ export function CreativeShowcaseEditor({
           index={index}
           onRemove={() => removeItem(index)}
           drag={drag}
+          onPendingVideo={setPendingVideo}
         />
       ))}
 
@@ -381,4 +423,4 @@ export function CreativeShowcaseEditor({
       </button>
     </div>
   );
-}
+});

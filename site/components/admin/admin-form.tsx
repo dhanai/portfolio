@@ -17,11 +17,13 @@ import type { ActionResult } from "@/lib/admin/types";
 type AdminFormContextValue = {
   isDirty: boolean;
   alwaysEnableSubmit: boolean;
+  isPreparing: boolean;
 };
 
 const AdminFormContext = createContext<AdminFormContextValue>({
   isDirty: false,
   alwaysEnableSubmit: false,
+  isPreparing: false,
 });
 
 export function useAdminForm() {
@@ -33,6 +35,7 @@ type AdminFormProps = {
   successMessage?: string;
   unchangedMessage?: string;
   alwaysEnableSubmit?: boolean;
+  prepareSubmit?: (form: HTMLFormElement) => Promise<void>;
   className?: string;
   children: React.ReactNode;
 };
@@ -42,6 +45,7 @@ export function AdminForm({
   successMessage = "Saved",
   unchangedMessage = "No changes to save",
   alwaysEnableSubmit = false,
+  prepareSubmit,
   className,
   children,
 }: AdminFormProps) {
@@ -49,6 +53,7 @@ export function AdminForm({
   const formRef = useRef<HTMLFormElement>(null);
   const baselineRef = useRef("");
   const [isDirty, setIsDirty] = useState(false);
+  const [isPreparing, setIsPreparing] = useState(false);
 
   const syncDirty = useCallback(() => {
     const form = formRef.current;
@@ -104,11 +109,38 @@ export function AdminForm({
     null,
   );
 
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const form = formRef.current;
+      if (!form) return;
+
+      if (prepareSubmit) {
+        setIsPreparing(true);
+        try {
+          await prepareSubmit(form);
+        } catch (err) {
+          const message =
+            err instanceof Error ? err.message : "Could not prepare save";
+          toastError(message);
+          return;
+        } finally {
+          setIsPreparing(false);
+        }
+      }
+
+      formAction(new FormData(form));
+    },
+    [formAction, prepareSubmit, toastError],
+  );
+
   return (
-    <AdminFormContext.Provider value={{ isDirty, alwaysEnableSubmit }}>
+    <AdminFormContext.Provider
+      value={{ isDirty, alwaysEnableSubmit, isPreparing }}
+    >
       <form
         ref={formRef}
-        action={formAction}
+        onSubmit={handleSubmit}
         className={className}
         onInput={syncDirty}
         onChange={syncDirty}

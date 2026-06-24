@@ -1,4 +1,6 @@
-import { saveCreativeShowcaseFromForm } from "@/lib/admin/actions";
+"use client";
+
+import { useRef } from "react";
 import { AdminForm } from "@/components/admin/admin-form";
 import {
   AdminCheckbox,
@@ -7,22 +9,30 @@ import {
   AdminSubmit,
   AdminTextarea,
 } from "@/components/admin/form";
-import { CreativeShowcaseEditor } from "@/components/admin/creative-showcase-editor";
+import {
+  CreativeShowcaseEditor,
+  type CreativeShowcaseEditorHandle,
+} from "@/components/admin/creative-showcase-editor";
+import type { ActionResult } from "@/lib/admin/types";
 import type { CreativeShowcaseData } from "@/lib/defaults/creative-showcase";
 
 export function CreativeShowcaseForm({
   showcase,
+  saveAction,
 }: {
   showcase: CreativeShowcaseData;
+  saveAction: (formData: FormData) => Promise<ActionResult>;
 }) {
-  async function action(formData: FormData) {
-    "use server";
-    return saveCreativeShowcaseFromForm(formData);
+  const editorRef = useRef<CreativeShowcaseEditorHandle>(null);
+
+  async function prepareSubmit(form: HTMLFormElement) {
+    await editorRef.current?.uploadPendingVideos(form);
   }
 
   return (
     <AdminForm
-      action={action}
+      action={saveAction}
+      prepareSubmit={prepareSubmit}
       successMessage="Creative showcase saved"
       className="mt-8 space-y-6"
     >
@@ -48,7 +58,10 @@ export function CreativeShowcaseForm({
       </AdminSection>
 
       <AdminSection title="Pieces (9×16)">
-        <CreativeShowcaseEditor initialItems={showcase.items} />
+        <CreativeShowcaseEditor
+          ref={editorRef}
+          initialItems={showcase.items}
+        />
       </AdminSection>
 
       <AdminSubmit />

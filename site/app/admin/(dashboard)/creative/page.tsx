@@ -1,4 +1,5 @@
 import { getCreativeShowcase } from "@/lib/content";
+import { saveCreativeShowcaseFromForm } from "@/lib/admin/actions";
 import { CreativeShowcaseForm } from "@/components/admin/creative-showcase-form";
 
 export default async function AdminCreativePage() {
@@ -14,7 +15,10 @@ export default async function AdminCreativePage() {
         <code className="text-[#ff453a]">public/assets/creative/</code>.
       </p>
 
-      <CreativeShowcaseForm showcase={showcase} />
+      <CreativeShowcaseForm
+        showcase={showcase}
+        saveAction={saveCreativeShowcaseFromForm}
+      />
     </div>
   );
 }
