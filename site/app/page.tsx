@@ -14,6 +14,7 @@ export default async function HomePage() {
     getSiteContent(),
     getCreativeShowcase(),
   ]);
+  const featuredProjects = projects.slice(0, 4);
 
   return (
     <>
@@ -69,7 +70,7 @@ export default async function HomePage() {
           </div>
         </FadeIn>
         <div className="grid gap-px bg-border md:grid-cols-2">
-          {projects.map((project, index) => (
+          {featuredProjects.map((project, index) => (
             <ProjectCard key={project.slug} {...project} index={index} />
           ))}
         </div>

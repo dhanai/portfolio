@@ -81,6 +81,7 @@ async function saveToBlob(
   const blob = await put(`creative/${filename}`, toBlobBody(buffer), {
     access: "public",
     addRandomSuffix: false,
+    allowOverwrite: true,
     contentType,
     ...auth,
   });

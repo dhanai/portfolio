@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CaseStudyLayout } from "@/components/case-study-layout";
-import { getCaseStudies, getCaseStudy, getProjects } from "@/lib/content";
+import { getCaseStudy, getProjects } from "@/lib/content";
+
+export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
-
-export async function generateStaticParams() {
-  const studies = await getCaseStudies();
-  return studies.map((study) => ({ slug: study.slug }));
-}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;

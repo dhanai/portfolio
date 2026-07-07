@@ -86,6 +86,7 @@ async function saveToBlob(
   const blob = await put(`work/${filename}`, toBlobBody(buffer), {
     access: "public",
     addRandomSuffix: false,
+    allowOverwrite: true,
     contentType,
     ...auth,
   });
