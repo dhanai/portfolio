@@ -24,6 +24,14 @@ export function CreativeShowcaseForm({
   saveAction: (formData: FormData) => Promise<ActionResult>;
 }) {
   const editorRef = useRef<CreativeShowcaseEditorHandle>(null);
+  const showcaseVersion = [
+    showcase.title,
+    showcase.subtitle,
+    String(showcase.enabled),
+    ...showcase.items.map((item) =>
+      [item.id, item.title, item.direction ?? "", item.src].join(":"),
+    ),
+  ].join("|");
 
   async function prepareSubmit(form: HTMLFormElement) {
     await editorRef.current?.uploadPendingVideos(form);
@@ -36,33 +44,35 @@ export function CreativeShowcaseForm({
       successMessage="Creative showcase saved"
       className="mt-8 space-y-6"
     >
-      <AdminSection title="Section">
-        <AdminCheckbox
-          label="Show on homepage"
-          name="enabled"
-          defaultChecked={showcase.enabled}
-        />
-        <AdminField
-          label="Section title"
-          name="title"
-          defaultValue={showcase.title}
-          required
-        />
-        <AdminTextarea
-          label="Section subtitle"
-          name="subtitle"
-          defaultValue={showcase.subtitle}
-          rows={2}
-          hint="One line under the section heading on the homepage."
-        />
-      </AdminSection>
+      <div key={showcaseVersion}>
+        <AdminSection title="Section">
+          <AdminCheckbox
+            label="Show on homepage"
+            name="enabled"
+            defaultChecked={showcase.enabled}
+          />
+          <AdminField
+            label="Section title"
+            name="title"
+            defaultValue={showcase.title}
+            required
+          />
+          <AdminTextarea
+            label="Section subtitle"
+            name="subtitle"
+            defaultValue={showcase.subtitle}
+            rows={2}
+            hint="One line under the section heading on the homepage."
+          />
+        </AdminSection>
 
-      <AdminSection title="Pieces (9×16)">
-        <CreativeShowcaseEditor
-          ref={editorRef}
-          initialItems={showcase.items}
-        />
-      </AdminSection>
+        <AdminSection title="Pieces (9×16)">
+          <CreativeShowcaseEditor
+            ref={editorRef}
+            initialItems={showcase.items}
+          />
+        </AdminSection>
+      </div>
 
       <AdminSubmit />
     </AdminForm>

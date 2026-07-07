@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
   createContext,
   startTransition,
@@ -37,6 +38,7 @@ type AdminFormProps = {
   unchangedMessage?: string;
   alwaysEnableSubmit?: boolean;
   prepareSubmit?: (form: HTMLFormElement) => Promise<void>;
+  onSaved?: () => void;
   className?: string;
   children: React.ReactNode;
 };
@@ -47,9 +49,11 @@ export function AdminForm({
   unchangedMessage = "No changes to save",
   alwaysEnableSubmit = false,
   prepareSubmit,
+  onSaved,
   className,
   children,
 }: AdminFormProps) {
+  const router = useRouter();
   const { success, error: toastError, info } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const baselineRef = useRef("");
@@ -93,11 +97,15 @@ export function AdminForm({
         if (result && "ok" in result) {
           success(successMessage);
           resetBaseline();
+          router.refresh();
+          onSaved?.();
           return result;
         }
 
         success(successMessage);
         resetBaseline();
+        router.refresh();
+        onSaved?.();
         return { ok: true as const };
       } catch (err) {
         if (isRedirectError(err)) throw err;

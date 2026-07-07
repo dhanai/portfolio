@@ -107,11 +107,28 @@ function syncMediaFieldsToForm(
   }
 }
 
+function syncTextFieldsToForm(
+  form: HTMLFormElement,
+  items: CreativeShowcaseItem[],
+) {
+  items.forEach((item, index) => {
+    const titleInput = form.querySelector<HTMLInputElement>(
+      `[name="item_${index}_title"]`,
+    );
+    const directionInput = form.querySelector<HTMLTextAreaElement>(
+      `[name="item_${index}_direction"]`,
+    );
+    if (titleInput) titleInput.value = item.title;
+    if (directionInput) directionInput.value = item.direction ?? "";
+  });
+}
+
 function CreativeItemFields({
   item,
   index,
   media,
   onMediaChange,
+  onItemChange,
   onRemove,
   drag,
   onPendingVideo,
@@ -120,6 +137,10 @@ function CreativeItemFields({
   index: number;
   media: ItemMedia;
   onMediaChange: (itemId: string, patch: Partial<ItemMedia>) => void;
+  onItemChange: (
+    itemId: string,
+    patch: Partial<Pick<CreativeShowcaseItem, "title" | "direction" | "poster">>,
+  ) => void;
   onRemove: () => void;
   drag: ReturnType<typeof useDragReorder>;
   onPendingVideo: (itemId: string, file: File | null) => void;
@@ -267,7 +288,11 @@ function CreativeItemFields({
             </span>
             <input
               name={`${prefix}title`}
-              defaultValue={item.title}
+              value={item.title}
+              onChange={(e) => {
+                onItemChange(item.id, { title: e.target.value });
+                notifyFormChanged(e.target);
+              }}
               placeholder="Campaign name or piece title"
               className="mt-1.5 w-full border border-white/10 bg-[#0a0a0a] px-3 py-2 text-sm text-white outline-none focus:border-[#ff453a]"
             />
@@ -279,7 +304,11 @@ function CreativeItemFields({
             </span>
             <textarea
               name={`${prefix}direction`}
-              defaultValue={item.direction ?? ""}
+              value={item.direction ?? ""}
+              onChange={(e) => {
+                onItemChange(item.id, { direction: e.target.value });
+                notifyFormChanged(e.target);
+              }}
               rows={4}
               placeholder="Brief: concept, art direction, tools (Runway, fal.ai, shoot), channel, what you directed vs generated…"
               className="mt-1.5 w-full border border-white/10 bg-[#0a0a0a] px-3 py-2 text-sm text-white outline-none focus:border-[#ff453a]"
@@ -372,6 +401,22 @@ export const CreativeShowcaseEditor = forwardRef<
     });
   }, []);
 
+  const updateItem = useCallback(
+    (
+      itemId: string,
+      patch: Partial<Pick<CreativeShowcaseItem, "title" | "direction" | "poster">>,
+    ) => {
+      setItems((prev) => {
+        const next = prev.map((item) =>
+          item.id === itemId ? { ...item, ...patch } : item,
+        );
+        itemsRef.current = next;
+        return next;
+      });
+    },
+    [],
+  );
+
   const setPendingVideo = useCallback((itemId: string, file: File | null) => {
     if (file) pendingVideosRef.current.set(itemId, file);
     else pendingVideosRef.current.delete(itemId);
@@ -379,6 +424,7 @@ export const CreativeShowcaseEditor = forwardRef<
 
   useImperativeHandle(ref, () => ({
     async uploadPendingVideos(form: HTMLFormElement) {
+      syncTextFieldsToForm(form, itemsRef.current);
       syncMediaFieldsToForm(form, itemsRef.current, mediaByItemIdRef.current);
 
       const pending = [...pendingVideosRef.current.entries()];
@@ -477,6 +523,7 @@ export const CreativeShowcaseEditor = forwardRef<
           index={index}
           media={mediaByItemId[item.id] ?? { src: item.src, type: item.type }}
           onMediaChange={updateMedia}
+          onItemChange={updateItem}
           onRemove={() => removeItem(index)}
           drag={drag}
           onPendingVideo={setPendingVideo}
