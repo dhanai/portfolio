@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
@@ -53,6 +53,7 @@ export async function logoutAction() {
 }
 
 async function revalidateAll() {
+  revalidateTag("cms", "max");
   revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/work");

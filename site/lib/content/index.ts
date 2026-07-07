@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from "next/cache";
 import type { CaseStudy, CaseStudySection } from "@/lib/case-studies";
 import { getCaseStudyDiagram } from "@/lib/case-studies";
 import type { Project } from "@/lib/projects";
@@ -27,29 +28,41 @@ function parseJson<T>(raw: string, fallback: T): T {
   }
 }
 
+/** CMS reads must bypass Next's static page cache so admin saves show immediately. */
+function readCms() {
+  noStore();
+}
+
 export async function getSiteContent(): Promise<SiteContentData> {
+  readCms();
   const block = await prisma.contentBlock.findUnique({ where: { key: "site" } });
   if (!block) return defaultSiteContent;
   const parsed = parseJson(block.data, defaultSiteContent);
   return {
+    ...defaultSiteContent,
     ...parsed,
     links: { ...defaultSiteContent.links, ...parsed.links },
+    hero: { ...defaultSiteContent.hero, ...parsed.hero },
+    now: { ...defaultSiteContent.now, ...parsed.now },
   };
 }
 
 export async function getAboutContent(): Promise<AboutContentData> {
+  readCms();
   const block = await prisma.contentBlock.findUnique({ where: { key: "about" } });
   if (!block) return defaultAboutContent;
   return parseJson(block.data, defaultAboutContent);
 }
 
 export async function getResumeContent(): Promise<ResumeContentData> {
+  readCms();
   const block = await prisma.contentBlock.findUnique({ where: { key: "resume" } });
   if (!block) return defaultResumeContent;
   return parseJson(block.data, defaultResumeContent);
 }
 
 export async function getCreativeShowcase(): Promise<CreativeShowcaseData> {
+  readCms();
   const block = await prisma.contentBlock.findUnique({
     where: { key: "creative" },
   });
@@ -85,6 +98,7 @@ function normalizeCreativeItem(raw: Record<string, unknown>): CreativeShowcaseIt
 }
 
 export async function getProjects(): Promise<Project[]> {
+  readCms();
   const works = await prisma.work.findMany({
     where: { published: true },
     orderBy: { sortOrder: "asc" },
@@ -115,6 +129,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | undefine
 }
 
 export async function getCaseStudies(): Promise<CaseStudy[]> {
+  readCms();
   const works = await prisma.work.findMany({
     where: { published: true },
     orderBy: { sortOrder: "asc" },
@@ -127,6 +142,7 @@ export async function getCaseStudies(): Promise<CaseStudy[]> {
 }
 
 export async function getCaseStudy(slug: string): Promise<CaseStudy | undefined> {
+  readCms();
   const work = await prisma.work.findUnique({ where: { slug } });
   if (!work || !work.published) {
     const { caseStudies } = await import("@/lib/case-studies");
