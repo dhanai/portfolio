@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  startTransition,
   useActionState,
   useCallback,
   useContext,
@@ -119,7 +120,9 @@ export function AdminForm({
       setIsPreparing(true);
       try {
         await prepareSubmit(form);
-        formAction(new FormData(form));
+        startTransition(() => {
+          formAction(new FormData(form));
+        });
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Could not prepare save";
