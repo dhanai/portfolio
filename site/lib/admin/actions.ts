@@ -236,7 +236,12 @@ export async function reorderWorks(orderedIds: string[]): Promise<ActionResult> 
   await requireAdmin();
 
   if (orderedIds.length === 0) {
-    return { ok: true };
+    return { error: "No work items to reorder" };
+  }
+
+  const uniqueIds = [...new Set(orderedIds)];
+  if (uniqueIds.length !== orderedIds.length) {
+    return { error: "Duplicate work items in sort order" };
   }
 
   const existing = await prisma.work.findMany({
@@ -248,17 +253,17 @@ export async function reorderWorks(orderedIds: string[]): Promise<ActionResult> 
     return { error: "One or more work items were not found" };
   }
 
-  await prisma.$transaction(
-    orderedIds.map((id, index) =>
-      prisma.work.update({
+  await prisma.$transaction(async (tx) => {
+    for (const [index, id] of orderedIds.entries()) {
+      await tx.work.update({
         where: { id },
         data: { sortOrder: index },
-      }),
-    ),
-  );
+      });
+    }
+  });
 
   await revalidateAll();
-  return { ok: true };
+  return { ok: true as const };
 }
 
 export async function deleteWork(id: string) {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { reorderWorks } from "@/lib/admin/actions";
 import { reorderList } from "@/lib/admin/reorder-list";
 import { useToast } from "@/components/toast";
@@ -18,39 +18,52 @@ type WorkRow = {
 export function WorkSortableList({ works: initialWorks }: { works: WorkRow[] }) {
   const router = useRouter();
   const [works, setWorks] = useState(initialWorks);
-  const [isPending, startTransition] = useTransition();
+  const worksRef = useRef(initialWorks);
   const { success, error: toastError } = useToast();
 
+  useEffect(() => {
+    worksRef.current = initialWorks;
+    setWorks(initialWorks);
+  }, [initialWorks]);
+
   const persistOrder = useCallback(
-    (nextWorks: WorkRow[], previousWorks: WorkRow[]) => {
-      startTransition(() => {
-        void (async () => {
-          const result = await reorderWorks(nextWorks.map((work) => work.id));
-          if (result && "error" in result) {
-            toastError(result.error);
-            setWorks(previousWorks);
-            return;
-          }
-          success("Work order saved");
-          router.refresh();
-        })();
-      });
+    async (nextWorks: WorkRow[], previousWorks: WorkRow[]) => {
+      const orderedIds = nextWorks.map((work) => work.id);
+      if (orderedIds.length === 0) {
+        toastError("Could not save work order");
+        setWorks(previousWorks);
+        return;
+      }
+
+      try {
+        const result = await reorderWorks(orderedIds);
+        if (result && "error" in result) {
+          toastError(result.error);
+          worksRef.current = previousWorks;
+          setWorks(previousWorks);
+          return;
+        }
+
+        success("Work order saved");
+        router.refresh();
+      } catch (err) {
+        toastError(err instanceof Error ? err.message : "Failed to save work order");
+        worksRef.current = previousWorks;
+        setWorks(previousWorks);
+      }
     },
     [router, success, toastError],
   );
 
   const onReorder = useCallback(
     (fromIndex: number, toIndex: number) => {
-      let previousWorks: WorkRow[] = [];
-      let nextWorks: WorkRow[] = [];
+      const previousWorks = worksRef.current;
+      const nextWorks = reorderList(previousWorks, fromIndex, toIndex);
+      if (nextWorks === previousWorks) return;
 
-      setWorks((current) => {
-        previousWorks = current;
-        nextWorks = reorderList(current, fromIndex, toIndex);
-        return nextWorks;
-      });
-
-      persistOrder(nextWorks, previousWorks);
+      worksRef.current = nextWorks;
+      setWorks(nextWorks);
+      void persistOrder(nextWorks, previousWorks);
     },
     [persistOrder],
   );
@@ -70,7 +83,7 @@ export function WorkSortableList({ works: initialWorks }: { works: WorkRow[] }) 
   }
 
   return (
-    <div className={isPending ? "opacity-80" : undefined}>
+    <div>
       <p className="mb-3 text-xs text-[#525252]">
         Drag rows to reorder homepage work cards.
       </p>
