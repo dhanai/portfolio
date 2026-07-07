@@ -3,6 +3,9 @@ import { CreativeShowcaseSection } from "@/components/creative-showcase-section"
 import { ProjectCard } from "@/components/project-card";
 import { getCreativeShowcase, getProjects, getSiteConfigFromCms } from "@/lib/content";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function generateMetadata(): Promise<Metadata> {
   const config = await getSiteConfigFromCms();
   return {

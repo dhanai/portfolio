@@ -5,6 +5,9 @@ import { CreativeShowcaseSection } from "@/components/creative-showcase-section"
 import { ProjectCard, FadeIn } from "@/components/project-card";
 import { getCreativeShowcase, getProjects, getSiteContent } from "@/lib/content";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function HomePage() {
   const [projects, site, showcase] = await Promise.all([
     getProjects(),

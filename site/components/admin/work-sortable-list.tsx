@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useState, useTransition } from "react";
 import { reorderWorks } from "@/lib/admin/actions";
 import { reorderList } from "@/lib/admin/reorder-list";
@@ -15,32 +16,41 @@ type WorkRow = {
 };
 
 export function WorkSortableList({ works: initialWorks }: { works: WorkRow[] }) {
+  const router = useRouter();
   const [works, setWorks] = useState(initialWorks);
   const [isPending, startTransition] = useTransition();
   const { success, error: toastError } = useToast();
 
   const persistOrder = useCallback(
     (nextWorks: WorkRow[], previousWorks: WorkRow[]) => {
-      startTransition(async () => {
-        const result = await reorderWorks(nextWorks.map((work) => work.id));
-        if (result && "error" in result) {
-          toastError(result.error);
-          setWorks(previousWorks);
-          return;
-        }
-        success("Work order saved");
+      startTransition(() => {
+        void (async () => {
+          const result = await reorderWorks(nextWorks.map((work) => work.id));
+          if (result && "error" in result) {
+            toastError(result.error);
+            setWorks(previousWorks);
+            return;
+          }
+          success("Work order saved");
+          router.refresh();
+        })();
       });
     },
-    [success, toastError],
+    [router, success, toastError],
   );
 
   const onReorder = useCallback(
     (fromIndex: number, toIndex: number) => {
+      let previousWorks: WorkRow[] = [];
+      let nextWorks: WorkRow[] = [];
+
       setWorks((current) => {
-        const next = reorderList(current, fromIndex, toIndex);
-        persistOrder(next, current);
-        return next;
+        previousWorks = current;
+        nextWorks = reorderList(current, fromIndex, toIndex);
+        return nextWorks;
       });
+
+      persistOrder(nextWorks, previousWorks);
     },
     [persistOrder],
   );

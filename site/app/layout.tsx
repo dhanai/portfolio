@@ -6,6 +6,9 @@ import { ToastProvider } from "@/components/toast";
 import { getSiteConfigFromCms } from "@/lib/content";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

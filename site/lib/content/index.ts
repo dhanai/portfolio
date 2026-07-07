@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { unstable_noStore as noStore } from "next/cache";
 import type { CaseStudy, CaseStudySection } from "@/lib/case-studies";
 import { getCaseStudyDiagram } from "@/lib/case-studies";
@@ -29,12 +30,13 @@ function parseJson<T>(raw: string, fallback: T): T {
 }
 
 /** CMS reads must bypass Next's static page cache so admin saves show immediately. */
-function readCms() {
+async function readCms() {
+  await connection();
   noStore();
 }
 
 export async function getSiteContent(): Promise<SiteContentData> {
-  readCms();
+  await readCms();
   const block = await prisma.contentBlock.findUnique({ where: { key: "site" } });
   if (!block) return defaultSiteContent;
   const parsed = parseJson(block.data, defaultSiteContent);
@@ -48,21 +50,21 @@ export async function getSiteContent(): Promise<SiteContentData> {
 }
 
 export async function getAboutContent(): Promise<AboutContentData> {
-  readCms();
+  await readCms();
   const block = await prisma.contentBlock.findUnique({ where: { key: "about" } });
   if (!block) return defaultAboutContent;
   return parseJson(block.data, defaultAboutContent);
 }
 
 export async function getResumeContent(): Promise<ResumeContentData> {
-  readCms();
+  await readCms();
   const block = await prisma.contentBlock.findUnique({ where: { key: "resume" } });
   if (!block) return defaultResumeContent;
   return parseJson(block.data, defaultResumeContent);
 }
 
 export async function getCreativeShowcase(): Promise<CreativeShowcaseData> {
-  readCms();
+  await readCms();
   const block = await prisma.contentBlock.findUnique({
     where: { key: "creative" },
   });
@@ -98,10 +100,10 @@ function normalizeCreativeItem(raw: Record<string, unknown>): CreativeShowcaseIt
 }
 
 export async function getProjects(): Promise<Project[]> {
-  readCms();
+  await readCms();
   const works = await prisma.work.findMany({
     where: { published: true },
-    orderBy: { sortOrder: "asc" },
+    orderBy: [{ sortOrder: "asc" }, { slug: "asc" }],
   });
   if (works.length === 0) {
     const { projects } = await import("@/lib/projects");
@@ -120,7 +122,9 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getAllProjectsAdmin() {
-  return prisma.work.findMany({ orderBy: { sortOrder: "asc" } });
+  return prisma.work.findMany({
+    orderBy: [{ sortOrder: "asc" }, { slug: "asc" }],
+  });
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
@@ -129,10 +133,10 @@ export async function getProjectBySlug(slug: string): Promise<Project | undefine
 }
 
 export async function getCaseStudies(): Promise<CaseStudy[]> {
-  readCms();
+  await readCms();
   const works = await prisma.work.findMany({
     where: { published: true },
-    orderBy: { sortOrder: "asc" },
+    orderBy: [{ sortOrder: "asc" }, { slug: "asc" }],
   });
   if (works.length === 0) {
     const { caseStudies } = await import("@/lib/case-studies");
@@ -142,7 +146,7 @@ export async function getCaseStudies(): Promise<CaseStudy[]> {
 }
 
 export async function getCaseStudy(slug: string): Promise<CaseStudy | undefined> {
-  readCms();
+  await readCms();
   const work = await prisma.work.findUnique({ where: { slug } });
   if (!work || !work.published) {
     const { caseStudies } = await import("@/lib/case-studies");
