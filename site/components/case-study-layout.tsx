@@ -21,10 +21,14 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
       <header className="border-b border-border">
         <div className="mx-auto max-w-3xl px-6 py-20 md:py-28">
           <div className="flex flex-wrap items-center gap-3 label-caps text-muted">
-            <span>{study.year}</span>
-            <span aria-hidden="true" style={{ color: accent }}>
-              /
-            </span>
+            {study.year ? (
+              <>
+                <span>{study.year}</span>
+                <span aria-hidden="true" style={{ color: accent }}>
+                  /
+                </span>
+              </>
+            ) : null}
             <span>{study.role}</span>
           </div>
           <h1 className="mt-6 text-4xl font-medium leading-tight tracking-tight text-foreground md:text-5xl">

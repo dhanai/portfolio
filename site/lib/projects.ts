@@ -6,7 +6,7 @@ export type Project = {
   title: string;
   subtitle: string;
   tags: string[];
-  year: string;
+  year?: string;
   href?: string;
   image?: string;
   cardAction?: WorkCardAction;

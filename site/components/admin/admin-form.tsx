@@ -98,6 +98,9 @@ export function AdminForm({
           success(successMessage);
           resetBaseline();
           router.refresh();
+          formRef.current?.dispatchEvent(
+            new CustomEvent("adminform:saved", { bubbles: true }),
+          );
           onSaved?.();
           return result;
         }
@@ -105,10 +108,19 @@ export function AdminForm({
         success(successMessage);
         resetBaseline();
         router.refresh();
+        formRef.current?.dispatchEvent(
+          new CustomEvent("adminform:saved", { bubbles: true }),
+        );
         onSaved?.();
         return { ok: true as const };
       } catch (err) {
-        if (isRedirectError(err)) throw err;
+        if (isRedirectError(err)) {
+          formRef.current?.dispatchEvent(
+            new CustomEvent("adminform:saved", { bubbles: true }),
+          );
+          onSaved?.();
+          throw err;
+        }
         const message =
           err instanceof Error ? err.message : "Something went wrong";
         toastError(message);

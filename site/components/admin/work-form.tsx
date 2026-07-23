@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AdminForm } from "@/components/admin/admin-form";
 import { WorkCardActionFields } from "@/components/admin/work-card-action-fields";
 import { WorkPreviewUpload } from "@/components/admin/work-preview-upload";
+import { AccentColorPicker } from "@/components/admin/accent-color-picker";
 import {
   AdminCheckbox,
   AdminField,
@@ -64,8 +65,13 @@ export function WorkForm({
         <AdminField label="Slug" name="slug" defaultValue={work?.slug} hint="URL: /work/your-slug" required />
         <AdminField label="Subtitle" name="subtitle" defaultValue={work?.subtitle} required />
         <AdminField label="Tags" name="tags" defaultValue={tags} hint="Comma-separated" />
-        <AdminField label="Year" name="year" defaultValue={work?.year ?? "2024"} />
-        <AdminField label="Accent color" name="color" defaultValue={work?.color ?? "#FF453A"} />
+        <AdminField
+          label="Year (optional)"
+          name="year"
+          defaultValue={work?.year ?? ""}
+          hint="Leave blank for freelance / undated work — year won’t show on the card"
+        />
+        <AccentColorPicker defaultValue={work?.color ?? "#FF453A"} />
         <WorkCardActionFields
           action={cardAction}
           onActionChange={setCardAction}

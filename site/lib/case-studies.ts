@@ -9,7 +9,7 @@ export type CaseStudy = {
   title: string;
   subtitle: string;
   tags: string[];
-  year: string;
+  year?: string;
   role: string;
   externalUrl?: string;
   diagram?: string;

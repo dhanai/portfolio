@@ -1,8 +1,21 @@
-const MAX_WIDTH = 1920;
-const MAX_HEIGHT = 1920;
-const TARGET_MAX_BYTES = 1_200_000;
-const INITIAL_QUALITY = 0.82;
-const MIN_QUALITY = 0.52;
+const PRESETS = {
+  preview: {
+    maxWidth: 1920,
+    maxHeight: 1920,
+    targetMaxBytes: 1_200_000,
+    initialQuality: 0.82,
+    minQuality: 0.52,
+  },
+  lightbox: {
+    maxWidth: 3360,
+    maxHeight: 3360,
+    targetMaxBytes: 4_500_000,
+    initialQuality: 0.92,
+    minQuality: 0.78,
+  },
+} as const;
+
+export type CompressPreset = keyof typeof PRESETS;
 
 function scaleDimensions(
   width: number,
@@ -30,14 +43,20 @@ function canvasToBlob(
   });
 }
 
-export async function compressImageForUpload(file: File): Promise<File> {
+export async function compressImageForUpload(
+  file: File,
+  preset: CompressPreset = "preview",
+): Promise<File> {
+  const settings = PRESETS[preset];
+
   if (file.type === "image/gif") {
     if (file.size <= 2 * 1024 * 1024) return file;
     throw new Error("GIF must be under 2MB. Use JPEG, PNG, or WebP instead.");
   }
 
+  const skipThreshold = preset === "lightbox" ? 1_200_000 : 400_000;
   if (
-    file.size <= 400_000 &&
+    file.size <= skipThreshold &&
     (file.type === "image/webp" || file.type === "image/jpeg")
   ) {
     return file;
@@ -47,8 +66,8 @@ export async function compressImageForUpload(file: File): Promise<File> {
   const { width, height } = scaleDimensions(
     bitmap.width,
     bitmap.height,
-    MAX_WIDTH,
-    MAX_HEIGHT,
+    settings.maxWidth,
+    settings.maxHeight,
   );
 
   const canvas = document.createElement("canvas");
@@ -63,7 +82,7 @@ export async function compressImageForUpload(file: File): Promise<File> {
   ctx.drawImage(bitmap, 0, 0, width, height);
   bitmap.close();
 
-  let quality = INITIAL_QUALITY;
+  let quality = settings.initialQuality;
   let mime = "image/webp";
   let blob = await canvasToBlob(canvas, mime, quality);
 
@@ -72,14 +91,18 @@ export async function compressImageForUpload(file: File): Promise<File> {
     blob = await canvasToBlob(canvas, mime, quality);
   }
 
-  while (blob && blob.size > TARGET_MAX_BYTES && quality > MIN_QUALITY) {
-    quality -= 0.08;
+  while (
+    blob &&
+    blob.size > settings.targetMaxBytes &&
+    quality > settings.minQuality
+  ) {
+    quality -= 0.04;
     blob = await canvasToBlob(canvas, mime, quality);
   }
 
   if (!blob) return file;
 
-  if (blob.size >= file.size && file.size <= TARGET_MAX_BYTES) {
+  if (blob.size >= file.size && file.size <= settings.targetMaxBytes) {
     return file;
   }
 

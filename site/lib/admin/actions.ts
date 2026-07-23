@@ -140,6 +140,8 @@ export async function saveWorkFromForm(
   const data = parseWorkFormData(formData, workId);
   const previewFile = formData.get("previewFile");
   const lightboxFile = formData.get("lightboxFile");
+  const clearImage = formData.get("clearImage") === "1";
+  const clearLightboxImage = formData.get("clearLightboxImage") === "1";
 
   if (previewFile instanceof File && previewFile.size > 0) {
     try {
@@ -149,6 +151,8 @@ export async function saveWorkFromForm(
         err instanceof Error ? err.message : "Failed to upload image";
       return { error: message };
     }
+  } else if (clearImage) {
+    data.image = "";
   }
 
   if (lightboxFile instanceof File && lightboxFile.size > 0) {
@@ -163,6 +167,8 @@ export async function saveWorkFromForm(
         err instanceof Error ? err.message : "Failed to upload lightbox image";
       return { error: message };
     }
+  } else if (clearLightboxImage) {
+    data.lightboxImage = "";
   }
 
   return saveWork(data);
@@ -210,7 +216,7 @@ export async function saveWork(data: WorkFormData): Promise<ActionResult | void>
     title: data.title,
     subtitle: data.subtitle,
     tags: JSON.stringify(tags),
-    year: data.year,
+    year: data.year.trim(),
     color: data.color || "#FF453A",
     href: data.cardAction === "external" ? data.href || null : null,
     image: data.image || null,

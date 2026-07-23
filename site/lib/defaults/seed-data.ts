@@ -101,7 +101,7 @@ export function buildDefaultWorks() {
       title: project.title,
       subtitle: project.subtitle,
       tags: JSON.stringify(project.tags),
-      year: project.year,
+      year: project.year ?? "",
       color: project.color,
       href: project.href ?? null,
       image: project.image ?? null,

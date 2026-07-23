@@ -104,7 +104,7 @@ function WorkLightbox({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm sm:p-8"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
@@ -119,23 +119,27 @@ function WorkLightbox({
         Close
       </button>
 
-      <figure
-        className="relative max-h-[90vh] w-full max-w-5xl"
+      <div
+        className="relative w-[80vw]"
         onClick={(event) => event.stopPropagation()}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt={title}
-          className="mx-auto max-h-[82vh] w-auto max-w-full object-contain"
-        />
+        <div
+          className="aspect-[1680/1050] max-h-[90vh] overflow-y-auto border border-white/10 bg-[#0a0a0a]"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={title}
+            className="block h-auto w-full"
+          />
+        </div>
         <figcaption
           id={titleId}
-          className="mt-4 text-center text-sm text-[#a3a3a3]"
+          className="mt-3 text-center text-sm text-[#a3a3a3]"
         >
           {title}
         </figcaption>
-      </figure>
+      </div>
     </div>,
     document.body,
   );
@@ -146,7 +150,7 @@ type ProjectCardProps = {
   title: string;
   subtitle: string;
   tags: string[];
-  year: string;
+  year?: string;
   color: string;
   href?: string;
   image?: string;
@@ -163,7 +167,7 @@ function CardMedia({
 }: {
   image?: string;
   color: string;
-  year: string;
+  year?: string;
   actionHint: string;
 }) {
   const remote = image ? isRemoteUrl(image) : false;
@@ -209,7 +213,11 @@ function CardMedia({
         aria-hidden="true"
       />
       <div className="absolute inset-0 flex items-end justify-between p-6">
-        <span className="label-caps text-muted">{year}</span>
+        {year ? (
+          <span className="label-caps text-muted">{year}</span>
+        ) : (
+          <span />
+        )}
         <span
           className="font-mono text-xs opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{ color }}

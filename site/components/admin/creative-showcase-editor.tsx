@@ -17,6 +17,10 @@ import {
   SortableDropRow,
   useDragReorder,
 } from "@/components/admin/drag-reorder";
+import {
+  assignFileToInput,
+  FileDropZone,
+} from "@/components/admin/file-drop-zone";
 
 export type CreativeShowcaseEditorHandle = {
   uploadPendingVideos: (form: HTMLFormElement) => Promise<void>;
@@ -162,10 +166,7 @@ function CreativeItemFields({
     };
   }, [localMedia, localPoster]);
 
-  async function onMediaFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  async function processMediaFile(file: File) {
     setUploadError(null);
     setUploadNote(null);
 
@@ -186,11 +187,7 @@ function CreativeItemFields({
     setCompressing(true);
     try {
       const compressed = await compressImageForUpload(file);
-      if (mediaRef.current) {
-        const transfer = new DataTransfer();
-        transfer.items.add(compressed);
-        mediaRef.current.files = transfer.files;
-      }
+      assignFileToInput(mediaRef.current, compressed);
       onMediaChange(item.id, { type: "image" });
       if (localMedia?.startsWith("blob:")) URL.revokeObjectURL(localMedia);
       setLocalMedia(URL.createObjectURL(compressed));
@@ -201,7 +198,27 @@ function CreativeItemFields({
       );
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : "Compression failed");
-      e.target.value = "";
+      if (mediaRef.current) mediaRef.current.value = "";
+    } finally {
+      setCompressing(false);
+    }
+  }
+
+  async function onMediaFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    await processMediaFile(file);
+  }
+
+  async function processPosterFile(file: File) {
+    setCompressing(true);
+    try {
+      const compressed = await compressImageForUpload(file);
+      assignFileToInput(posterRef.current, compressed);
+      if (localPoster) URL.revokeObjectURL(localPoster);
+      setLocalPoster(URL.createObjectURL(compressed));
+    } catch {
+      setUploadError("Failed to compress poster image");
     } finally {
       setCompressing(false);
     }
@@ -210,21 +227,7 @@ function CreativeItemFields({
   async function onPosterChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setCompressing(true);
-    try {
-      const compressed = await compressImageForUpload(file);
-      if (posterRef.current) {
-        const transfer = new DataTransfer();
-        transfer.items.add(compressed);
-        posterRef.current.files = transfer.files;
-      }
-      if (localPoster) URL.revokeObjectURL(localPoster);
-      setLocalPoster(URL.createObjectURL(compressed));
-    } catch {
-      setUploadError("Failed to compress poster image");
-    } finally {
-      setCompressing(false);
-    }
+    await processPosterFile(file);
   }
 
   function handleRemove() {
@@ -315,20 +318,30 @@ function CreativeItemFields({
             />
           </label>
 
-          <label className="block">
+          <div className="block">
             <span className="text-xs uppercase tracking-wider text-[#737373]">
               Media upload
             </span>
-            <input
-              ref={mediaRef}
-              type="file"
-              name={media.type === "image" ? `${prefix}media` : undefined}
-              data-creative-media={item.id}
+            <FileDropZone
               accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
-              onChange={onMediaFileChange}
               disabled={compressing}
-              className="mt-1.5 block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
-            />
+              onFile={processMediaFile}
+              className="mt-1.5 p-3"
+            >
+              <p className="mb-2 text-xs text-[#525252]">
+                Drag an image or video here, or choose a file
+              </p>
+              <input
+                ref={mediaRef}
+                type="file"
+                name={media.type === "image" ? `${prefix}media` : undefined}
+                data-creative-media={item.id}
+                accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+                onChange={onMediaFileChange}
+                disabled={compressing}
+                className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
+              />
+            </FileDropZone>
             {compressing && (
               <p className="mt-1 text-xs text-[#737373]">Processing…</p>
             )}
@@ -342,31 +355,38 @@ function CreativeItemFields({
               9×16 image or video. Images compress to WebP; videos upload when
               you save (up to 80MB).
             </p>
-          </label>
+          </div>
 
           {media.type === "video" && (
-            <label className="block">
+            <div className="block">
               <span className="text-xs uppercase tracking-wider text-[#737373]">
                 Video poster (optional)
               </span>
-              <input
-                ref={posterRef}
-                type="file"
-                name={`${prefix}posterFile`}
+              <FileDropZone
                 accept="image/jpeg,image/png,image/webp,image/gif"
-                onChange={onPosterChange}
                 disabled={compressing}
-                className="mt-1.5 block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
-              />
-              {localPoster && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={localPoster}
-                  alt=""
-                  className="mt-2 aspect-[9/16] w-20 object-cover border border-white/10"
+                onFile={processPosterFile}
+                className="mt-1.5 p-3"
+              >
+                <input
+                  ref={posterRef}
+                  type="file"
+                  name={`${prefix}posterFile`}
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={onPosterChange}
+                  disabled={compressing}
+                  className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
                 />
-              )}
-            </label>
+                {localPoster && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={localPoster}
+                    alt=""
+                    className="mt-2 aspect-[9/16] w-20 object-cover border border-white/10"
+                  />
+                )}
+              </FileDropZone>
+            </div>
           )}
         </div>
       </div>

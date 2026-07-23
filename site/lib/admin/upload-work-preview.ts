@@ -8,7 +8,10 @@ import {
 } from "@/lib/admin/blob-credentials";
 
 const MAX_INPUT_BYTES = 12 * 1024 * 1024;
-const MAX_OUTPUT_BYTES = 2 * 1024 * 1024;
+const MAX_OUTPUT_BYTES = {
+  preview: 2 * 1024 * 1024,
+  lightbox: 5 * 1024 * 1024,
+} as const;
 const ALLOWED = new Set([
   "image/jpeg",
   "image/png",
@@ -101,9 +104,13 @@ export async function saveWorkPreviewImage(
   validateImage(file);
 
   const input = copyBytes(await file.arrayBuffer());
-  const { buffer, mime, ext } = await compressImageBuffer(input, file.type);
+  const { buffer, mime, ext } = await compressImageBuffer(
+    input,
+    file.type,
+    variant,
+  );
 
-  if (buffer.length > MAX_OUTPUT_BYTES) {
+  if (buffer.length > MAX_OUTPUT_BYTES[variant]) {
     throw new Error("Image is still too large after compression — try a smaller file");
   }
 

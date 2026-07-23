@@ -57,8 +57,10 @@ export function WorkCardActionFields({
           label="Lightbox image (optional)"
           fileInputName="lightboxFile"
           textInputName="lightboxImage"
+          clearInputName="clearLightboxImage"
+          compressPreset="lightbox"
           defaultImage={defaultLightboxImage}
-          hint="Optional larger image for the modal. If empty, the card preview image is used."
+          hint="Optional larger image for the modal (kept up to ~3360px / higher quality). If empty, the card preview image is used."
         />
       )}
 
