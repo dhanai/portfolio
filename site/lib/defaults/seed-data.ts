@@ -25,6 +25,8 @@ export type SiteContentData = {
     title: string;
     titleMuted: string;
   };
+  /** How many published work items to show on the homepage Selected work grid */
+  homepageWorkCount: number;
   now: {
     label: string;
     title: string;
@@ -54,6 +56,7 @@ export const defaultSiteContent: SiteContentData = {
     title: "Designer, Director,",
     titleMuted: "Degenerate",
   },
+  homepageWorkCount: 4,
   now: {
     label: "Now",
     title: "Building Margenie",
@@ -102,6 +105,8 @@ export function buildDefaultWorks() {
       color: project.color,
       href: project.href ?? null,
       image: project.image ?? null,
+      cardAction: project.href ? "external" : "caseStudy",
+      lightboxImage: null,
       role: study.role,
       externalUrl: study.externalUrl ?? null,
       diagram: study.diagram ?? null,

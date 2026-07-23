@@ -33,6 +33,12 @@ function readCms() {
   noStore();
 }
 
+function normalizeHomepageWorkCount(value: unknown): number {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return defaultSiteContent.homepageWorkCount;
+  return Math.min(24, Math.max(1, Math.round(n)));
+}
+
 export async function getSiteContent(): Promise<SiteContentData> {
   readCms();
   const block = await prisma.contentBlock.findUnique({ where: { key: "site" } });
@@ -44,6 +50,10 @@ export async function getSiteContent(): Promise<SiteContentData> {
     links: { ...defaultSiteContent.links, ...parsed.links },
     hero: { ...defaultSiteContent.hero, ...parsed.hero },
     now: { ...defaultSiteContent.now, ...parsed.now },
+    homepageWorkCount: normalizeHomepageWorkCount(
+      (parsed as { homepageWorkCount?: unknown }).homepageWorkCount ??
+        defaultSiteContent.homepageWorkCount,
+    ),
   };
 }
 
@@ -107,16 +117,27 @@ export async function getProjects(): Promise<Project[]> {
     const { projects } = await import("@/lib/projects");
     return projects;
   }
-  return works.map((w) => ({
-    slug: w.slug,
-    title: w.title,
-    subtitle: w.subtitle,
-    tags: parseJson<string[]>(w.tags, []),
-    year: w.year,
-    color: w.color,
-    href: w.href ?? undefined,
-    image: w.image ?? undefined,
-  }));
+  return works.map((w) => {
+    const cardAction =
+      w.cardAction === "external" || w.cardAction === "lightbox"
+        ? w.cardAction
+        : w.href
+          ? ("external" as const)
+          : ("caseStudy" as const);
+
+    return {
+      slug: w.slug,
+      title: w.title,
+      subtitle: w.subtitle,
+      tags: parseJson<string[]>(w.tags, []),
+      year: w.year,
+      color: w.color,
+      href: w.href ?? undefined,
+      image: w.image ?? undefined,
+      cardAction,
+      lightboxImage: w.lightboxImage ?? undefined,
+    };
+  });
 }
 
 export async function getAllProjectsAdmin() {

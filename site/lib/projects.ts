@@ -1,4 +1,5 @@
 import { accentColors } from "@/lib/site-config";
+import type { WorkCardAction } from "@/lib/admin/types";
 
 export type Project = {
   slug: string;
@@ -8,6 +9,8 @@ export type Project = {
   year: string;
   href?: string;
   image?: string;
+  cardAction?: WorkCardAction;
+  lightboxImage?: string;
   color: string;
 };
 

@@ -1,4 +1,10 @@
-import type { WorkFormData } from "@/lib/admin/types";
+import type { WorkCardAction, WorkFormData } from "@/lib/admin/types";
+
+function parseCardAction(value: FormDataEntryValue | null): WorkCardAction {
+  const raw = String(value ?? "caseStudy");
+  if (raw === "external" || raw === "lightbox") return raw;
+  return "caseStudy";
+}
 
 export function parseWorkFormData(
   formData: FormData,
@@ -14,6 +20,8 @@ export function parseWorkFormData(
     color: String(formData.get("color")),
     href: String(formData.get("href")),
     image: String(formData.get("image")),
+    cardAction: parseCardAction(formData.get("cardAction")),
+    lightboxImage: String(formData.get("lightboxImage")),
     role: String(formData.get("role")),
     externalUrl: String(formData.get("externalUrl")),
     diagram: String(formData.get("diagram")),

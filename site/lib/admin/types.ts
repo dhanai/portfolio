@@ -3,6 +3,8 @@ export type ActionResult =
   | { unchanged: true }
   | { error: string };
 
+export type WorkCardAction = "caseStudy" | "external" | "lightbox";
+
 export type WorkFormData = {
   id?: string;
   slug: string;
@@ -13,6 +15,8 @@ export type WorkFormData = {
   color: string;
   href: string;
   image: string;
+  cardAction: WorkCardAction;
+  lightboxImage: string;
   role: string;
   externalUrl: string;
   diagram: string;

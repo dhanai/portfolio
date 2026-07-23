@@ -34,6 +34,11 @@ export default async function AdminSitePage() {
         title: String(formData.get("heroTitle")),
         titleMuted: String(formData.get("heroTitleMuted")),
       },
+      homepageWorkCount: (() => {
+        const n = Number(formData.get("homepageWorkCount"));
+        if (!Number.isFinite(n)) return 4;
+        return Math.min(24, Math.max(1, Math.round(n)));
+      })(),
       now: {
         label: String(formData.get("nowLabel")),
         title: String(formData.get("nowTitle")),
@@ -71,6 +76,17 @@ export default async function AdminSitePage() {
           <AdminField label="Eyebrow label" name="heroLabel" defaultValue={site.hero.label} />
           <AdminField label="Headline" name="heroTitle" defaultValue={site.hero.title} />
           <AdminField label="Headline (muted part)" name="heroTitleMuted" defaultValue={site.hero.titleMuted} />
+        </AdminSection>
+
+        <AdminSection title="Homepage work">
+          <AdminField
+            label="Work items to show"
+            name="homepageWorkCount"
+            type="number"
+            defaultValue={String(site.homepageWorkCount)}
+            hint="How many published projects appear in Selected work on the homepage (1–24). Order follows the Work admin drag sort."
+            required
+          />
         </AdminSection>
 
         <AdminSection title="Now section">

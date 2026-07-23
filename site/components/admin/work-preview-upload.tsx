@@ -11,8 +11,16 @@ function formatBytes(bytes: number) {
 
 export function WorkPreviewUpload({
   defaultImage = "",
+  label = "Preview image",
+  fileInputName = "previewFile",
+  textInputName = "image",
+  hint = "Large images are compressed before upload (max 1920px, WebP). Production uses Vercel Blob; local dev saves to public/assets/work/. Paste a URL below — upload overrides the text field.",
 }: {
   defaultImage?: string | null;
+  label?: string;
+  fileInputName?: string;
+  textInputName?: string;
+  hint?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState(defaultImage ?? "");
@@ -71,7 +79,7 @@ export function WorkPreviewUpload({
   return (
     <div className="block">
       <span className="text-xs uppercase tracking-wider text-[#737373]">
-        Preview image
+        {label}
       </span>
 
       {displaySrc && (
@@ -88,7 +96,7 @@ export function WorkPreviewUpload({
       <input
         ref={inputRef}
         type="file"
-        name="previewFile"
+        name={fileInputName}
         accept="image/jpeg,image/png,image/webp,image/gif"
         onChange={onFileChange}
         disabled={compressing}
@@ -107,18 +115,13 @@ export function WorkPreviewUpload({
 
       <input
         type="text"
-        name="image"
+        name={textInputName}
         defaultValue={defaultImage ?? ""}
         placeholder="/assets/work/your-slug.jpg or https://..."
         className="mt-3 w-full max-w-md border border-white/10 bg-[#0a0a0a] px-3 py-2 text-sm text-white outline-none focus:border-[#ff453a]"
       />
 
-      <p className="mt-1.5 text-xs text-[#525252]">
-        Large images are compressed before upload (max 1920px, WebP). Production
-        uses Vercel Blob; local dev saves to{" "}
-        <code className="text-[#ff453a]">public/assets/work/</code>. Paste a
-        URL below — upload overrides the text field.
-      </p>
+      <p className="mt-1.5 text-xs text-[#525252]">{hint}</p>
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default async function HomePage() {
     getSiteContent(),
     getCreativeShowcase(),
   ]);
-  const featuredProjects = projects.slice(0, 4);
+  const featuredProjects = projects.slice(0, site.homepageWorkCount);
 
   return (
     <>

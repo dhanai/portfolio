@@ -139,6 +139,7 @@ export async function saveWorkFromForm(
 ): Promise<ActionResult | void> {
   const data = parseWorkFormData(formData, workId);
   const previewFile = formData.get("previewFile");
+  const lightboxFile = formData.get("lightboxFile");
 
   if (previewFile instanceof File && previewFile.size > 0) {
     try {
@@ -146,6 +147,20 @@ export async function saveWorkFromForm(
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to upload image";
+      return { error: message };
+    }
+  }
+
+  if (lightboxFile instanceof File && lightboxFile.size > 0) {
+    try {
+      data.lightboxImage = await saveWorkPreviewImage(
+        lightboxFile,
+        data.slug,
+        "lightbox",
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to upload lightbox image";
       return { error: message };
     }
   }
@@ -159,11 +174,30 @@ export async function saveWork(data: WorkFormData): Promise<ActionResult | void>
   const slug = slugify(data.slug || data.title);
   if (!slug) return { error: "Slug is required" };
 
-  let sections: unknown;
-  try {
-    sections = JSON.parse(data.sectionsJson);
-  } catch {
-    return { error: "Sections must be valid JSON" };
+  const needsCaseStudy = data.cardAction === "caseStudy";
+
+  if (data.cardAction === "external" && !data.href.trim()) {
+    return { error: "External URL is required for external cards" };
+  }
+
+  let sections: unknown = [];
+  const sectionsRaw = data.sectionsJson.trim();
+  if (sectionsRaw) {
+    try {
+      sections = JSON.parse(sectionsRaw);
+    } catch {
+      if (needsCaseStudy) {
+        return { error: "Sections must be valid JSON" };
+      }
+      sections = [];
+    }
+  } else if (needsCaseStudy) {
+    return { error: "Sections are required for case study cards" };
+  }
+
+  if (needsCaseStudy) {
+    if (!data.role.trim()) return { error: "Role is required" };
+    if (!data.reflection.trim()) return { error: "Reflection is required" };
   }
 
   const tags = data.tags
@@ -178,12 +212,15 @@ export async function saveWork(data: WorkFormData): Promise<ActionResult | void>
     tags: JSON.stringify(tags),
     year: data.year,
     color: data.color || "#FF453A",
-    href: data.href || null,
+    href: data.cardAction === "external" ? data.href || null : null,
     image: data.image || null,
-    role: data.role,
+    cardAction: data.cardAction,
+    lightboxImage:
+      data.cardAction === "lightbox" ? data.lightboxImage || null : null,
+    role: data.role.trim(),
     externalUrl: data.externalUrl || null,
     diagram: data.diagram || null,
-    reflection: data.reflection,
+    reflection: data.reflection.trim(),
     sections: JSON.stringify(sections),
     published: data.published,
     sortOrder: 0,
@@ -207,6 +244,8 @@ export async function saveWork(data: WorkFormData): Promise<ActionResult | void>
         color: existing.color,
         href: existing.href,
         image: existing.image,
+        cardAction: existing.cardAction,
+        lightboxImage: existing.lightboxImage,
         role: existing.role,
         externalUrl: existing.externalUrl,
         diagram: existing.diagram,

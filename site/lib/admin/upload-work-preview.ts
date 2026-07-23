@@ -96,6 +96,7 @@ async function saveToBlob(
 export async function saveWorkPreviewImage(
   file: File,
   slug: string,
+  variant: "preview" | "lightbox" = "preview",
 ): Promise<string> {
   validateImage(file);
 
@@ -107,7 +108,8 @@ export async function saveWorkPreviewImage(
   }
 
   const safeSlug = slugify(slug || "preview") || "preview";
-  const filename = `${safeSlug}.${ext}`;
+  const filename =
+    variant === "lightbox" ? `${safeSlug}-lightbox.${ext}` : `${safeSlug}.${ext}`;
 
   if (useBlobStorage()) {
     return saveToBlob(buffer, filename, mime);
