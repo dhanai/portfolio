@@ -4,7 +4,7 @@ import { ResumeWeb } from "@/components/resume/resume-web";
 
 export const metadata: Metadata = {
   title: "Resume",
-  description: "Dhanai Holtzclaw — Design Engineer resume.",
+  description: "Dhanai Holtzclaw — Art Director / Creative Director resume.",
 };
 
 export default function ResumePage() {

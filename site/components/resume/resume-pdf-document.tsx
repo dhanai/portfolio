@@ -199,7 +199,11 @@ export function ResumePdfDocument({ data }: { data: ResumeContentData }) {
           <View style={styles.colSide}>
             <View style={styles.sideSection}>
               <SectionTitle>Earlier career</SectionTitle>
-              <Text style={styles.earlierNote}>20+ years · agencies & product</Text>
+              <Text style={styles.earlierNote}>
+                {"earlierCareerIntro" in d && d.earlierCareerIntro
+                  ? d.earlierCareerIntro
+                  : "20+ years · agencies & product"}
+              </Text>
               {d.earlierCareer.map((job) => (
                 <View key={job.company} style={styles.earlierRow}>
                   <Text style={styles.earlierCompany}>
