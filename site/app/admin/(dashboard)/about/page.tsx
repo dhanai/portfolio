@@ -13,22 +13,16 @@ export default async function AdminAboutPage() {
 
   async function action(formData: FormData) {
     "use server";
+    const current = await getAboutContent();
     const paragraphs = String(formData.get("paragraphs"))
       .split("\n\n")
       .map((p) => p.trim())
       .filter(Boolean);
 
-    const skillsRaw = String(formData.get("skillsJson"));
-    let skills = about.skills;
-    try {
-      skills = JSON.parse(skillsRaw);
-    } catch {
-      return { error: "Skills must be valid JSON" };
-    }
-
     return saveAboutContent({
       paragraphs,
-      skills,
+      // Skills matrix is no longer shown on the one-pager; preserve existing.
+      skills: current.skills,
       ctaTitle: String(formData.get("ctaTitle")),
       ctaBody: String(formData.get("ctaBody")),
     });
@@ -36,8 +30,12 @@ export default async function AdminAboutPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-medium">About page</h1>
-      <AdminForm action={action} successMessage="About page saved" className="mt-8 space-y-6">
+      <h1 className="text-2xl font-medium">About</h1>
+      <p className="mt-2 text-sm text-[#737373]">
+        Homepage about block (lower section next to resume CTA). There is no
+        separate /about page anymore.
+      </p>
+      <AdminForm action={action} successMessage="About saved" className="mt-8 space-y-6">
         <AdminSection title="Bio">
           <AdminTextarea
             label="Paragraphs"
@@ -48,17 +46,7 @@ export default async function AdminAboutPage() {
           />
         </AdminSection>
 
-        <AdminSection title="Skills matrix">
-          <AdminTextarea
-            label="Skills (JSON)"
-            name="skillsJson"
-            defaultValue={JSON.stringify(about.skills, null, 2)}
-            rows={12}
-            hint='[{ "area": "...", "level": "Expert", "accent": "#BF5AF2" }]'
-          />
-        </AdminSection>
-
-        <AdminSection title="CTA">
+        <AdminSection title="CTA card">
           <AdminField label="Title" name="ctaTitle" defaultValue={about.ctaTitle} />
           <AdminTextarea label="Body" name="ctaBody" defaultValue={about.ctaBody} rows={3} />
         </AdminSection>

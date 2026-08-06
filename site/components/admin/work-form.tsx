@@ -64,7 +64,7 @@ export function WorkForm({
         <AdminField label="Title" name="title" defaultValue={work?.title} required />
         <AdminField label="Slug" name="slug" defaultValue={work?.slug} hint="URL: /work/your-slug" required />
         <AdminField label="Subtitle" name="subtitle" defaultValue={work?.subtitle} required />
-        <AdminField label="Tags" name="tags" defaultValue={tags} hint="Comma-separated" />
+        <AdminField label="Tags" name="tags" defaultValue={tags} hint="Comma-separated. Include Brand and/or Product so homepage filters work." />
         <AdminField
           label="Year (optional)"
           name="year"

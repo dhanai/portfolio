@@ -53,37 +53,36 @@ export const defaultSiteContent: SiteContentData = {
   links: { ...siteConfig.links },
   hero: {
     label: "Los Angeles",
-    title: "Designer, Director,",
-    titleMuted: "Degenerate",
+    title: "Art direction &",
+    titleMuted: "product design",
   },
-  homepageWorkCount: 4,
+  homepageWorkCount: 12,
   now: {
     label: "Now",
-    title: "Building Margenie",
-    body: "Agent-native brand operations for Shopify merchants — human-in-the-loop approvals, Ops design system, Meta diagnostics.",
-    linkUrl: siteConfig.links.margenie,
-    linkLabel: "margenie.co",
+    title: "Building Doomsy",
+    body: "A creative feed for brands — paste a catalog link, get on-brand photos and reels without a shoot.",
+    linkUrl: "https://doomsy.ai",
+    linkLabel: "doomsy.ai",
   },
 };
 
 export const defaultAboutContent: AboutContentData = {
   paragraphs: [
-    "Los Angeles–based design engineer and founder. 20+ years in design, UI/UX, and front-end — from agency creative direction at DJcity and Ciplex to founding Takeout Order, where I hand-drew every design and grew the brand to $3.8M in gross sales since 2020.",
-    "When fulfillment broke at scale, I built a B2B printer portal on AngularJS and Firebase — real operators, every day. Now I'm building Margenie in Next.js: agent workflows, human approvals, Ops design system. I also shipped Parfade, a golf app for rounds and side games.",
-    "I use AI to move faster on implementation. Architecture, craft, and production decisions are mine.",
+    "Los Angeles–based creative lead spanning art direction and product design. Twenty years across broadcast, advertising, web, and product — from agency creative direction at DJcity and Ciplex to founding Takeout Order, where I built the brand to $3.8M and the fulfillment software operators run every day.",
+    "I art-direct brand systems and campaigns, and I design the product surfaces those brands live in — feeds, ops tools, growth loops. Came up on Photoshop and Flash; After Effects followed. Today I direct AI-native generative creative and ship front ends in Next.js when that's faster than briefing it.",
+    "Doomsy, Parfade, and Studio sit alongside the brand work: proof I can own taste and systems — how it looks and how it works.",
   ],
   skills: [
-    { area: "Next.js / React", level: "Expert", accent: "#BF5AF2" },
-    { area: "Design systems", level: "Expert", accent: "#BF5AF2" },
-    { area: "Agent / AI tooling", level: "Expert", accent: "#BF5AF2" },
-    { area: "Brand / visual craft", level: "Expert", accent: "#FF453A" },
-    { area: "B2B internal tools", level: "Expert", accent: "#0A84FF" },
-    { area: "Integrations", level: "Expert", accent: "#0A84FF" },
-    { area: "Mobile / interaction", level: "Strong", accent: "#30D158" },
+    { area: "Art direction / brand", level: "Expert", accent: "#FF453A" },
+    { area: "Campaign / performance creative", level: "Expert", accent: "#FF453A" },
+    { area: "Product UX / systems", level: "Expert", accent: "#BF5AF2" },
+    { area: "Motion / After Effects", level: "Expert", accent: "#FF9F0A" },
+    { area: "AI generative creative", level: "Expert", accent: "#64D2FF" },
+    { area: "Build / Next.js", level: "Strong", accent: "#0A84FF" },
   ],
   ctaTitle: "Open to opportunities",
   ctaBody:
-    "Design engineering roles where craft, tooling, and production systems matter. Based in LA, open to SF hybrid.",
+    "Art direction, brand, and product design roles — craft and systems. Based in LA, open across North America.",
 };
 
 export const defaultResumeContent = resumeData;
@@ -91,7 +90,11 @@ export const defaultResumeContent = resumeData;
 export function buildDefaultWorks() {
   return projects.map((project, index) => {
     const study = caseStudies.find((c) => c.slug === project.slug);
-    if (!study) {
+    const cardAction =
+      project.cardAction ??
+      (project.href ? ("external" as const) : ("caseStudy" as const));
+    const needsCaseStudy = cardAction === "caseStudy";
+    if (needsCaseStudy && !study) {
       throw new Error(`Missing case study for project slug: ${project.slug}`);
     }
     return {
@@ -103,15 +106,18 @@ export function buildDefaultWorks() {
       tags: JSON.stringify(project.tags),
       year: project.year ?? "",
       color: project.color,
-      href: project.href ?? null,
+      href: cardAction === "external" ? (project.href ?? null) : null,
       image: project.image ?? null,
-      cardAction: project.href ? "external" : "caseStudy",
-      lightboxImage: null,
-      role: study.role,
-      externalUrl: study.externalUrl ?? null,
-      diagram: study.diagram ?? null,
-      reflection: study.reflection,
-      sections: JSON.stringify(study.sections satisfies CaseStudySection[]),
+      cardAction,
+      lightboxImage:
+        cardAction === "lightbox" ? (project.lightboxImage ?? project.image ?? null) : null,
+      role: study?.role ?? "Creator",
+      externalUrl: study?.externalUrl ?? project.href ?? null,
+      diagram: study?.diagram ?? null,
+      reflection: study?.reflection ?? "",
+      sections: JSON.stringify(
+        (study?.sections ?? []) satisfies CaseStudySection[],
+      ),
     };
   });
 }

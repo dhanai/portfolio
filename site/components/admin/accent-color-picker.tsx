@@ -16,8 +16,9 @@ const PRESET_COLORS = [
   accentColors.fulfillment,
   accentColors.margenie,
   accentColors.parfade,
-  "#FF9F0A",
-  "#64D2FF",
+  accentColors.studio,
+  accentColors.doomsy,
+  accentColors.petshirts,
   "#FF375F",
   "#AC8E68",
 ];

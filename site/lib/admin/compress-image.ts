@@ -1,19 +1,29 @@
 import sharp from "sharp";
 
-export type CompressPreset = "preview" | "lightbox";
+export type CompressPreset = "preview" | "lightbox" | "fullpage";
 
 const PRESETS = {
   preview: {
-    maxDimension: 1920,
+    maxWidth: 1920,
+    maxHeight: 1920,
     webpQuality: 82,
     minQuality: 58,
     maxOutputBytes: 2 * 1024 * 1024,
   },
   lightbox: {
-    maxDimension: 3360,
+    maxWidth: 3360,
+    maxHeight: 3360,
     webpQuality: 90,
     minQuality: 78,
     maxOutputBytes: 5 * 1024 * 1024,
+  },
+  /** Tall marketing screenshots — preserve width, allow long height */
+  fullpage: {
+    maxWidth: 1920,
+    maxHeight: 12000,
+    webpQuality: 88,
+    minQuality: 72,
+    maxOutputBytes: 6 * 1024 * 1024,
   },
 } as const;
 
@@ -29,12 +39,11 @@ export async function compressImageBuffer(
   const settings = PRESETS[preset];
   let pipeline = sharp(input, { animated: false }).rotate();
   const meta = await pipeline.metadata();
+  const width = meta.width ?? 0;
+  const height = meta.height ?? 0;
 
-  if (
-    (meta.width ?? 0) > settings.maxDimension ||
-    (meta.height ?? 0) > settings.maxDimension
-  ) {
-    pipeline = pipeline.resize(settings.maxDimension, settings.maxDimension, {
+  if (width > settings.maxWidth || height > settings.maxHeight) {
+    pipeline = pipeline.resize(settings.maxWidth, settings.maxHeight, {
       fit: "inside",
       withoutEnlargement: true,
     });

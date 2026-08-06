@@ -15,9 +15,9 @@ export type EarlierJob = {
 
 export const resumeData = {
   name: siteConfig.fullName,
-  headline: "Art Director · Creative Director",
+  headline: "Art Direction · Product Design",
   subheadline:
-    "Brand · campaign · motion · AI generative creative · concept to shipped",
+    "Brand systems · campaign craft · product UX · AI generative creative · concept to shipped",
   contact: {
     location: "Los Angeles, CA",
     email: siteConfig.links.email,
@@ -27,17 +27,26 @@ export const resumeData = {
     portfolio: siteConfig.url.replace("https://", ""),
   },
   summary:
-    "Art director and creative lead with 20+ years across broadcast, advertising, web, and product. Fifteen years directing brand and campaign work in agencies and startups — most often as the entire creative department, accountable for every asset that left the building. Built and art-directed a hand-drawn apparel brand to $3.8M in lifetime sales. I came up on Photoshop and Flash, when motion was what made a website worth visiting; After Effects followed, and I still specify easing down to the curve. Today I direct AI-native generative video and image campaigns, and build the production front end when that's faster than briefing it.",
+    "Creative lead who owns how it looks and how it works — art direction, product design, and the build when that's faster than briefing it. Twenty years across broadcast, advertising, web, and product: agency creative direction, founder-led brands, and production software operators use every day. Built and art-directed a hand-drawn apparel brand to $3.8M in lifetime sales while designing the fulfillment systems behind it. Today I direct AI-native generative campaigns and ship product surfaces in Next.js — brand craft and product judgment in the same loop.",
   experience: [
     {
       company: "Takeout Order",
-      role: "Founder & Creative Director",
+      role: "Founder & Creative / Product Lead",
       period: "2020 — Present",
       bullets: [
         "Built the brand end to end — identity, voice, and a full hand-drawn product catalog — and scaled it to $3.8M in lifetime sales.",
-        "Wrote and art-directed campaigns across paid social, web, email, and packaging, owning every idea from concept through finished asset.",
-        "Directed hundreds of shoots, live-action and AI-generated, building a repeatable system for on-brand generative video and imagery (Seedance, Kling, Nano Banana via fal.ai).",
-        "Ran continuous performance-creative testing where fresh concepts were the primary growth lever, not media spend.",
+        "Wrote and art-directed campaigns across paid social, web, email, and packaging; ran continuous creative testing where fresh concepts were the primary growth lever.",
+        "Designed and shipped the B2B fulfillment portal operators use daily — Shopify ingest, labels, and an order state machine — when off-the-shelf tools broke at scale.",
+        "Directed hundreds of shoots, live-action and AI-generated, building a repeatable system for on-brand generative video and imagery.",
+      ],
+    },
+    {
+      company: "Doomsy",
+      role: "Founder · Product Design & Creative",
+      period: "2026 — Present",
+      bullets: [
+        "Designed and shipped a creative feed product for brands — catalog ingest, private feed, like/pass loop, and natural-language image edits.",
+        "Owned product UX and creative quality bar: on-brand photos and reels without a shoot, with taste and systems thinking in the same surface.",
       ],
     },
     {
@@ -49,22 +58,13 @@ export const resumeData = {
       ],
     },
     {
-      company: "Studio",
-      role: "Creator & Director",
-      period: "2026 — Present",
-      bullets: [
-        "Directing an original animated series — story, character design, and shot direction — and building the production system behind it: characters, locations, and props as entities with variants that hold a cast consistent across generations. Cut a finished one-minute clip from ~8 hours to ~2.",
-      ],
-    },
-    {
       company: "DJcity",
       role: "Creative Director",
       period: "2013 — 2019",
       bullets: [
         "Owned brand, campaign, and product creative for a DJ music platform across six years — a startup creative function I built and ran.",
-        "Directed DJcity TV's on-air identity: logo animation, show bumpers, and title sequences built in After Effects and delivered to broadcast spec — 25fps masters and alpha-channel titles cut into editorial.",
+        "Directed DJcity TV's on-air identity and partnered daily with engineering to take creative from concept to shipped product surfaces.",
         "Art-directed The Cutting Room title package end to end, from type design through final composited delivery.",
-        "Directed a production designer and partnered daily with an in-house developer to take creative from concept to shipped product surfaces.",
       ],
     },
     {
@@ -87,20 +87,18 @@ export const resumeData = {
   ] satisfies EarlierJob[],
   skills: {
     Creative:
-      "Art direction, brand identity, campaign concepting, copywriting, editorial & layout, hand illustration",
-    "Motion & AV":
-      "After Effects — title sequences, broadcast graphics, logo animation. Easing and timing with sharp exponential curves; AE curves into CSS or Framer Motion. Premiere for edit; Ableton and Cubase for audio.",
+      "Art direction, brand identity, campaign concepting, copywriting, editorial & layout, hand illustration, motion (After Effects)",
+    Product:
+      "Product UX, information architecture, flows & prototypes, design systems, usability judgment, Figma",
     "AI creative":
-      "Generative video & image direction — Seedance, Kling, Nano Banana, Flux via fal.ai & Runware; prompt direction for motion, fabric, and graphic fidelity.",
+      "Generative video & image direction — Seedance, Kling, Nano Banana, Flux via fal.ai & Runware; AI as production accelerant",
     "Design tools":
-      "Photoshop, Illustrator, After Effects, Premiere, InDesign, Procreate, Figma",
-    Build: "Next.js, React, TypeScript, Shopify, Meta Ads",
-    "Also builds":
-      "Ships production software solo — Parfade (live iOS app), Studio, and B2B fulfillment tooling, in Next.js / React. I can prototype the idea, not just brief it.",
+      "Figma, Photoshop, Illustrator, After Effects, Premiere, InDesign, Procreate",
+    Build: "Next.js, React, TypeScript, Shopify, Meta Ads — ships production software solo when needed",
   },
-  footerTagline: "Concept · craft · direction — and the ability to ship it.",
+  footerTagline: "How it looks · how it works — and the ability to ship both.",
   availability: "Los Angeles · Available across North America",
 };
 
-export const RESUME_PDF_FILENAME = "Dhanai-Holtzclaw-Art-Director-Resume-v2.pdf";
+export const RESUME_PDF_FILENAME = "Dhanai-Resume-Art-Direction-Product-Design.pdf";
 export const RESUME_PDF_PUBLIC_PATH = `/assets/resume/${RESUME_PDF_FILENAME}`;

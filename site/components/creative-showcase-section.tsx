@@ -12,14 +12,17 @@ export function CreativeShowcaseSection({
   }
 
   return (
-    <section className="border-t border-border py-24">
+    <section className="border-t border-border py-24 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <FadeIn>
-          <div className="border-b border-border pb-6">
-            <h2 className="text-2xl font-medium tracking-tight text-foreground">
+          <div className="mb-12">
+            <p className="label-caps text-muted">Creative</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
               {showcase.title}
             </h2>
-            <p className="mt-2 max-w-2xl text-sm text-muted">{showcase.subtitle}</p>
+            <p className="mt-3 max-w-2xl text-xs leading-relaxed text-muted md:text-sm">
+              {showcase.subtitle}
+            </p>
           </div>
         </FadeIn>
       </div>

@@ -21,12 +21,12 @@ export type SiteConfigView = {
 export const siteConfig: SiteConfigView = {
   name: "Dhanai",
   fullName: "Dhanai Holtzclaw",
-  title: "Dhanai Holtzclaw — Design Engineer",
+  title: "Dhanai Holtzclaw — Art Direction & Product Design",
   description:
-    "Designer, director, and builder. 20+ years in art direction, AI generative creative, and code. Takeout Order, Margenie, Parfade.",
+    "Art direction and product design. Brand systems, campaign craft, product UX, and AI generative creative — concept to shipped.",
   url: "https://dhanai.net",
   oneLiner:
-    "Twenty years designing, directing, and building. Hand-drew a brand to $3.8M in lifetime sales, built software that runs in production, and a daily practice in AI video and creative direction.",
+    "Creative lead who owns how it looks and how it works — art direction, product design, and the build when it helps.",
   links: {
     email: "DhanaiH@gmail.com",
     phone: "702.321.1971",
@@ -37,7 +37,8 @@ export const siteConfig: SiteConfigView = {
     parfade: "https://www.parfade.com",
   },
   nav: [
-    { href: "/about", label: "About" },
+    { href: "/#work", label: "Work" },
+    { href: "/#about", label: "About" },
     { href: "/resume", label: "Resume" },
   ],
 };
@@ -47,5 +48,8 @@ export const accentColors = {
   fulfillment: "#0A84FF",
   margenie: "#BF5AF2",
   parfade: "#30D158",
+  studio: "#FF9F0A",
+  doomsy: "#64D2FF",
+  petshirts: "#FF3EA5",
   default: "#FF453A",
 } as const;

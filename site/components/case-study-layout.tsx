@@ -15,6 +15,8 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
       : { slug: "", title: "Work" };
   const project = projects.find((p) => p.slug === study.slug);
   const accent = project?.color ?? "#ff453a";
+  const heroImage =
+    study.heroImage || project?.lightboxImage || project?.image;
 
   return (
     <article>
@@ -34,7 +36,7 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
           <h1 className="mt-6 text-4xl font-medium leading-tight tracking-tight text-foreground md:text-5xl">
             {study.title}
           </h1>
-          <p className="mt-4 text-lg leading-relaxed text-muted">
+          <p className="mt-4 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
             {study.subtitle}
           </p>
           <ul className="mt-8 flex flex-wrap gap-2">
@@ -59,6 +61,49 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
           )}
         </div>
       </header>
+
+      {heroImage ? (
+        <div className="border-b border-border bg-surface">
+          <div className="mx-auto max-w-5xl px-6 py-10 md:py-14">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={heroImage}
+              alt={`${study.title} product screenshot`}
+              className="w-full border border-border"
+            />
+          </div>
+        </div>
+      ) : null}
+
+      {study.gallery && study.gallery.length > 0 ? (
+        <div className="border-b border-border">
+          <div className="mx-auto max-w-5xl px-6 py-14 md:py-20">
+            <p className="label-caps text-muted">Product screens</p>
+            <h2 className="mt-3 text-xl font-medium tracking-tight text-foreground">
+              The loop in the hand
+            </h2>
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {study.gallery.map((item) => (
+                <figure key={item.src} className="group">
+                  <div className="overflow-hidden border border-border bg-surface">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      className="mx-auto w-full max-w-[280px] object-contain"
+                    />
+                  </div>
+                  {item.caption ? (
+                    <figcaption className="mt-3 text-sm text-muted">
+                      {item.caption}
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {study.diagram && (
         <div className="border-b border-border bg-surface">
@@ -119,10 +164,10 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
       <nav className="border-t border-border">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-12">
           <Link
-            href="/work"
+            href="/#work"
             className="label-caps text-muted transition-colors hover:text-foreground"
           >
-            ← All work
+            ← Work
           </Link>
           <Link
             href={`/work/${nextProject.slug}`}

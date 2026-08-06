@@ -240,19 +240,27 @@ function CardBody({
 }) {
   return (
     <div className="border-t border-border p-6">
-      <h3 className="text-lg font-medium tracking-tight text-foreground transition-colors group-hover:text-[var(--card-accent)]">
+      <h3 className="text-base font-medium tracking-tight text-foreground transition-colors group-hover:text-[var(--card-accent)]">
         {title}
       </h3>
-      <p className="mt-1 text-sm text-muted">{subtitle}</p>
+      <p className="mt-1 text-xs text-muted md:text-sm">{subtitle}</p>
       <ul className="mt-4 flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <li
-            key={tag}
-            className="border border-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted"
-          >
-            {tag}
-          </li>
-        ))}
+        {tags.map((tag) => {
+          const lane =
+            tag.toLowerCase() === "brand" || tag.toLowerCase() === "product";
+          return (
+            <li
+              key={tag}
+              className={`border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${
+                lane
+                  ? "border-[var(--card-accent)]/50 text-[var(--card-accent)]"
+                  : "border-border text-muted"
+              }`}
+            >
+              {tag}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

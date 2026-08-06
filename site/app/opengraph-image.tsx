@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getSiteConfigFromCms } from "@/lib/content";
 
-export const alt = "Dhanai Holtzclaw — Design Engineer";
+export const alt = "Dhanai Holtzclaw — Art Direction & Product Design";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

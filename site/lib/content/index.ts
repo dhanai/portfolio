@@ -1,6 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import type { CaseStudy, CaseStudySection } from "@/lib/case-studies";
-import { getCaseStudyDiagram } from "@/lib/case-studies";
+import { caseStudies, getCaseStudyDiagram } from "@/lib/case-studies";
 import type { Project } from "@/lib/projects";
 import {
   defaultAboutContent,
@@ -205,6 +205,7 @@ function workToCaseStudy(work: {
   reflection: string;
   sections: string;
 }): CaseStudy {
+  const staticStudy = caseStudies.find((c) => c.slug === work.slug);
   return {
     slug: work.slug,
     title: work.title,
@@ -214,6 +215,8 @@ function workToCaseStudy(work: {
     role: work.role,
     externalUrl: work.externalUrl ?? undefined,
     diagram: resolveDiagram(work.slug, work.diagram),
+    heroImage: staticStudy?.heroImage,
+    gallery: staticStudy?.gallery,
     sections: parseJson<CaseStudySection[]>(work.sections, []),
     reflection: work.reflection,
   };
@@ -231,7 +234,8 @@ export async function getSiteConfigFromCms() {
     oneLiner: site.oneLiner,
     links: site.links,
     nav: [
-      { href: "/about", label: "About" },
+      { href: "/#work", label: "Work" },
+      { href: "/#about", label: "About" },
       { href: "/resume", label: "Resume" },
     ],
   } as const;

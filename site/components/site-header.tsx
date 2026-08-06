@@ -4,6 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { SiteConfigView } from "@/lib/site-config";
 
+function isNavActive(pathname: string, href: string) {
+  if (href.startsWith("/#") || href.startsWith("#")) {
+    return false;
+  }
+  return pathname.startsWith(href);
+}
+
 export function SiteHeader({ config }: { config: SiteConfigView }) {
   const pathname = usePathname();
 
@@ -21,7 +28,7 @@ export function SiteHeader({ config }: { config: SiteConfigView }) {
         </Link>
         <nav className="flex items-center gap-8">
           {config.nav.map((item) => {
-            const active = pathname.startsWith(item.href);
+            const active = isNavActive(pathname, item.href);
             return (
               <Link
                 key={item.href}

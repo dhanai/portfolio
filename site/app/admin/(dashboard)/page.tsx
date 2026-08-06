@@ -1,46 +1,62 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getSiteContent } from "@/lib/content";
 
 export default async function AdminDashboardPage() {
-  const [workCount, contentCount] = await Promise.all([
+  const [workCount, publishedCount, site] = await Promise.all([
     prisma.work.count(),
-    prisma.contentBlock.count(),
+    prisma.work.count({ where: { published: true } }),
+    getSiteContent(),
   ]);
 
   return (
     <div>
       <h1 className="text-2xl font-medium">Dashboard</h1>
       <p className="mt-2 text-sm text-[#737373]">
-        Edit portfolio content. Changes publish immediately.
+        One-pager CMS — edits publish immediately on dhanai.net.
       </p>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-3">
-        <Stat label="Work items" value={workCount} href="/admin/work" />
-        <Stat label="Content blocks" value={contentCount} href="/admin/site" />
+        <Stat label="Work (published)" value={`${publishedCount}/${workCount}`} href="/admin/work" />
+        <Stat
+          label="Homepage shows"
+          value={site.homepageWorkCount}
+          href="/admin/site"
+        />
         <Stat label="Public site" value="→" href="/" external />
       </div>
 
       <div className="mt-10 border border-white/10 p-6">
-        <h2 className="text-sm font-medium">Quick links</h2>
+        <h2 className="text-sm font-medium">One-pager sections</h2>
         <ul className="mt-4 space-y-2 text-sm text-[#a3a3a3]">
           <li>
-            <Link href="/admin/work/new" className="hover:text-[#ff453a]">
-              + New work item
+            <Link href="/admin/site" className="hover:text-white">
+              Hero &amp; homepage work count
             </Link>
           </li>
           <li>
-            <Link href="/admin/site" className="hover:text-white">
-              Edit hero & site settings
+            <Link href="/admin/work" className="hover:text-white">
+              Selected work (cards + sort)
             </Link>
           </li>
           <li>
             <Link href="/admin/creative" className="hover:text-white">
-              Edit creative showcase (9×16 gallery)
+              Creative showcase rail
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/about" className="hover:text-white">
+              About + resume CTA copy
             </Link>
           </li>
           <li>
             <Link href="/admin/resume" className="hover:text-white">
-              Edit resume (JSON)
+              Resume (web JSON + PDF path)
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/work/new" className="hover:text-[#ff453a]">
+              + New work item
             </Link>
           </li>
         </ul>
