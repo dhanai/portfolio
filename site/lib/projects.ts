@@ -39,7 +39,7 @@ export const projects: Project[] = [
   {
     slug: "studio",
     title: "Studio",
-    subtitle: "AI production system for animated series",
+    subtitle: "AI production system — consistency as a product problem",
     tags: ["Product", "Brand", "AI", "Direction"],
     year: "2026–present",
     image: `${BLOB}/studio.webp`,

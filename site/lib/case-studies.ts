@@ -185,7 +185,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "studio",
     title: "Studio",
     subtitle:
-      "AI production system for animated series — characters, locations, and clips as durable entities",
+      "AI production system for animated series — consistency as a product problem",
     tags: ["Product", "Brand", "AI", "Direction"],
     year: "2026–present",
     role: "Creator · Product Design · Creative Direction",
@@ -195,45 +195,45 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Studio is a full-screen production workspace for DNA-driven AI animation — not a timeline editor. You generate stills and clips against a show bible, then export to Premiere. Shows hold episodes, characters, locations, props, voices, and segments; each generation inherits the same visual DNA so a cast stays consistent across shots.",
-          "I designed and built the product end to end (Next.js, Runware for Nano Banana / Seedance, agent chat with reversible ops) while directing original series work through it — including Felt The Music, visible in the workspace screenshot.",
+          "Studio is a production workspace for DNA-driven AI animation — not a timeline editor. I cut a finished one-minute clip from about eight hours of thrash down to roughly two by treating cast continuity as a product problem, not a prompting habit.",
+          "I designed and built it end to end (Next.js, Runware for Nano Banana / Seedance, agent chat) while directing original series work through it — including Felt The Music, visible in the workspace screenshot.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Generative video tools are one-shot: prompt, hope, regenerate, lose continuity. For a series you need characters and locations as entities with variants, a segment composer that locks references, and a workflow from cheap drafts to final clips — without reinventing the cast every take.",
-          "Cutting a finished one-minute clip used to take ~8 hours of thrash. The system needed to cut that path to roughly ~2 hours by holding identity and structure in product, not only in prompts.",
+          "Saving and reusing good prompts helps a little, then falls apart when the same character needs a different outfit, or the same location at night. A template doesn’t carry visual identity. Fal playgrounds made the gap obvious: every one-off restarted from scratch.",
+          "For a series you need characters and locations as entities with variants, a composer that locks references, and a path from cheap drafts to final clips — without reinventing the cast every take.",
         ],
       },
       {
         heading: "Product design",
         paragraphs: [
-          "Full-screen workspace with a clear IA: library sidebar (episodes, characters, locations, props), center canvas for preview + filmstrip + prompt dock, and a right rail for DNA, references, model tiers, and agent chat.",
+          "Landed on entities with variants as first-class assets. Characters, locations, and props sit in the library; Fred can have a default look and a cowboy variant. Drop him into Composer, switch the variant — don’t hunt for the still. Character sheets lock the look.",
+          "Studio stays hands-on for building: pick assets, send to Composer, generate. The agent sits beside that path for questions, planning, and drafting — “group this cast at the park,” or “Fred skydiving with a parachute” — with the same library and show bible underneath. Two models, one ecosystem.",
         ],
         bullets: [
-          "Entity model: Show → Episode → Assets (characters / locations / props) + Segments → Generations",
-          "Reference slots (@image) so Seedance clips lock to approved stills, not free-floating prompts",
-          "Model tiers for prototype → production (Lite stills / Mini clips → hero NB2 + Seedance 2)",
-          "Agent chat proposes structured, reversible ops with before/after diffs — accept or reject, don't bury the run in chat prose",
-          "Enhance path: rough prompt → Claude Fable expand → editable Seedance prompt → generate",
+          "Hierarchy: Episodes · Clips · Characters · Locations · Props · Frames — same underlying asset model, separated to lower friction when assembling a clip",
+          "Soft nested folders (leads vs side characters, Episode 1 vs Episode 2 locations)",
+          "Reference slots so Seedance clips lock to approved stills, not free-floating prompts",
+          "Model tiers for prototype → production; agent ops are structured and reversible",
         ],
       },
       {
         heading: "Art direction",
         paragraphs: [
-          "Studio encodes taste as data: show DNA and asset DNA are the style bible. Felt The Music uses a coherent felted-character world across the asset library — the product surfaces that consistency so direction isn't only a prompt skill, it's a system you can browse and reuse.",
+          "Taste lives as data: show DNA and asset DNA are the style bible. Felt The Music keeps a coherent felted-character world across the library — direction becomes a system you browse and reuse, not only a prompt skill.",
         ],
       },
       {
-        heading: "Outcome",
+        heading: "Outcome & honesty",
         paragraphs: [
-          "A production tool that treats generative AI like a pipeline, not a slot machine — and a portfolio proof that product UX and creative direction can share one seat. Continuity, tiers, and reviewable agent ops are the design; the screenshot is the workspace in use on a real show.",
+          "An internal tool I’m running to ship a YouTube series faster. Validation is thin on purpose: it’s me grinding the workflow to get episodes out. The IA is the risk I’d watch closest with a new user — if they hesitate or take a wrong path, the fix is restructuring, not hover tips.",
         ],
       },
     ],
     reflection:
-      "A show runner that knows better than you do — because the characters, locations, and DNA live in the product, not only in your head.",
+      "Consistency isn’t a better prompt. It’s entities, variants, and a library the agent and the hands-on path share.",
   },
   {
     slug: "fulfillment-portal",
@@ -397,49 +397,45 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Parfade is a consumer iOS app for golfers: schedule rounds, invite friends, run side games on the course, and keep the social loop in one place instead of group texts and scattered score apps.",
-          "I own product design and the full stack — Expo / React Native client, Next.js API, Neon Postgres. The screens below walk Discover → My Rounds → Create → Games → Groups → Profile.",
+          "Parfade is a consumer iOS app for golfers who already have a network — Saturday regulars, the “who’s free Thursday” crowd. Getting a round together was eating more energy than the round: three group chats, half the people don’t see it, maybes pile up, and the tee time’s gone. The work isn’t golf. It’s logistics.",
+          "I own product design and the full stack. The product only works if other people tap Accept — I feel the pain as a player, but I’m not the customer.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Golf is social, but coordination is chaos. Tee times land in texts; who’s in is unclear; skins and Wolf live in someone else’s head or a note app. Scorecard tools don’t fix invites; invite tools don’t run games.",
+          "Scorecard apps don’t fix invites; invite tools don’t run games. The real failure mode was leaving negotiation outside the product.",
         ],
       },
       {
-        heading: "Product design",
+        heading: "Product decisions",
         paragraphs: [
-          "Designed for two contexts: thumbing a phone on the range, and glancing between shots. Segmented controls over menus. Clear states for “still planning” vs “locked tee time.” Side games as first-class products, not buried features.",
+          "First I tried the timid version: a link or poll dropped into the group thread — keep iMessage as home base, make the app a helper. It failed. People answered in the thread, the poll went stale, and the host was back to juggling.",
+          "So availability became a first-class action. Pick friends or a group; Parfade pushes; first to accept are in. In-app chat stays for people already in the round. What I refused to keep was three outside chats as the booking system.",
         ],
         bullets: [
-          "Planning-first create flow — date, morning/afternoon/twilight, visibility, join policy, then friends",
-          "Discover and My Rounds share the same card language so open and hosted rounds feel related",
-          "Games hub for Skins, Wolf, Best ball, Nassau, Sixes, Match Play, Vegas, Dots — with session history",
-          "Groups and profiles so regular foursomes and handicap/social identity stick around after the round",
+          "Invite → push → accept/decline — host sees who’s in without chasing threads",
+          "Planning vs locked tee time as clear states; course and time on the notification and accept screen (after a friend accepted then texted “which course?”)",
+          "Games, scoring, and recaps so the app isn’t only useful for five minutes of RSVP",
+          "Groups and profiles so regular foursomes stick around after the round",
         ],
       },
       {
         heading: "Brand & craft",
         paragraphs: [
-          "Visual system leans golf-club calm: cream surfaces, forest green accents, gold mark, script wordmark next to utilitarian UI type. Lifestyle photography on the splash sets the premium bar; in-app chrome stays quiet so course photos and game standings can lead.",
+          "Visual system leans golf-club calm: cream surfaces, forest green, gold mark, script wordmark next to utilitarian UI. Lifestyle photography sets the bar; in-app chrome stays quiet so course photos and standings can lead.",
         ],
       },
       {
-        heading: "Stack",
+        heading: "Outcome & honesty",
         paragraphs: [
-          "Expo / React Native for iOS, Next.js API with Drizzle and Neon, Ably for realtime, Clerk for auth, Expo push for invites. Ship → learn on-course → tighten the loop.",
-        ],
-      },
-      {
-        heading: "Outcome",
-        paragraphs: [
-          "A live consumer product at parfade.com — proof of end-to-end product design for a social loop, not just dashboards or brand decks. Complements the B2B and brand-ops work with a mobile interaction case.",
+          "Shipped loop at parfade.com — build your people, invite, accept, play. Traction is early on purpose: no marketing yet; me and two friends is enough to feel the product break in real rounds, not enough to claim PMF.",
+          "The real constraint is habit. Group chat is still the default. I don’t win by building a better messenger — I win when a host trusts a Parfade invite to fill a tee time faster than three threads.",
         ],
       },
     ],
     reflection:
-      "On a golf course the UI has seconds, not minutes. Same constraint as marketing surfaces that have to land on first glance — clarity under distraction.",
+      "Accept has to mean “I’m in for this round,” not “I saw a ping.” Clarity in the invite is the product.",
   },
   {
     slug: "petshirts",
