@@ -9,7 +9,7 @@ export function SiteFooter({ config }: { config: SiteConfigView }) {
         <div>
           <p className="text-sm font-medium text-foreground">{config.fullName}</p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">
-            Design engineer · Los Angeles
+            Art direction & product design · Los Angeles
           </p>
         </div>
         <div className="flex flex-col gap-2 text-sm text-muted sm:items-end">
