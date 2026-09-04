@@ -57,6 +57,7 @@ async function revalidateAll() {
   revalidatePath("/", "layout");
   revalidatePath("/");
   revalidatePath("/work");
+  revalidatePath("/ai");
   revalidatePath("/about");
   revalidatePath("/resume");
 }

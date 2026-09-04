@@ -66,7 +66,7 @@ export function CreativeShowcaseForm({
           />
         </AdminSection>
 
-        <AdminSection title="Pieces (9×16)">
+        <AdminSection title="Pieces">
           <CreativeShowcaseEditor
             ref={editorRef}
             initialItems={showcase.items}
