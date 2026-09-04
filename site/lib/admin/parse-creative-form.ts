@@ -1,8 +1,4 @@
 import type { CreativeShowcaseData } from "@/lib/defaults/creative-showcase";
-import {
-  saveCreativeImage,
-  saveCreativeMedia,
-} from "@/lib/admin/upload-creative-media";
 
 function newId() {
   return `creative-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -39,6 +35,9 @@ export async function parseCreativeShowcaseForm(
 
     if (mediaFile instanceof File && mediaFile.size > 0) {
       try {
+        const { saveCreativeMedia } = await import(
+          "@/lib/admin/upload-creative-media"
+        );
         const uploaded = await saveCreativeMedia(mediaFile, id);
         src = uploaded.url;
         type = uploaded.type;
@@ -52,6 +51,9 @@ export async function parseCreativeShowcaseForm(
     const posterFile = formData.get(`${prefix}posterFile`);
     if (posterFile instanceof File && posterFile.size > 0) {
       try {
+        const { saveCreativeImage } = await import(
+          "@/lib/admin/upload-creative-media"
+        );
         poster = await saveCreativeImage(posterFile, `${id}-poster`);
       } catch (err) {
         const message =
