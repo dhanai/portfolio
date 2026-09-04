@@ -1,5 +1,3 @@
-import sharp from "sharp";
-
 export type CompressPreset = "preview" | "lightbox" | "fullpage";
 
 const PRESETS = {
@@ -35,6 +33,10 @@ export async function compressImageBuffer(
   if (mime === "image/gif") {
     return { buffer: copyBuffer(input), mime, ext: "gif" };
   }
+
+  // Lazy-load so admin routes that import upload helpers don't fail SSR
+  // when sharp's native binary isn't needed yet (and avoid bundling it into login).
+  const sharp = (await import("sharp")).default;
 
   const settings = PRESETS[preset];
   let pipeline = sharp(input, { animated: false }).rotate();

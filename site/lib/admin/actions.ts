@@ -2,14 +2,6 @@
 
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
-import {
-  defaultSession,
-  getAdminPassword,
-  sessionOptions,
-  type AdminSession,
-} from "@/lib/auth/session";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/prisma";
 import type { AboutContentData, SiteContentData, CreativeShowcaseData } from "@/lib/content";
@@ -17,7 +9,6 @@ import type { ResumeContentData } from "@/lib/content";
 import type { ActionResult, WorkFormData } from "@/lib/admin/types";
 import { isSameJson } from "@/lib/admin/diff";
 import { parseCreativeShowcaseForm } from "@/lib/admin/parse-creative-form";
-import { saveWorkPreviewImage } from "@/lib/admin/upload-work-preview";
 import { parseWorkFormData } from "@/lib/admin/parse-work-form";
 
 function slugify(input: string) {
@@ -26,30 +17,6 @@ function slugify(input: string) {
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
-}
-
-export async function loginAction(formData: FormData) {
-  const password = String(formData.get("password") ?? "");
-  if (password !== getAdminPassword()) {
-    redirect("/admin/login?error=1");
-  }
-  const session = await getIronSession<AdminSession>(
-    await cookies(),
-    sessionOptions,
-  );
-  session.isLoggedIn = true;
-  await session.save();
-  redirect("/admin");
-}
-
-export async function logoutAction() {
-  const session = await getIronSession<AdminSession>(
-    await cookies(),
-    sessionOptions,
-  );
-  session.isLoggedIn = false;
-  await session.save();
-  redirect("/admin/login");
 }
 
 async function revalidateAll() {
@@ -241,6 +208,9 @@ export async function saveWorkFromForm(
 
   if (previewFile instanceof File && previewFile.size > 0) {
     try {
+      const { saveWorkPreviewImage } = await import(
+        "@/lib/admin/upload-work-preview"
+      );
       data.image = await saveWorkPreviewImage(previewFile, data.slug);
     } catch (err) {
       const message =
@@ -253,6 +223,9 @@ export async function saveWorkFromForm(
 
   if (lightboxFile instanceof File && lightboxFile.size > 0) {
     try {
+      const { saveWorkPreviewImage } = await import(
+        "@/lib/admin/upload-work-preview"
+      );
       data.lightboxImage = await saveWorkPreviewImage(
         lightboxFile,
         data.slug,

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { logoutAction } from "@/lib/admin/actions";
+import { logoutAction } from "@/lib/auth/actions";
 import { requireAdmin } from "@/lib/auth/require-admin";
 
 const nav = [

@@ -1,4 +1,4 @@
-import { loginAction } from "@/lib/admin/actions";
+import { loginAction } from "@/lib/auth/actions";
 
 export default async function AdminLoginPage({
   searchParams,
