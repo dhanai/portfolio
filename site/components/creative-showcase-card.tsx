@@ -3,16 +3,15 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import type { CreativeShowcaseItem } from "@/lib/defaults/creative-showcase";
 
-function isRemoteUrl(src: string) {
-  return src.startsWith("http://") || src.startsWith("https://");
-}
-
 export function CreativeShowcaseCard({
   item,
   className = "",
+  onOpen,
 }: {
   item: CreativeShowcaseItem;
   className?: string;
+  /** When set, the card is clickable and opens a full view. */
+  onOpen?: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -41,11 +40,8 @@ export function CreativeShowcaseCard({
     return () => observer.disconnect();
   }, [item.type]);
 
-  return (
-    <figure
-      className={`creative-showcase-card group relative aspect-[9/16] overflow-hidden border border-border bg-[#0a0a0a] ${className}`}
-      style={{ "--card-accent": "#0A84FF" } as CSSProperties}
-    >
+  const media = (
+    <>
       {item.type === "video" ? (
         <video
           ref={videoRef}
@@ -74,7 +70,7 @@ export function CreativeShowcaseCard({
       />
 
       {(item.title || item.direction) && (
-        <figcaption className="absolute inset-x-0 bottom-0 z-[1] p-4">
+        <div className="absolute inset-x-0 bottom-0 z-[1] p-4">
           {item.title ? (
             <p className="text-sm font-medium leading-snug text-[#f5f5f5]">
               {item.title}
@@ -89,13 +85,36 @@ export function CreativeShowcaseCard({
               {item.caption}
             </p>
           ) : null}
-        </figcaption>
+        </div>
       )}
 
       <div
         className="pointer-events-none absolute left-0 top-0 h-full w-px scale-y-0 bg-[var(--card-accent)] transition-transform duration-500 group-hover:scale-y-100"
         aria-hidden="true"
       />
+    </>
+  );
+
+  const shellClass = `creative-showcase-card group relative aspect-[9/16] overflow-hidden border border-border bg-[#0a0a0a] ${className}`;
+  const shellStyle = { "--card-accent": "#0A84FF" } as CSSProperties;
+
+  if (onOpen) {
+    return (
+      <button
+        type="button"
+        onClick={onOpen}
+        className={`${shellClass} w-full cursor-zoom-in text-left`}
+        style={shellStyle}
+        aria-label={`Open ${item.title || item.alt || "piece"}`}
+      >
+        {media}
+      </button>
+    );
+  }
+
+  return (
+    <figure className={shellClass} style={shellStyle}>
+      {media}
     </figure>
   );
 }
