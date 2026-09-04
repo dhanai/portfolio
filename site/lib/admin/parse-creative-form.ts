@@ -30,6 +30,7 @@ export async function parseCreativeShowcaseForm(
       | "video";
     const itemTitle = String(formData.get(`${prefix}title`) ?? "").trim();
     const direction = String(formData.get(`${prefix}direction`) ?? "").trim();
+    const hidden = formData.get(`${prefix}hidden`) === "1";
     let src = String(formData.get(`${prefix}src`) ?? "").trim();
     let poster = String(formData.get(`${prefix}poster`) ?? "").trim() || undefined;
 
@@ -79,6 +80,7 @@ export async function parseCreativeShowcaseForm(
       title: itemTitle,
       direction: direction || undefined,
       alt: itemTitle,
+      ...(hidden ? { hidden: true } : {}),
     });
   }
 

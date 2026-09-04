@@ -11,6 +11,8 @@ export type CreativeShowcaseItem = {
   direction?: string;
   /** Accessibility label (defaults to title) */
   alt: string;
+  /** When true, kept in CMS but omitted from public /ai and homepage rail */
+  hidden?: boolean;
   /** @deprecated Use title + direction */
   caption?: string;
 };

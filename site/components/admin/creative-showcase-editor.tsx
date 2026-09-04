@@ -1,30 +1,18 @@
 "use client";
 
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useId,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { CreativeShowcaseItem } from "@/lib/defaults/creative-showcase";
 import { compressImageForUpload } from "@/lib/admin/compress-image-client";
 import { uploadCreativeVideoToBlob } from "@/lib/admin/upload-creative-blob-client";
-import { notifyFormChanged, reorderList } from "@/lib/admin/reorder-list";
+import { reorderList } from "@/lib/admin/reorder-list";
 import {
-  DragHandle,
-  useDragReorder,
-} from "@/components/admin/drag-reorder";
-import {
-  assignFileToInput,
-  FileDropZone,
-} from "@/components/admin/file-drop-zone";
-
-export type CreativeShowcaseEditorHandle = {
-  uploadPendingVideos: (form: HTMLFormElement) => Promise<void>;
-};
+  saveCreativeShowcaseItems,
+  uploadCreativeItemMedia,
+  uploadCreativeItemPoster,
+} from "@/lib/admin/actions";
+import { DragHandle, useDragReorder } from "@/components/admin/drag-reorder";
+import { FileDropZone } from "@/components/admin/file-drop-zone";
+import { useToast } from "@/components/toast";
 
 type ItemMedia = { src: string; type: "image" | "video" };
 
@@ -34,6 +22,8 @@ type ModalDraft = {
   localSrc: string | null;
   localPoster: string | null;
   pendingVideo: File | null;
+  pendingImage: File | null;
+  pendingPoster: File | null;
   isNew: boolean;
   baseline: string;
 };
@@ -52,10 +42,16 @@ function newItem(): CreativeShowcaseItem {
     title: "",
     direction: "",
     alt: "",
+    hidden: false,
   };
 }
 
-function draftSignature(draft: Omit<ModalDraft, "baseline" | "isNew" | "pendingVideo">) {
+function draftSignature(
+  draft: Omit<
+    ModalDraft,
+    "baseline" | "isNew" | "pendingVideo" | "pendingImage" | "pendingPoster"
+  >,
+) {
   return JSON.stringify({
     item: draft.item,
     media: draft.media,
@@ -68,40 +64,6 @@ function initMediaByItemId(items: CreativeShowcaseItem[]): Record<string, ItemMe
   return Object.fromEntries(
     items.map((item) => [item.id, { src: item.src, type: item.type }]),
   );
-}
-
-function syncMediaFieldsToForm(
-  form: HTMLFormElement,
-  items: CreativeShowcaseItem[],
-  mediaByItemId: Record<string, ItemMedia>,
-) {
-  for (const item of items) {
-    const media = mediaByItemId[item.id] ?? { src: item.src, type: item.type };
-    const srcInput = form.querySelector<HTMLInputElement>(
-      `[data-creative-src="${item.id}"]`,
-    );
-    const typeInput = form.querySelector<HTMLInputElement>(
-      `[data-creative-type="${item.id}"]`,
-    );
-    if (srcInput) srcInput.value = media.src;
-    if (typeInput) typeInput.value = media.type;
-  }
-}
-
-function syncTextFieldsToForm(
-  form: HTMLFormElement,
-  items: CreativeShowcaseItem[],
-) {
-  items.forEach((item, index) => {
-    const titleInput = form.querySelector<HTMLInputElement>(
-      `[name="item_${index}_title"]`,
-    );
-    const directionInput = form.querySelector<HTMLTextAreaElement>(
-      `[name="item_${index}_direction"]`,
-    );
-    if (titleInput) titleInput.value = item.title;
-    if (directionInput) directionInput.value = item.direction ?? "";
-  });
 }
 
 function ThumbMedia({
@@ -150,12 +112,11 @@ function PieceModal({
   onSave,
   onDelete,
   compressing,
+  saving,
   uploadNote,
   uploadError,
   onProcessMedia,
   onProcessPoster,
-  mediaInputRef,
-  posterInputRef,
 }: {
   draft: ModalDraft;
   onChange: (patch: Partial<ModalDraft>) => void;
@@ -163,12 +124,11 @@ function PieceModal({
   onSave: () => void;
   onDelete?: () => void;
   compressing: boolean;
+  saving: boolean;
   uploadNote: string | null;
   uploadError: string | null;
   onProcessMedia: (file: File) => Promise<void>;
   onProcessPoster: (file: File) => Promise<void>;
-  mediaInputRef: React.RefObject<HTMLInputElement | null>;
-  posterInputRef: React.RefObject<HTMLInputElement | null>;
 }) {
   const titleId = useId();
   const titleRef = useRef<HTMLInputElement>(null);
@@ -176,8 +136,9 @@ function PieceModal({
   const dirty = draftSignature(draft) !== draft.baseline;
   const canSave =
     draft.item.title.trim().length > 0 &&
-    Boolean(previewSrc) &&
-    !compressing;
+    Boolean(previewSrc || draft.pendingImage || draft.pendingVideo) &&
+    !compressing &&
+    !saving;
 
   useEffect(() => {
     const previous = document.body.style.overflow;
@@ -228,7 +189,7 @@ function PieceModal({
               {draft.isNew ? "Add piece" : "Edit piece"}
             </p>
             <p className="mt-0.5 text-xs text-[#737373]">
-              9×16 still or video for the homepage rail and /ai
+              Saves immediately to the homepage rail and /ai
             </p>
           </div>
           <button
@@ -258,11 +219,6 @@ function PieceModal({
                 alt={draft.item.title || "Preview"}
               />
             </div>
-            {draft.media.type === "video" && previewSrc ? (
-              <p className="text-[10px] uppercase tracking-wider text-[#525252]">
-                Video
-              </p>
-            ) : null}
           </div>
 
           <div className="space-y-4">
@@ -300,13 +256,32 @@ function PieceModal({
               />
             </label>
 
+            <label className="flex cursor-pointer items-start gap-3 border border-white/10 bg-[#0a0a0a] px-3 py-3">
+              <input
+                type="checkbox"
+                checked={Boolean(draft.item.hidden)}
+                onChange={(e) =>
+                  onChange({
+                    item: { ...draft.item, hidden: e.target.checked },
+                  })
+                }
+                className="mt-0.5 h-4 w-4 accent-[#ff453a]"
+              />
+              <span>
+                <span className="block text-sm text-white">Hidden</span>
+                <span className="mt-0.5 block text-xs text-[#737373]">
+                  Keep in the CMS but hide from the homepage rail and /ai
+                </span>
+              </span>
+            </label>
+
             <div className="block">
               <span className="text-xs uppercase tracking-wider text-[#737373]">
                 Media
               </span>
               <FileDropZone
                 accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
-                disabled={compressing}
+                disabled={compressing || saving}
                 onFile={onProcessMedia}
                 className="mt-1.5 p-3"
               >
@@ -314,14 +289,13 @@ function PieceModal({
                   Drop a 9×16 image or video, or choose a file
                 </p>
                 <input
-                  ref={mediaInputRef}
                   type="file"
                   accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) void onProcessMedia(file);
                   }}
-                  disabled={compressing}
+                  disabled={compressing || saving}
                   className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
                 />
               </FileDropZone>
@@ -343,19 +317,18 @@ function PieceModal({
                 </span>
                 <FileDropZone
                   accept="image/jpeg,image/png,image/webp,image/gif"
-                  disabled={compressing}
+                  disabled={compressing || saving}
                   onFile={onProcessPoster}
                   className="mt-1.5 p-3"
                 >
                   <input
-                    ref={posterInputRef}
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/gif"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) void onProcessPoster(file);
                     }}
-                    disabled={compressing}
+                    disabled={compressing || saving}
                     className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
                   />
                 </FileDropZone>
@@ -370,13 +343,14 @@ function PieceModal({
               <button
                 type="button"
                 onClick={onDelete}
-                className="text-xs text-[#ff453a] transition-colors hover:text-white"
+                disabled={saving}
+                className="text-xs text-[#ff453a] transition-colors hover:text-white disabled:opacity-40"
               >
                 Delete piece
               </button>
             ) : (
               <span className="text-xs text-[#525252]">
-                {dirty ? "Unsaved edits" : "Ready"}
+                {saving ? "Saving…" : dirty ? "Unsaved edits" : "Ready"}
               </span>
             )}
           </div>
@@ -384,7 +358,8 @@ function PieceModal({
             <button
               type="button"
               onClick={requestClose}
-              className="border border-white/15 px-4 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/30 hover:text-white"
+              disabled={saving}
+              className="border border-white/15 px-4 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/30 hover:text-white disabled:opacity-40"
             >
               Cancel
             </button>
@@ -394,7 +369,11 @@ function PieceModal({
               disabled={!canSave}
               className="bg-white px-4 py-2 text-xs font-medium text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {draft.isNew ? "Add to gallery" : "Save piece"}
+              {saving
+                ? "Saving…"
+                : draft.isNew
+                  ? "Add to gallery"
+                  : "Save piece"}
             </button>
           </div>
         </div>
@@ -403,118 +382,73 @@ function PieceModal({
   );
 }
 
-export const CreativeShowcaseEditor = forwardRef<
-  CreativeShowcaseEditorHandle,
-  { initialItems: CreativeShowcaseItem[] }
->(function CreativeShowcaseEditor({ initialItems }, ref) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pendingVideosRef = useRef(new Map<string, File>());
-  const mediaFileByIdRef = useRef(new Map<string, File>());
-  const posterFileByIdRef = useRef(new Map<string, File>());
-  const mediaInputRef = useRef<HTMLInputElement>(null);
-  const posterInputRef = useRef<HTMLInputElement>(null);
-
-  const [items, setItems] = useState<CreativeShowcaseItem[]>(
-    initialItems.length > 0 ? initialItems : [],
-  );
+export function CreativeShowcaseEditor({
+  initialItems,
+}: {
+  initialItems: CreativeShowcaseItem[];
+}) {
+  const { success, error: toastError } = useToast();
+  const [items, setItems] = useState(initialItems);
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
-  const [mediaByItemId, setMediaByItemId] = useState<Record<string, ItemMedia>>(
-    () => initMediaByItemId(initialItems),
+  const [mediaByItemId, setMediaByItemId] = useState(() =>
+    initMediaByItemId(initialItems),
   );
-  const mediaByItemIdRef = useRef(mediaByItemId);
-  mediaByItemIdRef.current = mediaByItemId;
-
-  const [modal, setModal] = useState<ModalDraft | null>(null);
   const [previewByItemId, setPreviewByItemId] = useState<Record<string, string>>(
     {},
   );
+  const [modal, setModal] = useState<ModalDraft | null>(null);
   const [compressing, setCompressing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [uploadNote, setUploadNote] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [saveHint, setSaveHint] = useState<string | null>(null);
 
-  useImperativeHandle(ref, () => ({
-    async uploadPendingVideos(form: HTMLFormElement) {
-      syncTextFieldsToForm(form, itemsRef.current);
-      syncMediaFieldsToForm(form, itemsRef.current, mediaByItemIdRef.current);
+  useEffect(() => {
+    setItems(initialItems);
+    itemsRef.current = initialItems;
+    setMediaByItemId(initMediaByItemId(initialItems));
+  }, [initialItems]);
 
-      // Attach any pending image/poster files by item id onto indexed inputs
-      itemsRef.current.forEach((item, index) => {
-        const mediaFile = mediaFileByIdRef.current.get(item.id);
-        const mediaInput = form.querySelector<HTMLInputElement>(
-          `[data-creative-media="${item.id}"]`,
-        );
-        if (mediaFile && mediaInput && mediaByItemIdRef.current[item.id]?.type === "image") {
-          assignFileToInput(mediaInput, mediaFile);
-          mediaInput.name = `item_${index}_media`;
+  const persistItems = useCallback(
+    async (nextItems: CreativeShowcaseItem[], successMessage?: string) => {
+      setStatus("saving");
+      try {
+        const result = await saveCreativeShowcaseItems(nextItems);
+        if (result && "error" in result) {
+          toastError(result.error);
+          setStatus("idle");
+          return false;
         }
-
-        const posterFile = posterFileByIdRef.current.get(item.id);
-        const posterInput = form.querySelector<HTMLInputElement>(
-          `[data-creative-poster-file="${item.id}"]`,
-        );
-        if (posterFile && posterInput) {
-          assignFileToInput(posterInput, posterFile);
-          posterInput.name = `item_${index}_posterFile`;
+        setStatus("saved");
+        if (successMessage && !(result && "unchanged" in result && result.unchanged)) {
+          success(successMessage);
         }
-      });
-
-      const pending = [...pendingVideosRef.current.entries()];
-      if (pending.length === 0) return;
-
-      for (const [itemId, file] of pending) {
-        const mediaInput = form.querySelector<HTMLInputElement>(
-          `[data-creative-media="${itemId}"]`,
-        );
-
-        try {
-          const url = await uploadCreativeVideoToBlob(file, itemId);
-          const nextMedia: ItemMedia = { src: url, type: "video" };
-          mediaByItemIdRef.current = {
-            ...mediaByItemIdRef.current,
-            [itemId]: nextMedia,
-          };
-          setMediaByItemId((prev) => ({ ...prev, [itemId]: nextMedia }));
-          syncMediaFieldsToForm(form, itemsRef.current, mediaByItemIdRef.current);
-          pendingVideosRef.current.delete(itemId);
-        } catch (err) {
-          if (process.env.NODE_ENV === "development" && mediaInput) {
-            const transfer = new DataTransfer();
-            transfer.items.add(file);
-            mediaInput.files = transfer.files;
-            const srcInput = form.querySelector<HTMLInputElement>(
-              `[data-creative-src="${itemId}"]`,
-            );
-            mediaInput.name = srcInput?.name.replace(/src$/, "media") ?? "";
-            pendingVideosRef.current.delete(itemId);
-            continue;
-          }
-          throw err;
-        }
+        window.setTimeout(() => setStatus("idle"), 1200);
+        return true;
+      } catch (err) {
+        toastError(err instanceof Error ? err.message : "Failed to save");
+        setStatus("idle");
+        return false;
       }
     },
-  }));
+    [success, toastError],
+  );
 
-  const onReorder = useCallback((fromIndex: number, toIndex: number) => {
-    setItems((prev) => {
-      const next = reorderList(prev, fromIndex, toIndex);
+  const onReorder = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      const previous = itemsRef.current;
+      const next = reorderList(previous, fromIndex, toIndex);
+      if (next === previous) return;
       itemsRef.current = next;
-      return next;
-    });
-  }, []);
+      setItems(next);
+      void persistItems(next, "Order saved");
+    },
+    [persistItems],
+  );
 
   const drag = useDragReorder(onReorder);
-
-  const skipDirtyNotify = useRef(true);
-  useEffect(() => {
-    if (skipDirtyNotify.current) {
-      skipDirtyNotify.current = false;
-      return;
-    }
-    notifyFormChanged(containerRef.current);
-  }, [items, mediaByItemId]);
 
   function openCreate() {
     const item = newItem();
@@ -529,6 +463,8 @@ export const CreativeShowcaseEditor = forwardRef<
     setModal({
       ...draftBase,
       pendingVideo: null,
+      pendingImage: null,
+      pendingPoster: null,
       isNew: true,
       baseline: draftSignature(draftBase),
     });
@@ -546,7 +482,9 @@ export const CreativeShowcaseEditor = forwardRef<
     setUploadError(null);
     setModal({
       ...draftBase,
-      pendingVideo: pendingVideosRef.current.get(item.id) ?? null,
+      pendingVideo: null,
+      pendingImage: null,
+      pendingPoster: null,
       isNew: false,
       baseline: draftSignature(draftBase),
     });
@@ -554,10 +492,8 @@ export const CreativeShowcaseEditor = forwardRef<
 
   function closeModal() {
     if (modal?.localSrc?.startsWith("blob:")) {
-      const keptPreview = previewByItemId[modal.item.id];
-      if (modal.localSrc !== keptPreview) {
-        URL.revokeObjectURL(modal.localSrc);
-      }
+      const kept = previewByItemId[modal.item.id];
+      if (modal.localSrc !== kept) URL.revokeObjectURL(modal.localSrc);
     }
     if (modal?.localPoster?.startsWith("blob:")) {
       URL.revokeObjectURL(modal.localPoster);
@@ -566,6 +502,7 @@ export const CreativeShowcaseEditor = forwardRef<
     setUploadNote(null);
     setUploadError(null);
     setCompressing(false);
+    setSaving(false);
   }
 
   function patchModal(patch: Partial<ModalDraft>) {
@@ -578,33 +515,29 @@ export const CreativeShowcaseEditor = forwardRef<
     setUploadNote(null);
 
     if (file.type.startsWith("video/")) {
-      mediaFileByIdRef.current.delete(modal.item.id);
       const localSrc = URL.createObjectURL(file);
       if (modal.localSrc?.startsWith("blob:")) URL.revokeObjectURL(modal.localSrc);
       patchModal({
         media: { src: modal.media.src, type: "video" },
         localSrc,
         pendingVideo: file,
+        pendingImage: null,
         item: { ...modal.item, type: "video" },
       });
-      setUploadNote(
-        `Video ready (${formatBytes(file.size)}) — uploads when you save the page`,
-      );
+      setUploadNote(`Video ready (${formatBytes(file.size)})`);
       return;
     }
 
     setCompressing(true);
     try {
       const compressed = await compressImageForUpload(file);
-      assignFileToInput(mediaInputRef.current, compressed);
-      mediaFileByIdRef.current.set(modal.item.id, compressed);
       const localSrc = URL.createObjectURL(compressed);
       if (modal.localSrc?.startsWith("blob:")) URL.revokeObjectURL(modal.localSrc);
-      // Keep remote src if present; blob preview is local-only until page save uploads.
       patchModal({
         media: { src: modal.media.src, type: "image" },
         localSrc,
         pendingVideo: null,
+        pendingImage: compressed,
         item: { ...modal.item, type: "image" },
       });
       setUploadNote(
@@ -624,13 +557,11 @@ export const CreativeShowcaseEditor = forwardRef<
     setCompressing(true);
     try {
       const compressed = await compressImageForUpload(file);
-      assignFileToInput(posterInputRef.current, compressed);
-      posterFileByIdRef.current.set(modal.item.id, compressed);
       const localPoster = URL.createObjectURL(compressed);
       if (modal.localPoster?.startsWith("blob:")) {
         URL.revokeObjectURL(modal.localPoster);
       }
-      patchModal({ localPoster });
+      patchModal({ localPoster, pendingPoster: compressed });
     } catch {
       setUploadError("Failed to compress poster image");
     } finally {
@@ -638,85 +569,119 @@ export const CreativeShowcaseEditor = forwardRef<
     }
   }
 
-  function saveModal() {
+  async function saveModal() {
     if (!modal) return;
     const title = modal.item.title.trim();
     const previewSrc = modal.localSrc ?? modal.media.src;
-    const hasPendingImage = mediaFileByIdRef.current.has(modal.item.id);
-    const hasPendingVideo = Boolean(modal.pendingVideo);
     if (!title) {
-      setSaveHint("Title is required");
+      setUploadError("Title is required");
       return;
     }
-    if (!previewSrc && !hasPendingImage && !hasPendingVideo) {
-      setSaveHint("Add media before saving this piece");
+    if (!previewSrc && !modal.pendingImage && !modal.pendingVideo) {
+      setUploadError("Add media before saving this piece");
       return;
     }
-    setSaveHint(null);
 
-    const persistedSrc =
-      modal.media.src && !modal.media.src.startsWith("blob:")
-        ? modal.media.src
-        : "";
-
-    const nextItem: CreativeShowcaseItem = {
-      ...modal.item,
-      title,
-      alt: title,
-      type: modal.media.type,
-      src: persistedSrc,
-      direction: modal.item.direction?.trim() || undefined,
-    };
-
-    if (modal.pendingVideo) {
-      pendingVideosRef.current.set(modal.item.id, modal.pendingVideo);
-    } else if (modal.media.type === "image") {
-      pendingVideosRef.current.delete(modal.item.id);
-    }
-
-    if (modal.localSrc) {
-      setPreviewByItemId((prev) => ({
-        ...prev,
-        [modal.item.id]: modal.localSrc as string,
-      }));
-    }
-
-    setMediaByItemId((prev) => {
-      const next = {
-        ...prev,
-        [modal.item.id]: {
-          src: persistedSrc,
-          type: modal.media.type,
-        },
-      };
-      mediaByItemIdRef.current = next;
-      return next;
-    });
-
-    setItems((prev) => {
-      const exists = prev.some((item) => item.id === modal.item.id);
-      const next = exists
-        ? prev.map((item) => (item.id === modal.item.id ? nextItem : item))
-        : [...prev, nextItem];
-      itemsRef.current = next;
-      return next;
-    });
-
-    // Don't revoke localSrc on close — grid still needs the preview blob.
-    setModal(null);
-    setUploadNote(null);
+    setSaving(true);
     setUploadError(null);
-    setCompressing(false);
+
+    try {
+      let src =
+        modal.media.src && !modal.media.src.startsWith("blob:")
+          ? modal.media.src
+          : "";
+      let type = modal.media.type;
+      let poster = modal.item.poster;
+
+      if (modal.pendingVideo) {
+        src = await uploadCreativeVideoToBlob(modal.pendingVideo, modal.item.id);
+        type = "video";
+      } else if (modal.pendingImage) {
+        const formData = new FormData();
+        formData.set("itemId", modal.item.id);
+        formData.set("file", modal.pendingImage);
+        const uploaded = await uploadCreativeItemMedia(formData);
+        if ("error" in uploaded) throw new Error(uploaded.error);
+        src = uploaded.url;
+        type = uploaded.type;
+      }
+
+      if (modal.pendingPoster) {
+        const formData = new FormData();
+        formData.set("itemId", modal.item.id);
+        formData.set("file", modal.pendingPoster);
+        const uploaded = await uploadCreativeItemPoster(formData);
+        if ("error" in uploaded) throw new Error(uploaded.error);
+        poster = uploaded.url;
+      }
+
+      if (!src) throw new Error("Media upload did not return a URL");
+
+      const nextItem: CreativeShowcaseItem = {
+        ...modal.item,
+        title,
+        alt: title,
+        type,
+        src,
+        poster,
+        direction: modal.item.direction?.trim() || undefined,
+        hidden: Boolean(modal.item.hidden),
+      };
+
+      const previous = itemsRef.current;
+      const exists = previous.some((item) => item.id === nextItem.id);
+      const nextItems = exists
+        ? previous.map((item) => (item.id === nextItem.id ? nextItem : item))
+        : [...previous, nextItem];
+
+      const ok = await persistItems(
+        nextItems,
+        modal.isNew ? "Piece added" : "Piece saved",
+      );
+      if (!ok) {
+        setSaving(false);
+        return;
+      }
+
+      itemsRef.current = nextItems;
+      setItems(nextItems);
+      setMediaByItemId((prev) => ({
+        ...prev,
+        [nextItem.id]: { src, type },
+      }));
+      if (modal.localSrc) {
+        setPreviewByItemId((prev) => ({
+          ...prev,
+          [nextItem.id]: modal.localSrc as string,
+        }));
+      }
+      setModal(null);
+      setUploadNote(null);
+      setCompressing(false);
+      setSaving(false);
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Failed to save piece");
+      setSaving(false);
+    }
   }
 
-  function deleteFromModal() {
+  async function deleteFromModal() {
     if (!modal || modal.isNew) return;
     if (!window.confirm(`Delete “${modal.item.title || "this piece"}”?`)) return;
 
     const id = modal.item.id;
-    pendingVideosRef.current.delete(id);
-    mediaFileByIdRef.current.delete(id);
-    posterFileByIdRef.current.delete(id);
+    const previous = itemsRef.current;
+    const nextItems = previous.filter((item) => item.id !== id);
+    const ok = await persistItems(nextItems, "Piece deleted");
+    if (!ok) return;
+
+    itemsRef.current = nextItems;
+    setItems(nextItems);
+    setMediaByItemId((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
     setPreviewByItemId((prev) => {
       const next = { ...prev };
       const preview = next[id];
@@ -724,90 +689,57 @@ export const CreativeShowcaseEditor = forwardRef<
       delete next[id];
       return next;
     });
-    setMediaByItemId((prev) => {
-      const next = { ...prev };
-      delete next[id];
-      mediaByItemIdRef.current = next;
-      return next;
-    });
-    setItems((prev) => {
-      const next = prev.filter((item) => item.id !== id);
-      itemsRef.current = next;
-      return next;
-    });
     closeModal();
   }
 
-  function duplicateItem(item: CreativeShowcaseItem, index: number) {
-    const copy = {
+  async function toggleHidden(item: CreativeShowcaseItem) {
+    const previous = itemsRef.current;
+    const nextItems = previous.map((entry) =>
+      entry.id === item.id ? { ...entry, hidden: !entry.hidden } : entry,
+    );
+    itemsRef.current = nextItems;
+    setItems(nextItems);
+    const ok = await persistItems(
+      nextItems,
+      item.hidden ? "Piece visible" : "Piece hidden",
+    );
+    if (!ok) {
+      itemsRef.current = previous;
+      setItems(previous);
+    }
+  }
+
+  async function duplicateItem(item: CreativeShowcaseItem, index: number) {
+    const copy: CreativeShowcaseItem = {
       ...item,
       id: `creative-${crypto.randomUUID().slice(0, 8)}`,
       title: item.title ? `${item.title} (copy)` : "Untitled copy",
     };
     const media = mediaByItemId[item.id] ?? { src: item.src, type: item.type };
-    setMediaByItemId((prev) => {
-      const next = { ...prev, [copy.id]: { ...media } };
-      mediaByItemIdRef.current = next;
-      return next;
-    });
-    setItems((prev) => {
-      const next = [...prev];
-      next.splice(index + 1, 0, copy);
-      itemsRef.current = next;
-      return next;
-    });
+    const previous = itemsRef.current;
+    const nextItems = [...previous];
+    nextItems.splice(index + 1, 0, copy);
+
+    itemsRef.current = nextItems;
+    setItems(nextItems);
+    setMediaByItemId((prev) => ({ ...prev, [copy.id]: { ...media } }));
+
+    const ok = await persistItems(nextItems, "Piece duplicated");
+    if (!ok) {
+      itemsRef.current = previous;
+      setItems(previous);
+      setMediaByItemId((prev) => {
+        const next = { ...prev };
+        delete next[copy.id];
+        return next;
+      });
+    }
   }
 
+  const hiddenCount = items.filter((item) => item.hidden).length;
+
   return (
-    <div ref={containerRef} className="space-y-4">
-      <input type="hidden" name="itemCount" value={items.length} />
-
-      {/* Persist fields for form submit */}
-      {items.map((item, index) => {
-        const media = mediaByItemId[item.id] ?? { src: item.src, type: item.type };
-        const prefix = `item_${index}_`;
-        return (
-          <div key={`fields-${item.id}`} className="hidden" aria-hidden>
-            <input type="hidden" name={`${prefix}id`} value={item.id} />
-            <input
-              type="hidden"
-              name={`${prefix}type`}
-              value={media.type}
-              data-creative-type={item.id}
-            />
-            <input
-              type="hidden"
-              name={`${prefix}src`}
-              value={media.src}
-              data-creative-src={item.id}
-            />
-            <input
-              type="hidden"
-              name={`${prefix}poster`}
-              value={item.poster ?? ""}
-            />
-            <input type="hidden" name={`${prefix}title`} value={item.title} />
-            <input
-              type="hidden"
-              name={`${prefix}direction`}
-              value={item.direction ?? ""}
-            />
-            <input
-              type="file"
-              data-creative-media={item.id}
-              className="hidden"
-              tabIndex={-1}
-            />
-            <input
-              type="file"
-              data-creative-poster-file={item.id}
-              className="hidden"
-              tabIndex={-1}
-            />
-          </div>
-        );
-      })}
-
+    <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs uppercase tracking-wider text-[#737373]">
@@ -816,28 +748,31 @@ export const CreativeShowcaseEditor = forwardRef<
           <p className="mt-1 text-xs text-[#525252]">
             {items.length === 0
               ? "No pieces yet"
-              : `${items.length} piece${items.length === 1 ? "" : "s"} · drag to reorder`}
+              : `${items.length} piece${items.length === 1 ? "" : "s"} · ${hiddenCount} hidden · autosaves`}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={openCreate}
-          className="flex h-9 w-9 items-center justify-center border border-white/15 text-white transition-colors hover:border-[#ff453a] hover:text-[#ff453a]"
-          aria-label="Add piece"
-          title="Add piece"
-        >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-            <path
-              d="M8 3v10M3 8h10"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
+        <div className="flex items-center gap-3">
+          <p className="text-[10px] uppercase tracking-wider text-[#525252]">
+            {status === "saving" ? "Saving…" : status === "saved" ? "Saved" : ""}
+          </p>
+          <button
+            type="button"
+            onClick={openCreate}
+            className="flex h-9 w-9 items-center justify-center border border-white/15 text-white transition-colors hover:border-[#ff453a] hover:text-[#ff453a]"
+            aria-label="Add piece"
+            title="Add piece"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path
+                d="M8 3v10M3 8h10"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
-
-      {saveHint && <p className="text-xs text-[#ff453a]">{saveHint}</p>}
 
       {items.length === 0 ? (
         <button
@@ -849,9 +784,6 @@ export const CreativeShowcaseEditor = forwardRef<
             +
           </span>
           <span className="text-sm text-[#a3a3a3]">Add your first 9×16 piece</span>
-          <span className="max-w-xs text-xs text-[#525252]">
-            Stills and videos show on the homepage rail and /ai
-          </span>
         </button>
       ) : (
         <div
@@ -870,7 +802,7 @@ export const CreativeShowcaseEditor = forwardRef<
                 role="listitem"
                 className={drag.getRowClassName(
                   index,
-                  "group relative overflow-hidden border border-white/10 bg-[#0a0a0a]",
+                  `group relative overflow-hidden border border-white/10 bg-[#0a0a0a] ${item.hidden ? "opacity-55" : ""}`,
                 )}
                 onDragOver={(event) => drag.handleDragOver(index, event)}
                 onDragLeave={drag.handleDragLeave}
@@ -900,14 +832,23 @@ export const CreativeShowcaseEditor = forwardRef<
                         </p>
                       ) : null}
                     </div>
-                    {media.type === "video" && (
-                      <span className="absolute left-2 top-8 bg-black/70 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-white">
-                        Video
-                      </span>
-                    )}
-                    <span className="absolute right-2 top-2 bg-black/70 px-1.5 py-0.5 text-[9px] tabular-nums text-[#a3a3a3]">
-                      {index + 1}
-                    </span>
+                    <div className="absolute right-2 top-2 flex flex-col items-end gap-1">
+                      <div className="flex items-center gap-1">
+                        {media.type === "video" && (
+                          <span className="bg-black/70 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-white">
+                            Video
+                          </span>
+                        )}
+                        <span className="bg-black/70 px-1.5 py-0.5 text-[9px] tabular-nums text-[#a3a3a3]">
+                          {index + 1}
+                        </span>
+                      </div>
+                      {item.hidden && (
+                        <span className="bg-black/80 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-[#ff453a]">
+                          Hidden
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </button>
 
@@ -919,17 +860,30 @@ export const CreativeShowcaseEditor = forwardRef<
                   />
                 </div>
 
-                <button
-                  type="button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    duplicateItem(item, index);
-                  }}
-                  className="absolute bottom-2 right-2 z-[1] rounded bg-black/70 px-1.5 py-1 text-[9px] uppercase tracking-wider text-[#a3a3a3] opacity-0 transition-opacity hover:text-white group-hover:opacity-100 group-focus-within:opacity-100"
-                  title="Duplicate"
-                >
-                  Dup
-                </button>
+                <div className="absolute bottom-2 right-2 z-[1] flex gap-1 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      void toggleHidden(item);
+                    }}
+                    className="rounded bg-black/70 px-1.5 py-1 text-[9px] uppercase tracking-wider text-[#a3a3a3] hover:text-white"
+                    title={item.hidden ? "Show on site" : "Hide from site"}
+                  >
+                    {item.hidden ? "Show" : "Hide"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      void duplicateItem(item, index);
+                    }}
+                    className="rounded bg-black/70 px-1.5 py-1 text-[9px] uppercase tracking-wider text-[#a3a3a3] hover:text-white"
+                    title="Duplicate"
+                  >
+                    Dup
+                  </button>
+                </div>
               </div>
             );
           })}
@@ -947,8 +901,7 @@ export const CreativeShowcaseEditor = forwardRef<
       )}
 
       <p className="text-xs text-[#525252]">
-        Click a piece to edit. Drag the handle to reorder. Use Save at the bottom
-        of the page to publish.
+        Edits, hide/show, and drag-reorder save automatically.
       </p>
 
       {modal && (
@@ -956,17 +909,16 @@ export const CreativeShowcaseEditor = forwardRef<
           draft={modal}
           onChange={patchModal}
           onClose={closeModal}
-          onSave={saveModal}
-          onDelete={modal.isNew ? undefined : deleteFromModal}
+          onSave={() => void saveModal()}
+          onDelete={modal.isNew ? undefined : () => void deleteFromModal()}
           compressing={compressing}
+          saving={saving}
           uploadNote={uploadNote}
           uploadError={uploadError}
           onProcessMedia={processMediaFile}
           onProcessPoster={processPosterFile}
-          mediaInputRef={mediaInputRef}
-          posterInputRef={posterInputRef}
         />
       )}
     </div>
   );
-});
+}

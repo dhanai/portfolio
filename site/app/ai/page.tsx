@@ -30,7 +30,7 @@ export default async function AiPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <header className="mb-16 max-w-2xl border-b border-border pb-10">
+      <header className="mb-16 max-w-2xl">
         <FadeIn>
           <p className="label-caps text-muted">Generative</p>
           <h1 className="mt-4 font-display text-4xl font-medium tracking-tight text-foreground md:text-5xl">

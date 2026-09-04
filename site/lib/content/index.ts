@@ -71,7 +71,9 @@ export async function getResumeContent(): Promise<ResumeContentData> {
   return parseJson(block.data, defaultResumeContent);
 }
 
-export async function getCreativeShowcase(): Promise<CreativeShowcaseData> {
+export async function getCreativeShowcase(options?: {
+  includeHidden?: boolean;
+}): Promise<CreativeShowcaseData> {
   readCms();
   const block = await prisma.contentBlock.findUnique({
     where: { key: "creative" },
@@ -86,7 +88,9 @@ export async function getCreativeShowcase(): Promise<CreativeShowcaseData> {
   return {
     ...defaultCreativeShowcase,
     ...parsed,
-    items,
+    items: options?.includeHidden
+      ? items
+      : items.filter((item) => !item.hidden),
   };
 }
 
@@ -103,6 +107,7 @@ function normalizeCreativeItem(raw: Record<string, unknown>): CreativeShowcaseIt
     title,
     direction,
     alt: String(raw.alt ?? title),
+    hidden: Boolean(raw.hidden),
     caption: raw.caption ? String(raw.caption) : undefined,
   };
 }

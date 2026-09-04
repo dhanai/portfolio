@@ -124,6 +124,101 @@ export async function saveCreativeShowcase(
   return { ok: true as const };
 }
 
+async function readCreativeShowcaseRaw(): Promise<CreativeShowcaseData> {
+  const { defaultCreativeShowcase } = await import(
+    "@/lib/defaults/creative-showcase"
+  );
+  const existing = await prisma.contentBlock.findUnique({
+    where: { key: "creative" },
+  });
+  if (!existing) return defaultCreativeShowcase;
+  try {
+    const parsed = JSON.parse(existing.data) as Partial<CreativeShowcaseData>;
+    return {
+      ...defaultCreativeShowcase,
+      ...parsed,
+      items: Array.isArray(parsed.items) ? parsed.items : [],
+    };
+  } catch {
+    return defaultCreativeShowcase;
+  }
+}
+
+export async function saveCreativeShowcaseItems(
+  items: CreativeShowcaseData["items"],
+): Promise<ActionResult> {
+  await requireAdmin();
+  const current = await readCreativeShowcaseRaw();
+  return saveCreativeShowcase({
+    enabled: current.enabled,
+    title: current.title,
+    subtitle: current.subtitle,
+    items,
+  });
+}
+
+export async function saveCreativeShowcaseSection(input: {
+  enabled: boolean;
+  title: string;
+  subtitle: string;
+}): Promise<ActionResult> {
+  await requireAdmin();
+  const title = input.title.trim();
+  if (!title) return { error: "Section title is required" };
+  const current = await readCreativeShowcaseRaw();
+  return saveCreativeShowcase({
+    enabled: input.enabled,
+    title,
+    subtitle: input.subtitle.trim(),
+    items: current.items,
+  });
+}
+
+export async function uploadCreativeItemMedia(
+  formData: FormData,
+): Promise<{ url: string; type: "image" | "video" } | { error: string }> {
+  await requireAdmin();
+  const itemId = String(formData.get("itemId") ?? "").trim();
+  const file = formData.get("file");
+  if (!itemId) return { error: "Missing item id" };
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "No file selected" };
+  }
+  try {
+    const { saveCreativeMedia } = await import(
+      "@/lib/admin/upload-creative-media"
+    );
+    return await saveCreativeMedia(file, itemId);
+  } catch (err) {
+    return {
+      error: err instanceof Error ? err.message : "Failed to upload media",
+    };
+  }
+}
+
+export async function uploadCreativeItemPoster(
+  formData: FormData,
+): Promise<{ url: string } | { error: string }> {
+  await requireAdmin();
+  const itemId = String(formData.get("itemId") ?? "").trim();
+  const file = formData.get("file");
+  if (!itemId) return { error: "Missing item id" };
+  if (!(file instanceof File) || file.size === 0) {
+    return { error: "No poster selected" };
+  }
+  try {
+    const { saveCreativeImage } = await import(
+      "@/lib/admin/upload-creative-media"
+    );
+    const url = await saveCreativeImage(file, `${itemId}-poster`);
+    return { url };
+  } catch (err) {
+    return {
+      error: err instanceof Error ? err.message : "Failed to upload poster",
+    };
+  }
+}
+
 export async function saveCreativeShowcaseFromForm(
   formData: FormData,
 ): Promise<ActionResult> {
