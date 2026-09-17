@@ -1,16 +1,15 @@
 # Resume — Dhanai Holtzclaw
 
-**Web:** full experience at `/resume` (stylized, scrollable)  
-**PDF:** one-page export via `@react-pdf/renderer`  
-**Data source:** `site/lib/resume-data.ts`
+**Web:** full experience at `/resume`  
+**PDF:** static export from Figma at `site/public/assets/resume/Dhanai-Holtzclaw-Resume-Art-Product.pdf`  
+**Data source:** `site/lib/resume-data.ts` (keep in sync with the Figma one-pager)
 
 ---
 
 ## Download PDF
 
-- **Live:** `/api/resume/pdf` (generated on demand)
-- **Static:** `/assets/resume/Dhanai-Holtzclaw-Design-Engineer-Resume.pdf`
-- **Regenerate:** `cd site && npm run resume:pdf` (also runs after `npm run build`)
+- **Static:** `/assets/resume/Dhanai-Holtzclaw-Resume-Art-Product.pdf`
+- **API:** `/api/resume/pdf` (serves the same static file)
 
 ---
 
@@ -18,13 +17,9 @@
 
 | Layer | File | Purpose |
 |-------|------|---------|
-| Data (full) | `lib/resume-data.ts` | Web resume + shared contact |
-| Data (PDF) | `resumePdfContent` in same file | Condensed one-pager copy |
+| Data | `lib/resume-data.ts` | Web resume + PDF filename |
 | Web UI | `components/resume/resume-web.tsx` | Full stylized resume |
-| PDF layout | `components/resume/resume-pdf-document.tsx` | React PDF document |
-| Generator | `lib/generate-resume-pdf.tsx` | `renderToBuffer()` wrapper |
+| PDF layout (unused for download) | `components/resume/resume-pdf-document.tsx` | React PDF document (legacy) |
 | API | `app/api/resume/pdf/route.ts` | Download endpoint |
 
-Web and PDF share `resumeData`. PDF uses a two-column layout (experience left, earlier career + skills right) styled to mirror the web resume — accent bar, dash bullets, bordered skill cells.
-
-To tune density, edit `components/resume/resume-pdf-document.tsx`.
+Update `resume-data.ts`, replace the static PDF, then sync CMS (`npx tsx scripts/sync-dual-positioning.ts`) so production picks up the new copy.

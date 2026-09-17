@@ -38,14 +38,6 @@ export async function ResumeWeb({ data }: { data?: ResumeContentData }) {
             {contact.linkedin}
           </a>
           <a
-            href={`https://${contact.github}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-foreground transition-colors hover:text-accent"
-          >
-            {contact.github}
-          </a>
-          <a
             href={`https://${contact.portfolio}`}
             className="text-foreground transition-colors hover:text-accent"
           >
