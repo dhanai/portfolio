@@ -7,11 +7,14 @@ export function CreativeShowcaseCard({
   item,
   className = "",
   onOpen,
+  href,
 }: {
   item: CreativeShowcaseItem;
   className?: string;
   /** When set, the card is clickable and opens a full view. */
   onOpen?: () => void;
+  /** Deep link to this piece (e.g. /ai?v=id). Used with onOpen for shareable URLs. */
+  href?: string;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -99,6 +102,33 @@ export function CreativeShowcaseCard({
   const shellStyle = { "--card-accent": "#0A84FF" } as CSSProperties;
 
   if (onOpen) {
+    if (href) {
+      return (
+        <a
+          href={href}
+          onClick={(event) => {
+            if (
+              event.defaultPrevented ||
+              event.button !== 0 ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey
+            ) {
+              return;
+            }
+            event.preventDefault();
+            onOpen();
+          }}
+          className={`${shellClass} block w-full cursor-zoom-in text-left`}
+          style={shellStyle}
+          aria-label={`Open ${item.title || item.alt || "piece"}`}
+        >
+          {media}
+        </a>
+      );
+    }
+
     return (
       <button
         type="button"
@@ -109,6 +139,14 @@ export function CreativeShowcaseCard({
       >
         {media}
       </button>
+    );
+  }
+
+  if (href) {
+    return (
+      <a href={href} className={`${shellClass} block`} style={shellStyle}>
+        {media}
+      </a>
     );
   }
 

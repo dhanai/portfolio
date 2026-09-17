@@ -30,6 +30,7 @@ export function CreativeShowcaseRail({
             key={item.id}
             item={item}
             className="w-[220px] shrink-0 snap-start sm:w-[248px] md:w-[272px]"
+            href={`/ai?v=${encodeURIComponent(item.id)}`}
           />
         ))}
       </div>

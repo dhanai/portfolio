@@ -8,17 +8,21 @@ export function CreativeShowcaseLightbox({
   index,
   onClose,
   onChangeIndex,
+  sharePath = "/ai",
 }: {
   items: CreativeShowcaseItem[];
   index: number;
   onClose: () => void;
   onChangeIndex: (index: number) => void;
+  /** Path used for copy-link (defaults to /ai). */
+  sharePath?: string;
 }) {
   const item = items[index];
   const titleId = useId();
   const videoRef = useRef<HTMLVideoElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const [muted, setMuted] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -37,6 +41,7 @@ export function CreativeShowcaseLightbox({
 
   useEffect(() => {
     setMuted(false);
+    setCopied(false);
   }, [index]);
 
   useEffect(() => {
@@ -81,6 +86,17 @@ export function CreativeShowcaseLightbox({
   if (!item) return null;
 
   const hasPrevNext = items.length > 1;
+
+  async function copyShareLink() {
+    const url = `${window.location.origin}${sharePath}?v=${encodeURIComponent(item.id)}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* ignore */
+    }
+  }
 
   return (
     <div
@@ -176,7 +192,7 @@ export function CreativeShowcaseLightbox({
             ) : null}
 
             {hasPrevNext && (
-              <div className="mt-6 flex items-center gap-3 sm:mt-8">
+              <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-8">
                 <button
                   type="button"
                   onClick={() =>
@@ -194,6 +210,25 @@ export function CreativeShowcaseLightbox({
                   aria-label="Next piece"
                 >
                   Next →
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void copyShareLink()}
+                  className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
+                >
+                  {copied ? "Copied" : "Copy link"}
+                </button>
+              </div>
+            )}
+
+            {!hasPrevNext && (
+              <div className="mt-6 sm:mt-8">
+                <button
+                  type="button"
+                  onClick={() => void copyShareLink()}
+                  className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
+                >
+                  {copied ? "Copied" : "Copy link"}
                 </button>
               </div>
             )}
