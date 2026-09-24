@@ -26,11 +26,33 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { token } = await params;
   const invoice = await prisma.invoice.findUnique({ where: { token } });
-  if (!invoice) return { title: "Invoice" };
+  if (!invoice) {
+    return {
+      title: { absolute: "Invoice" },
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const title = `Invoice ${invoice.number}`;
+  const description = `Invoice for ${invoice.clientName} — ${formatMoney(invoice.amount)} due to ${INVOICE_ISSUER.name}.`;
+  const path = `/invoice/${token}`;
+
   return {
-    title: `Invoice ${invoice.number}`,
-    description: `Invoice for ${invoice.clientName} — ${formatMoney(invoice.amount)}`,
+    title: { absolute: title },
+    description,
     robots: { index: false, follow: false },
+    openGraph: {
+      title,
+      description,
+      url: path,
+      siteName: INVOICE_ISSUER.name,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
