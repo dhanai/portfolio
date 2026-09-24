@@ -36,3 +36,25 @@ model ContentBlock {
   data      String   // JSON
   updatedAt DateTime @updatedAt
 }
+
+/** Client-facing invoices — create/edit behind admin; public via /invoice/[token] */
+model Invoice {
+  id            String   @id @default(cuid())
+  token         String   @unique
+  number        String   @unique
+  clientName    String
+  clientEmail   String
+  description   String
+  /** hourly | fixed */
+  rateType      String
+  /** Dollars (stored as float for simplicity; display with 2dp) */
+  rate          Float
+  hours         Float?
+  /** Cached total in dollars */
+  amount        Float
+  /** draft | sent | paid */
+  status        String   @default("sent")
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

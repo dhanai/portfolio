@@ -40,6 +40,11 @@ export default async function AdminDashboardPage() {
             </Link>
           </li>
           <li>
+            <Link href="/admin/invoices" className="hover:text-white">
+              Invoices
+            </Link>
+          </li>
+          <li>
             <Link href="/admin/creative" className="hover:text-white">
               Creative showcase rail
             </Link>
@@ -52,6 +57,11 @@ export default async function AdminDashboardPage() {
           <li>
             <Link href="/admin/resume" className="hover:text-white">
               Resume (web JSON + PDF path)
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/invoices/new" className="hover:text-[#ff453a]">
+              + New invoice
             </Link>
           </li>
           <li>
