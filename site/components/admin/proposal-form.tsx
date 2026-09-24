@@ -4,6 +4,7 @@ import { AdminForm } from "@/components/admin/admin-form";
 import { AdminSubmit } from "@/components/admin/admin-submit";
 import { AdminField, AdminTextarea } from "@/components/admin/form";
 import { ProposalListEditor } from "@/components/admin/proposal-list-editor";
+import { SimpleRichTextEditor } from "@/components/admin/simple-rich-text";
 import type { ActionResult } from "@/lib/admin/types";
 import {
   DEFAULT_PAYMENT_SCHEDULE,
@@ -79,12 +80,11 @@ export function ProposalForm({
       </section>
 
       <section className="space-y-6 border border-white/10 p-6">
-        <AdminTextarea
+        <SimpleRichTextEditor
           label="Goals & objectives (optional)"
           name="goals"
-          rows={4}
           defaultValue={initial?.goals ?? ""}
-          hint="Hidden on the client page when empty."
+          hint="Bold, italic, underline, bullet & numbered lists. Hidden when empty."
         />
         <ProposalListEditor
           name="deliverablesJson"

@@ -12,6 +12,11 @@ import {
   PROPOSAL_ISSUER,
   proposalStatusLabel,
 } from "@/lib/proposals";
+import {
+  richTextIsEmpty,
+  richTextToBlocks,
+  type RichTextSegment,
+} from "@/lib/rich-text";
 
 const ink = "#18181b";
 const muted = "#52525b";
@@ -96,6 +101,27 @@ const styles = StyleSheet.create({
     lineHeight: 1.45,
     color: "#27272a",
   },
+  goalsLine: {
+    marginTop: 4,
+    fontSize: 9.5,
+    lineHeight: 1.45,
+    color: "#27272a",
+  },
+  goalsMarker: {
+    fontFamily: "Helvetica",
+  },
+  goalsBold: {
+    fontFamily: "Helvetica-Bold",
+  },
+  goalsItalic: {
+    fontFamily: "Helvetica-Oblique",
+  },
+  goalsBoldItalic: {
+    fontFamily: "Helvetica-BoldOblique",
+  },
+  goalsUnderline: {
+    textDecoration: "underline",
+  },
   bullet: {
     marginTop: 4,
     fontSize: 9.5,
@@ -174,6 +200,35 @@ export type ProposalPdfProps = {
   createdAt: Date;
 };
 
+function segmentStyle(segment: RichTextSegment) {
+  const stylesList = [];
+  if (segment.bold && segment.italic) stylesList.push(styles.goalsBoldItalic);
+  else if (segment.bold) stylesList.push(styles.goalsBold);
+  else if (segment.italic) stylesList.push(styles.goalsItalic);
+  if (segment.underline) stylesList.push(styles.goalsUnderline);
+  return stylesList;
+}
+
+function GoalsPdfBlocks({ html }: { html: string }) {
+  const blocks = richTextToBlocks(html);
+  return (
+    <View style={{ marginTop: 4 }}>
+      {blocks.map((block, index) => (
+        <Text key={index} style={styles.goalsLine}>
+          {block.marker ? (
+            <Text style={styles.goalsMarker}>{block.marker}</Text>
+          ) : null}
+          {block.segments.map((segment, segIndex) => (
+            <Text key={segIndex} style={segmentStyle(segment)}>
+              {segment.text}
+            </Text>
+          ))}
+        </Text>
+      ))}
+    </View>
+  );
+}
+
 export function ProposalPdfDocument({
   number,
   title,
@@ -239,10 +294,10 @@ export function ProposalPdfDocument({
           </View>
         </View>
 
-        {goals ? (
+        {!richTextIsEmpty(goals) ? (
           <View style={styles.section}>
             <Text style={styles.label}>Goals & objectives</Text>
-            <Text style={styles.sectionBody}>{goals}</Text>
+            <GoalsPdfBlocks html={goals ?? ""} />
           </View>
         ) : null}
 

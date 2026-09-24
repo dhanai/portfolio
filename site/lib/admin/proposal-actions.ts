@@ -15,13 +15,14 @@ import {
   roundMoney,
   serializeStringList,
 } from "@/lib/proposals";
+import { sanitizeRichText } from "@/lib/rich-text";
 
 function parseProposalForm(formData: FormData) {
   const clientName = String(formData.get("clientName") ?? "").trim();
   const clientCompany = String(formData.get("clientCompany") ?? "").trim();
   const clientEmail = String(formData.get("clientEmail") ?? "").trim();
   const title = String(formData.get("title") ?? "").trim();
-  const goals = String(formData.get("goals") ?? "").trim() || null;
+  const goals = sanitizeRichText(String(formData.get("goals") ?? "")) || null;
   const timeframe = String(formData.get("timeframe") ?? "").trim();
   const quoteLabel = String(formData.get("quoteLabel") ?? "").trim();
   const paymentSchedule =

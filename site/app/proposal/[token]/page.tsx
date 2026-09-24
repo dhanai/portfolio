@@ -12,6 +12,7 @@ import {
   proposalPdfPath,
   proposalStatusLabel,
 } from "@/lib/proposals";
+import { richTextIsEmpty, sanitizeRichText } from "@/lib/rich-text";
 
 export const dynamic = "force-dynamic";
 
@@ -168,12 +169,17 @@ export default async function PublicProposalPage({ params }: PageProps) {
         </div>
 
         <div className="mt-12 space-y-12">
-          {proposal.goals ? (
+          {!richTextIsEmpty(proposal.goals) ? (
             <section>
               <SectionHeading index={nextIndex()}>
                 Goals &amp; objectives
               </SectionHeading>
-              <p className={`${p} whitespace-pre-wrap`}>{proposal.goals}</p>
+              <div
+                className={`${p} [&_b]:font-semibold [&_strong]:font-semibold [&_em]:italic [&_i]:italic [&_u]:underline [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5`}
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeRichText(proposal.goals),
+                }}
+              />
             </section>
           ) : null}
 
