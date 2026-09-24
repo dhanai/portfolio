@@ -24,6 +24,8 @@ export type CaseStudy = {
   heroImage?: string;
   /** Optional product screens (phone / UI gallery) */
   gallery?: CaseStudyGalleryItem[];
+  /** How to render gallery: device thumbs (default) or full page frames */
+  galleryLayout?: "devices" | "frames";
   sections: CaseStudySection[];
   reflection: string;
 };
@@ -527,6 +529,87 @@ export const caseStudies: CaseStudy[] = [
     ],
     reflection:
       "AI apparel only works when the preview feels like a product and the order note carries a print file. Taste without fulfillment is a demo.",
+  },
+  {
+    slug: "undeniable",
+    title: "Undeniable",
+    subtitle:
+      "AI-native video studio branding and landing — commercials, social, creators",
+    tags: ["Brand", "Product", "AI"],
+    year: "2026",
+    role: "Brand · Product Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/uq5YdbLNzGE3QVHTe5CArV",
+    heroImage:
+      "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/desktop-layout.webp",
+    galleryLayout: "frames",
+    gallery: [
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/desktop-layout.webp",
+        alt: "Undeniable desktop landing — full 1440 layout from Figma",
+        caption: "Desktop 1440",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/mobile-layout.webp",
+        alt: "Undeniable mobile landing — full 390 layout from Figma",
+        caption: "Mobile 390",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/still-porsche.webp",
+        alt: "Cinematic Porsche coastal night still for Undeniable placement",
+        caption: "Placement still — automotive film",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/still-tower38.webp",
+        alt: "Tower 38 beauty commercial still — dewy skin golden hour",
+        caption: "Placement still — beauty spot",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/still-skims.webp",
+        alt: "Skims fashion commercial still — nude bodysuit loft light",
+        caption: "Placement still — fashion film",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Undeniable is a speculative brand and desktop/mobile landing for an AI generative video studio — commercials, social, and creator work with a director’s bar for craft. Built in Figma against references like Matter Studio, Silverside, Genre, and Secret Level.",
+          "The brief was studio-site energy, not SaaS dashboard: one cinematic composition, brand as the hero signal, and placement stills that read as production, not stock.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Most AI studio sites either look like purple SaaS or bury the brand under feature grids. The portfolio needed a site that could sit next to entertainment studios — showreel-first, work-first — while still naming three production lanes without repeating them on every block.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Near-black field, bone type, acid lime (#C8F542) as the only accent. Space Grotesk across the board after killing a serif/sans split. Sharp corners, vector play icons, true three-column nav with the link cluster on the geometric center.",
+        ],
+        bullets: [
+          "Desktop 1440 + Mobile 390 as paired frames in one Figma file",
+          "Hero project reel (Secret Level pattern) with lime active state",
+          "Capabilities holds the lane taxonomy once; work labels speak in formats",
+          "Generated cinematic stills (Porsche, Tower 38, Skims, Adidas, Hermès, UGC) as placement media",
+        ],
+      },
+      {
+        heading: "Product design",
+        paragraphs: [
+          "Information architecture mirrors a production house: showreel CTA, capabilities, selected work as full-bleed panels, process as Brief → Generate → Edit → Ship, then a single closing ask. Mobile stacks the same system — menu chrome, full-width CTAs, thumbs parked at the bottom of the first viewport.",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "A coherent brand-and-landing kit ready to hand to engineering or keep as speculative portfolio craft — proof I can art-direct generative media and ship a studio site that doesn’t read like every other AI landing.",
+        ],
+      },
+    ],
+    reflection:
+      "An AI studio site earns trust when the work looks directed and the type system stays quiet. Lime is the signal; the stills do the selling.",
   },
 ];
 

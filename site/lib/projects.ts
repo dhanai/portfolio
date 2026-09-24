@@ -28,6 +28,15 @@ export const projects: Project[] = [
     color: accentColors.takeout,
   },
   {
+    slug: "undeniable",
+    title: "Undeniable",
+    subtitle: "AI generative video studio — brand + landing",
+    tags: ["Brand", "Product", "AI"],
+    year: "2026",
+    image: `${BLOB}/undeniable.webp`,
+    color: accentColors.undeniable,
+  },
+  {
     slug: "doomsy",
     title: "Doomsy",
     subtitle: "Product UX for an AI creative feed",

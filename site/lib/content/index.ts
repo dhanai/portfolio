@@ -222,6 +222,7 @@ function workToCaseStudy(work: {
     diagram: resolveDiagram(work.slug, work.diagram),
     heroImage: staticStudy?.heroImage,
     gallery: staticStudy?.gallery,
+    galleryLayout: staticStudy?.galleryLayout,
     sections: parseJson<CaseStudySection[]>(work.sections, []),
     reflection: work.reflection,
   };

@@ -51,5 +51,6 @@ export const accentColors = {
   studio: "#FF9F0A",
   doomsy: "#64D2FF",
   petshirts: "#FF3EA5",
+  undeniable: "#C8F542",
   default: "#FF453A",
 } as const;

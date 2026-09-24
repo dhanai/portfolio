@@ -56,7 +56,9 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
               rel="noopener noreferrer"
               className="mt-10 inline-flex items-center gap-2 text-sm text-foreground transition-colors hover:text-accent"
             >
-              Visit live site →
+              {study.externalUrl.includes("figma.com")
+                ? "Open in Figma →"
+                : "Visit live site →"}
             </a>
           )}
         </div>
@@ -78,29 +80,80 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
       {study.gallery && study.gallery.length > 0 ? (
         <div className="border-b border-border">
           <div className="mx-auto max-w-5xl px-6 py-14 md:py-20">
-            <p className="label-caps text-muted">Product screens</p>
+            <p className="label-caps text-muted">
+              {study.galleryLayout === "frames" ? "Layouts" : "Product screens"}
+            </p>
             <h2 className="mt-3 text-xl font-medium tracking-tight text-foreground">
-              The loop in the hand
+              {study.galleryLayout === "frames"
+                ? "Desktop and mobile"
+                : "The loop in the hand"}
             </h2>
-            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {study.gallery.map((item) => (
-                <figure key={item.src} className="group">
-                  <div className="overflow-hidden border border-border bg-surface">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      className="mx-auto w-full max-w-[280px] object-contain"
-                    />
-                  </div>
-                  {item.caption ? (
-                    <figcaption className="mt-3 text-sm text-muted">
-                      {item.caption}
-                    </figcaption>
-                  ) : null}
-                </figure>
-              ))}
-            </div>
+            {study.galleryLayout === "frames" ? (
+              <div className="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_minmax(0,280px)]">
+                {study.gallery.slice(0, 2).map((item) => (
+                  <figure key={item.src} className="group">
+                    <div className="overflow-hidden border border-border bg-surface">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.src}
+                        alt={item.alt}
+                        className="w-full object-contain object-top"
+                      />
+                    </div>
+                    {item.caption ? (
+                      <figcaption className="mt-3 text-sm text-muted">
+                        {item.caption}
+                      </figcaption>
+                    ) : null}
+                  </figure>
+                ))}
+              </div>
+            ) : null}
+            {study.galleryLayout === "frames" && study.gallery.length > 2 ? (
+              <div className="mt-14">
+                <p className="label-caps text-muted">Placement stills</p>
+                <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                  {study.gallery.slice(2).map((item) => (
+                    <figure key={item.src} className="group">
+                      <div className="overflow-hidden border border-border bg-surface">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={item.src}
+                          alt={item.alt}
+                          className="w-full object-cover"
+                        />
+                      </div>
+                      {item.caption ? (
+                        <figcaption className="mt-3 text-sm text-muted">
+                          {item.caption}
+                        </figcaption>
+                      ) : null}
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            {study.galleryLayout !== "frames" ? (
+              <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                {study.gallery.map((item) => (
+                  <figure key={item.src} className="group">
+                    <div className="overflow-hidden border border-border bg-surface">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.src}
+                        alt={item.alt}
+                        className="mx-auto w-full max-w-[280px] object-contain"
+                      />
+                    </div>
+                    {item.caption ? (
+                      <figcaption className="mt-3 text-sm text-muted">
+                        {item.caption}
+                      </figcaption>
+                    ) : null}
+                  </figure>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}
