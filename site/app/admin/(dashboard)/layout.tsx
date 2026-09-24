@@ -7,6 +7,7 @@ const nav = [
   { href: "/admin/site", label: "Site & Hero" },
   { href: "/admin/work", label: "Work" },
   { href: "/admin/invoices", label: "Invoices" },
+  { href: "/admin/proposals", label: "Proposals" },
   { href: "/admin/creative", label: "Creative" },
   { href: "/admin/about", label: "About" },
   { href: "/admin/resume", label: "Resume" },

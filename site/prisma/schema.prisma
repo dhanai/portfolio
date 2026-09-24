@@ -61,3 +61,29 @@ model Invoice {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
+
+/** Client-facing proposals — create/edit behind admin; public via /proposal/[token] */
+model Proposal {
+  id               String   @id @default(cuid())
+  token            String   @unique
+  number           String   @unique
+  clientName       String
+  clientCompany    String   @default("")
+  clientEmail      String
+  title            String
+  goals            String?
+  /** JSON string[] */
+  deliverables     String   @default("[]")
+  timeframe        String   @default("")
+  quoteLabel       String   @default("")
+  amount           Float
+  paymentSchedule  String   @default("")
+  /** JSON string[] */
+  nextSteps        String   @default("[]")
+  terms            String   @default("")
+  notes            String?
+  /** sent | accepted | declined */
+  status           String   @default("sent")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
