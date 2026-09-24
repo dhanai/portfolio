@@ -611,6 +611,97 @@ export const caseStudies: CaseStudy[] = [
     reflection:
       "An AI studio site earns trust when the work looks directed and the type system stays quiet. Lime is the signal; the stills do the selling.",
   },
+  {
+    slug: "north-of-real",
+    title: "North of Real",
+    subtitle:
+      "Hybrid live-action × AI production studio — editorial landing inspired by Genre",
+    tags: ["Brand", "Product", "AI"],
+    year: "2026",
+    role: "Brand · Product Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/HIgLRDb6hh5B1gjHNC6VKe",
+    heroImage:
+      "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/desktop-layout.webp",
+    galleryLayout: "frames",
+    gallery: [
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/desktop-layout.webp",
+        alt: "North of Real desktop landing — full 1440 layout from Figma",
+        caption: "Desktop 1440",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/mobile-layout.webp",
+        alt: "North of Real mobile landing — full 390 layout from Figma",
+        caption: "Mobile 390",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-lost-years.webp",
+        alt: "The Last of Us: THE LOST YEARS — North of Real work still",
+        caption: "Work still — THE LOST YEARS",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-superbowl.webp",
+        alt: "Super Bowl LX Hype Trailer — North of Real work still",
+        caption: "Work still — Super Bowl LX",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-jeep.webp",
+        alt: "UNBOUND Jeep spec ad — North of Real work still",
+        caption: "Work still — UNBOUND",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-nike.webp",
+        alt: "Nike Giannis Freak 7 — North of Real work still",
+        caption: "Work still — Giannis Freak 7",
+      },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-set-shift.webp",
+        alt: "Set SHIFT pipeline breakdown — North of Real",
+        caption: "Set SHIFT",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "North of Real is a speculative brand and desktop/mobile landing for a Los Angeles hybrid studio — live-action craft fused with AI pipelines like Set SHIFT. Designed as a peer to Genre-style editorial studio sites, not another dark AI SaaS landing.",
+          "Their own copy and work titles lead: THE LOST YEARS, Nike Giannis, Super Bowl LX, Jeep UNBOUND, plus the Set SHIFT product story.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Hybrid production houses need a site that reads as prestige filmmaking first — light, gallery-paced, era-organized work — while still explaining an AI-assisted pipeline without looking like every other generative studio.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Cool near-white field (#F5F6F5), ink type, teal accent (#1FA89A). Manrope ExtraLight display with a split wordmark (teal “of”), NR monogram, film-gate corners, and hairline meta. Work is structured as ERA timeline cards with media + meta rails.",
+        ],
+        bullets: [
+          "Desktop 1440 + Mobile 390 in one Figma file",
+          "Genre-inspired IA: Work eras → Studio → Ethos → Set SHIFT → Contact form",
+          "Stills pulled from northofreal.ai preview GIFs (letterbox cropped)",
+          "No play overlays — frames read as stills, not fake players",
+        ],
+      },
+      {
+        heading: "Product design",
+        paragraphs: [
+          "Information architecture mirrors a next-gen production house: selected work by era, about + ethos, then Set SHIFT as the capability/product block with live-action / pipeline / delivery columns, closing on a real inquiry form and hello@northofreal.ai.",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "A coherent alternate studio-site system — proof I can art-direct the same category as Undeniable in a completely different visual register when the brief calls for editorial light, not signal-color dark.",
+        ],
+      },
+    ],
+    reflection:
+      "Two AI studio sites can share a category and still feel unrelated. Genre’s light editorial system was the right north star for craft-first hybrid work.",
+  },
 ];
 
 export function getCaseStudy(slug: string) {

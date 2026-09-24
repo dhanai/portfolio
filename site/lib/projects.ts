@@ -37,6 +37,15 @@ export const projects: Project[] = [
     color: accentColors.undeniable,
   },
   {
+    slug: "north-of-real",
+    title: "North of Real",
+    subtitle: "Hybrid AI production studio — brand + landing",
+    tags: ["Brand", "Product", "AI"],
+    year: "2026",
+    image: `${BLOB}/north-of-real.webp`,
+    color: accentColors.northOfReal,
+  },
+  {
     slug: "doomsy",
     title: "Doomsy",
     subtitle: "Product UX for an AI creative feed",

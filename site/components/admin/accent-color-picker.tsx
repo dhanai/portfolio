@@ -20,6 +20,7 @@ const PRESET_COLORS = [
   accentColors.doomsy,
   accentColors.petshirts,
   accentColors.undeniable,
+  accentColors.northOfReal,
   "#FF375F",
   "#AC8E68",
 ];
