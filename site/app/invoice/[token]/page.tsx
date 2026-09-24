@@ -7,6 +7,9 @@ import {
   getInvoiceLineItems,
   INVOICE_ISSUER,
   INVOICE_PAYMENT_OPTIONS,
+  INVOICE_W9_FILENAME,
+  INVOICE_W9_LABEL,
+  INVOICE_W9_PUBLIC_PATH,
   lineItemsHaveHours,
 } from "@/lib/invoices";
 
@@ -169,6 +172,23 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                 </li>
               ))}
             </ul>
+            {invoice.includeW9 ? (
+              <div className="mt-5 border border-[#e4e4e7] px-4 py-4">
+                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[#71717a]">
+                  Tax form
+                </p>
+                <a
+                  href={INVOICE_W9_PUBLIC_PATH}
+                  download={INVOICE_W9_FILENAME}
+                  className="mt-2 inline-flex items-center gap-2 text-sm font-medium text-[#18181b] underline underline-offset-2 hover:opacity-70"
+                >
+                  Download {INVOICE_W9_LABEL}
+                  <span className="font-mono text-xs font-normal text-[#71717a]">
+                    {INVOICE_W9_FILENAME}
+                  </span>
+                </a>
+              </div>
+            ) : null}
             {invoice.notes ? (
               <p className="mt-5 whitespace-pre-wrap text-sm text-[#52525b]">
                 {invoice.notes}

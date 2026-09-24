@@ -38,6 +38,7 @@ function parseInvoiceForm(formData: FormData) {
   const clientName = String(formData.get("clientName") ?? "").trim();
   const clientEmail = String(formData.get("clientEmail") ?? "").trim();
   const notes = String(formData.get("notes") ?? "").trim() || null;
+  const includeW9 = formData.get("includeW9") === "on";
   const rawItems = String(formData.get("lineItemsJson") ?? "");
   const lineItems = normalizeLineItems(parseLineItemsJson(rawItems));
 
@@ -73,6 +74,7 @@ function parseInvoiceForm(formData: FormData) {
       clientName,
       clientEmail,
       notes,
+      includeW9,
       lineItems: JSON.stringify(lineItems),
       amount,
       // Keep legacy columns in sync with the first line for older readers

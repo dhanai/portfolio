@@ -106,6 +106,7 @@ export default async function AdminInvoiceDetailPage({
             </p>
             <p className="mt-1 text-white">
               {lineItems.length} item{lineItems.length === 1 ? "" : "s"}
+              {invoice.includeW9 ? " · W-9 included" : ""}
             </p>
           </div>
         </div>

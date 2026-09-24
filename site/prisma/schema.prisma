@@ -55,6 +55,8 @@ model Invoice {
   amount        Float
   /** draft | sent | paid */
   status        String   @default("sent")
+  /** Show W-9 download link on the client invoice */
+  includeW9     Boolean  @default(false)
   notes         String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

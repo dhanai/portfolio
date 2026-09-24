@@ -10,6 +10,11 @@ export const INVOICE_PAYMENT_OPTIONS = [
   { label: "Zelle", value: "702-321-1971" },
 ] as const;
 
+/** Public path for the downloadable W-9 (filename strips year). */
+export const INVOICE_W9_FILENAME = "undeniable-w9-signed.pdf";
+export const INVOICE_W9_PUBLIC_PATH = `/assets/invoices/${INVOICE_W9_FILENAME}`;
+export const INVOICE_W9_LABEL = "W-9 (Undeniable)";
+
 export type InvoiceRateType = "hourly" | "fixed";
 
 export type InvoiceLineItem = {

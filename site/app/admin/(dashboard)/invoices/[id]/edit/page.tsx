@@ -41,6 +41,7 @@ export default async function AdminEditInvoicePage({ params }: PageProps) {
           clientName: invoice.clientName,
           clientEmail: invoice.clientEmail,
           notes: invoice.notes ?? "",
+          includeW9: invoice.includeW9,
           lineItems: getInvoiceLineItems(invoice),
         }}
       />

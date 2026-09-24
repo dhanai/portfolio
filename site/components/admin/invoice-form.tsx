@@ -2,7 +2,11 @@
 
 import { AdminForm } from "@/components/admin/admin-form";
 import { AdminSubmit } from "@/components/admin/admin-submit";
-import { AdminField, AdminTextarea } from "@/components/admin/form";
+import {
+  AdminCheckbox,
+  AdminField,
+  AdminTextarea,
+} from "@/components/admin/form";
 import { InvoiceLineItemsEditor } from "@/components/admin/invoice-line-items-editor";
 import type { ActionResult } from "@/lib/admin/types";
 import type { InvoiceLineItem } from "@/lib/invoices";
@@ -12,6 +16,7 @@ export type InvoiceFormValues = {
   clientName: string;
   clientEmail: string;
   notes: string;
+  includeW9?: boolean;
   lineItems?: InvoiceLineItem[];
 };
 
@@ -55,7 +60,7 @@ export function InvoiceForm({
 
       <InvoiceLineItemsEditor initialItems={initial?.lineItems} />
 
-      <section className="border border-white/10 p-6">
+      <section className="space-y-4 border border-white/10 p-6">
         <AdminTextarea
           label="Notes (optional)"
           name="notes"
@@ -63,6 +68,15 @@ export function InvoiceForm({
           defaultValue={initial?.notes ?? ""}
           hint="Shown on the invoice under payment options."
         />
+        <AdminCheckbox
+          label="Include W-9 download link for the client"
+          name="includeW9"
+          defaultChecked={initial?.includeW9 ?? false}
+        />
+        <p className="text-xs text-[#525252]">
+          When checked, the invoice page shows a download for{" "}
+          <code className="text-[#a3a3a3]">undeniable-w9-signed.pdf</code>.
+        </p>
       </section>
 
       <div className="flex justify-end">
