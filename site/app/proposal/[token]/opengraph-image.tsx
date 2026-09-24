@@ -11,24 +11,24 @@ type ImageProps = {
   params: Promise<{ token: string }>;
 };
 
-async function loadFont(weight: number) {
+async function loadFont(family: string, weight: number) {
   const css = await (
     await fetch(
-      `https://fonts.googleapis.com/css2?family=Inter:wght@${weight}`,
+      `https://fonts.googleapis.com/css2?family=${family}:wght@${weight}`,
       { cache: "force-cache" },
     )
   ).text();
   const match = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/);
-  if (!match?.[1]) throw new Error("Failed to load font");
+  if (!match?.[1]) throw new Error(`Failed to load font ${family}`);
   return fetch(match[1]).then((res) => res.arrayBuffer());
 }
 
 export default async function Image({ params }: ImageProps) {
   const { token } = await params;
   const proposal = await prisma.proposal.findUnique({ where: { token } });
-  const [fontMedium, fontSemi] = await Promise.all([
-    loadFont(500),
-    loadFont(600),
+  const [manrope, serif] = await Promise.all([
+    loadFont("Manrope", 600),
+    loadFont("Instrument+Serif", 400),
   ]);
 
   const number = proposal?.number ?? "Proposal";
@@ -46,143 +46,126 @@ export default async function Image({ params }: ImageProps) {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#f4f4f5",
+          background: "#dfe6eb",
           padding: "64px 72px",
+          position: "relative",
         }}
       >
         <div
           style={{
+            position: "absolute",
+            width: 480,
+            height: 480,
+            left: -120,
+            top: -80,
+            borderRadius: 999,
+            background:
+              "radial-gradient(circle, rgba(31,168,154,0.28) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            width: 520,
+            height: 520,
+            right: -140,
+            bottom: -160,
+            borderRadius: 999,
+            background:
+              "radial-gradient(circle, rgba(20,40,60,0.14) 0%, transparent 68%)",
+          }}
+        />
+
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "space-between",
+            fontFamily: "Manrope",
+            fontSize: 22,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "#5a6b78",
+          }}
+        >
+          <div style={{ display: "flex" }}>Proposal</div>
+          <div style={{ display: "flex", fontFamily: "Manrope" }}>{number}</div>
+        </div>
+
+        <div
+          style={{
+            position: "relative",
             display: "flex",
             flexDirection: "column",
-            background: "#ffffff",
-            border: "1px solid #e4e4e7",
-            padding: "56px 60px",
-            height: "100%",
-            justifyContent: "space-between",
+            maxWidth: 900,
           }}
         >
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
+              fontFamily: "Manrope",
+              fontSize: 26,
+              color: "#5a6b78",
+              marginBottom: 18,
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column", maxWidth: 720 }}>
-              <div
-                style={{
-                  fontFamily: "Inter Semi",
-                  fontSize: 22,
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "#71717a",
-                }}
-              >
-                Project proposal
-              </div>
-              <div
-                style={{
-                  marginTop: 16,
-                  fontFamily: "Inter Semi",
-                  fontSize: 48,
-                  letterSpacing: "-0.03em",
-                  color: "#18181b",
-                  lineHeight: 1.1,
-                }}
-              >
-                {title}
-              </div>
-              <div
-                style={{
-                  marginTop: 18,
-                  fontFamily: "Inter Medium",
-                  fontSize: 26,
-                  color: "#52525b",
-                }}
-              >
-                {clientLabel}
-              </div>
-              <div
-                style={{
-                  marginTop: 8,
-                  fontFamily: "Inter Medium",
-                  fontSize: 22,
-                  color: "#a1a1aa",
-                }}
-              >
-                {number}
-              </div>
-            </div>
-            {amount ? (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "Inter Semi",
-                    fontSize: 20,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "#71717a",
-                  }}
-                >
-                  Quote
-                </div>
-                <div
-                  style={{
-                    marginTop: 12,
-                    fontFamily: "Inter Semi",
-                    fontSize: 52,
-                    letterSpacing: "-0.03em",
-                    color: "#18181b",
-                  }}
-                >
-                  {amount}
-                </div>
-              </div>
-            ) : null}
+            Prepared for {clientLabel}
           </div>
-
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              borderTop: "1px solid #e4e4e7",
-              paddingTop: 28,
+              fontFamily: "Instrument Serif",
+              fontSize: 64,
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              color: "#12181e",
             }}
           >
-            <div
-              style={{
-                fontFamily: "Inter Medium",
-                fontSize: 26,
-                color: "#18181b",
-              }}
-            >
-              {PROPOSAL_ISSUER.name}
-            </div>
-            <div
-              style={{
-                fontFamily: "Inter Medium",
-                fontSize: 22,
-                color: "#71717a",
-              }}
-            >
-              {PROPOSAL_ISSUER.email}
-            </div>
+            {title}
           </div>
+        </div>
+
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            borderTop: "1px solid rgba(26,34,41,0.15)",
+            paddingTop: 28,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "Manrope",
+              fontSize: 26,
+              color: "#1a2229",
+            }}
+          >
+            {PROPOSAL_ISSUER.name}
+          </div>
+          {amount ? (
+            <div
+              style={{
+                fontFamily: "Instrument Serif",
+                fontSize: 48,
+                color: "#12181e",
+              }}
+            >
+              {amount}
+            </div>
+          ) : null}
         </div>
       </div>
     ),
     {
       ...size,
       fonts: [
-        { name: "Inter Medium", data: fontMedium, weight: 500, style: "normal" },
-        { name: "Inter Semi", data: fontSemi, weight: 600, style: "normal" },
+        { name: "Manrope", data: manrope, weight: 600, style: "normal" },
+        {
+          name: "Instrument Serif",
+          data: serif,
+          weight: 400,
+          style: "normal",
+        },
       ],
     },
   );

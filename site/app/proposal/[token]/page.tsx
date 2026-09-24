@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import { Instrument_Serif, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
@@ -13,6 +15,17 @@ import {
 } from "@/lib/proposals";
 
 export const dynamic = "force-dynamic";
+
+const display = Instrument_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const sans = Manrope({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 type PageProps = {
   params: Promise<{ token: string }>;
@@ -54,6 +67,25 @@ export async function generateMetadata({
   };
 }
 
+function SectionLabel({
+  index,
+  children,
+}: {
+  index: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="mb-5 flex items-baseline gap-3">
+      <span className="font-mono text-[11px] tracking-wide text-[#6b7c8a]">
+        {index}
+      </span>
+      <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#3d4a55]">
+        {children}
+      </h2>
+    </div>
+  );
+}
+
 export default async function PublicProposalPage({ params }: PageProps) {
   const { token } = await params;
   const proposal = await prisma.proposal.findUnique({ where: { token } });
@@ -68,170 +100,222 @@ export default async function PublicProposalPage({ params }: PageProps) {
     .map((line) => line.trim())
     .filter(Boolean);
 
+  let section = 1;
+  const nextIndex = () => String(section++).padStart(2, "0");
+
   return (
-    <div className="min-h-screen bg-[#f4f4f5] text-[#111111]">
-      <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-14">
-        <article className="border border-[#e4e4e7] bg-white shadow-sm">
-          <header className="flex flex-col gap-6 border-b border-[#e4e4e7] px-5 py-6 sm:flex-row sm:items-start sm:justify-between sm:px-8 sm:py-8">
-            <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-[#71717a]">
-                Project proposal
-              </p>
-              <h1 className="mt-2 text-xl font-medium tracking-tight sm:text-2xl">
-                {proposal.title}
-              </h1>
-              <p className="mt-2 font-mono text-sm text-[#52525b]">
-                {proposal.number}
-              </p>
-              <p className="mt-1 text-sm text-[#52525b]">
-                {formatProposalDate(proposal.createdAt)}
-              </p>
-              <a
-                href={proposalPdfPath(proposal.token)}
-                download={proposalPdfFilename(proposal.number)}
-                className="mt-4 inline-flex items-center border border-[#18181b] bg-[#18181b] px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-white hover:bg-[#27272a]"
-              >
-                Download proposal
-              </a>
-            </div>
-            <div className="sm:text-right">
-              <p
-                className={`inline-block text-[10px] font-medium uppercase tracking-[0.16em] ${
-                  proposal.status === "accepted"
-                    ? "text-emerald-700"
-                    : proposal.status === "declined"
-                      ? "text-[#b91c1c]"
-                      : "text-[#71717a]"
-                }`}
-              >
-                {statusLabel}
-              </p>
-              <p className="mt-1 font-mono text-3xl font-medium tracking-tight sm:text-4xl">
-                {formatMoney(proposal.amount)}
-              </p>
-            </div>
-          </header>
+    <div
+      className={`${sans.className} relative min-h-screen overflow-hidden text-[#1a2229]`}
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[#dfe6eb]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-24 top-0 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(31,168,154,0.22)_0%,transparent_70%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-16 top-40 h-[32rem] w-[32rem] rounded-full bg-[radial-gradient(circle,rgba(20,40,60,0.12)_0%,transparent_68%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#cfd8df]/80 to-transparent"
+      />
 
-          <section className="grid gap-8 border-b border-[#e4e4e7] px-5 py-6 sm:grid-cols-2 sm:px-8 sm:py-8">
-            <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
-                From
-              </p>
-              <p className="mt-2 text-sm font-medium">{PROPOSAL_ISSUER.name}</p>
-              {PROPOSAL_ISSUER.addressLines.map((line) => (
-                <p key={line} className="text-sm text-[#52525b]">
-                  {line}
-                </p>
-              ))}
-              <p className="mt-1 text-sm text-[#52525b]">
-                {PROPOSAL_ISSUER.email}
-              </p>
-            </div>
-            <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
-                Prepared for
-              </p>
-              <p className="mt-2 text-sm font-medium">{proposal.clientName}</p>
-              {proposal.clientCompany ? (
-                <p className="text-sm text-[#52525b]">{proposal.clientCompany}</p>
-              ) : null}
-              <p className="text-sm text-[#52525b]">{proposal.clientEmail}</p>
-            </div>
-          </section>
+      <div className="relative mx-auto max-w-3xl px-5 py-10 sm:px-8 sm:py-16">
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-3 text-[11px] tracking-[0.14em] text-[#5a6b78] uppercase">
+          <p>
+            Proposal ·{" "}
+            <span className="font-mono normal-case tracking-normal text-[#3d4a55]">
+              {proposal.number}
+            </span>
+          </p>
+          <div className="flex items-center gap-4">
+            <span
+              className={
+                proposal.status === "accepted"
+                  ? "text-emerald-800"
+                  : proposal.status === "declined"
+                    ? "text-[#9f1239]"
+                    : "text-[#5a6b78]"
+              }
+            >
+              {statusLabel}
+            </span>
+            <a
+              href={proposalPdfPath(proposal.token)}
+              download={proposalPdfFilename(proposal.number)}
+              className="border-b border-[#1a2229]/35 pb-0.5 text-[#1a2229] transition-opacity hover:opacity-60"
+            >
+              Download PDF
+            </a>
+          </div>
+        </div>
 
+        <header className="max-w-2xl animate-[proposalFade_0.7s_ease-out]">
+          <p className="text-sm text-[#5a6b78]">
+            Prepared for {clientLabel} · {formatProposalDate(proposal.createdAt)}
+          </p>
+          <h1
+            className={`${display.className} mt-4 text-[2.5rem] leading-[1.08] tracking-[-0.02em] text-[#12181e] sm:text-[3.35rem]`}
+          >
+            {proposal.title}
+          </h1>
+        </header>
+
+        <div className="mt-12 grid gap-8 border-y border-[#1a2229]/12 py-8 sm:grid-cols-2">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6b7c8a]">
+              From
+            </p>
+            <p className="mt-3 text-base font-medium">{PROPOSAL_ISSUER.name}</p>
+            {PROPOSAL_ISSUER.addressLines.map((line) => (
+              <p key={line} className="text-sm text-[#5a6b78]">
+                {line}
+              </p>
+            ))}
+            <p className="mt-1 text-sm text-[#5a6b78]">{PROPOSAL_ISSUER.email}</p>
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#6b7c8a]">
+              Prepared for
+            </p>
+            <p className="mt-3 text-base font-medium">{proposal.clientName}</p>
+            {proposal.clientCompany ? (
+              <p className="text-sm text-[#5a6b78]">{proposal.clientCompany}</p>
+            ) : null}
+            <p className="text-sm text-[#5a6b78]">{proposal.clientEmail}</p>
+          </div>
+        </div>
+
+        <div className="mt-14 space-y-14">
           {proposal.goals ? (
-            <section className="border-b border-[#e4e4e7] px-5 py-6 sm:px-8 sm:py-8">
-              <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
-                Goals &amp; objectives
-              </p>
-              <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-[#27272a]">
+            <section>
+              <SectionLabel index={nextIndex()}>Goals &amp; objectives</SectionLabel>
+              <p
+                className={`${display.className} whitespace-pre-wrap text-[1.35rem] leading-[1.45] text-[#1f2a33] sm:text-[1.5rem]`}
+              >
                 {proposal.goals}
               </p>
             </section>
           ) : null}
 
-          <section className="border-b border-[#e4e4e7] px-5 py-6 sm:px-8 sm:py-8">
-            <div className="grid gap-8 sm:grid-cols-2">
+          <section>
+            <SectionLabel index={nextIndex()}>Scope</SectionLabel>
+            <div className="grid gap-10 sm:grid-cols-[1.4fr_1fr]">
               <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7c8a]">
                   Deliverables
                 </p>
-                <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm text-[#27272a]">
+                <ul className="mt-4 space-y-3">
                   {deliverables.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li
+                      key={item}
+                      className="flex gap-3 text-[15px] leading-snug text-[#1f2a33]"
+                    >
+                      <span
+                        aria-hidden
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#1fa89a]"
+                      />
+                      <span>{item}</span>
+                    </li>
                   ))}
                 </ul>
               </div>
               <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7c8a]">
                   Timeframe
                 </p>
-                <p className="mt-3 text-sm font-medium text-[#18181b]">
+                <p
+                  className={`${display.className} mt-4 text-3xl leading-none text-[#12181e]`}
+                >
                   {proposal.timeframe}
                 </p>
               </div>
             </div>
           </section>
 
-          <section className="border-b border-[#e4e4e7] px-5 py-6 sm:px-8 sm:py-8">
-            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
-              Quote — flat rate
-            </p>
-            <div className="mt-4 flex flex-col gap-1 border border-[#e4e4e7] px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[#27272a]">{proposal.quoteLabel}</p>
-              <p className="font-mono text-lg font-medium">
-                {formatMoney(proposal.amount)}
+          <section>
+            <SectionLabel index={nextIndex()}>Investment</SectionLabel>
+            <div className="relative overflow-hidden bg-[#12181e] px-6 py-8 text-[#eef2f4] sm:px-8 sm:py-10">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(31,168,154,0.35)_0%,transparent_70%)]"
+              />
+              <p className="relative text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8fa0ad]">
+                Flat rate
               </p>
-            </div>
-            {paymentLines.length > 0 ? (
-              <div className="mt-5">
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-[#71717a]">
-                  Payment schedule
+              <div className="relative mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                <p className="max-w-md text-base leading-snug text-[#d5dde3]">
+                  {proposal.quoteLabel}
                 </p>
-                <ul className="mt-2 space-y-1 text-sm text-[#52525b]">
+                <p
+                  className={`${display.className} text-4xl tracking-tight sm:text-5xl`}
+                >
+                  {formatMoney(proposal.amount)}
+                </p>
+              </div>
+              {paymentLines.length > 0 ? (
+                <ul className="relative mt-8 space-y-1.5 border-t border-white/10 pt-5 text-sm text-[#a8b6c1]">
                   {paymentLines.map((line) => (
                     <li key={line}>{line}</li>
                   ))}
                 </ul>
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </section>
 
-          <section className="border-b border-[#e4e4e7] px-5 py-6 sm:px-8 sm:py-8">
-            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
-              Next steps
-            </p>
-            <p className="mt-3 text-sm text-[#52525b]">
+          <section>
+            <SectionLabel index={nextIndex()}>Next steps</SectionLabel>
+            <p className="max-w-2xl text-[15px] leading-relaxed text-[#5a6b78]">
               {nextStepsIntro(clientLabel)}
             </p>
-            <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm text-[#27272a]">
-              {nextSteps.map((step) => (
-                <li key={step} className="pl-1">
-                  {step}
+            <ol className="mt-8 space-y-6">
+              {nextSteps.map((step, index) => (
+                <li key={step} className="flex gap-5">
+                  <span
+                    className={`${display.className} w-10 shrink-0 text-2xl text-[#1fa89a]`}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="pt-1 text-[15px] leading-relaxed text-[#1f2a33]">
+                    {step}
+                  </p>
                 </li>
               ))}
             </ol>
           </section>
 
-          <section className="px-5 py-6 sm:px-8 sm:py-8">
-            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
-              Terms &amp; conditions
-            </p>
-            <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-[#52525b]">
+          <section>
+            <SectionLabel index={nextIndex()}>Terms &amp; conditions</SectionLabel>
+            <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#5a6b78]">
               {proposal.terms}
             </p>
             {proposal.notes ? (
-              <p className="mt-5 whitespace-pre-wrap text-sm text-[#52525b]">
+              <p className="mt-6 whitespace-pre-wrap text-sm leading-relaxed text-[#5a6b78]">
                 {proposal.notes}
               </p>
             ) : null}
           </section>
+        </div>
 
-          <footer className="border-t border-[#e4e4e7] px-5 py-4 text-center text-[11px] text-[#a1a1aa] sm:px-8">
-            Prepared by {PROPOSAL_ISSUER.name} · {proposal.number}
-          </footer>
-        </article>
+        <footer className="mt-16 flex flex-col gap-2 border-t border-[#1a2229]/12 pt-6 text-sm text-[#6b7c8a] sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            Prepared by{" "}
+            <span className="text-[#1a2229]">{PROPOSAL_ISSUER.name}</span>
+          </p>
+          <p className="font-mono text-xs">{proposal.number}</p>
+        </footer>
       </div>
+
+      <style>{`
+        @keyframes proposalFade {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }
