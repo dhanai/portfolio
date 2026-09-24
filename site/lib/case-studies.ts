@@ -573,7 +573,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Undeniable is a speculative brand and desktop/mobile landing for an AI generative video studio — commercials, social, and creator work with a director’s bar for craft. Built in Figma against references like Matter Studio, Silverside, Genre, and Secret Level.",
+          "Undeniable is a speculative brand and desktop/mobile landing for an AI generative video studio — commercials, social, and creator work with a director’s bar for craft.",
           "The brief was studio-site energy, not SaaS dashboard: one cinematic composition, brand as the hero signal, and placement stills that read as production, not stock.",
         ],
       },
@@ -590,7 +590,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         bullets: [
           "Desktop 1440 + Mobile 390 as paired frames in one Figma file",
-          "Hero project reel (Secret Level pattern) with lime active state",
+          "Hero project reel with lime active state",
           "Capabilities holds the lane taxonomy once; work labels speak in formats",
           "Generated cinematic stills (Porsche, Tower 38, Skims, Adidas, Hermès, UGC) as placement media",
         ],
@@ -615,7 +615,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "north-of-real",
     title: "North of Real",
     subtitle:
-      "Hybrid live-action × AI production studio — editorial landing inspired by Genre",
+      "Hybrid live-action × AI production studio — light editorial landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
     role: "Brand · Product Design · Art Direction",
@@ -664,7 +664,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "North of Real is a speculative brand and desktop/mobile landing for a Los Angeles hybrid studio — live-action craft fused with AI pipelines like Set SHIFT. Designed as a peer to Genre-style editorial studio sites, not another dark AI SaaS landing.",
+          "North of Real is a speculative brand and desktop/mobile landing for a Los Angeles hybrid studio — live-action craft fused with AI pipelines like Set SHIFT. Built as a light, gallery-paced production-house site rather than another dark AI SaaS landing.",
           "Their own copy and work titles lead: THE LOST YEARS, Nike Giannis, Super Bowl LX, Jeep UNBOUND, plus the Set SHIFT product story.",
         ],
       },
@@ -681,7 +681,7 @@ export const caseStudies: CaseStudy[] = [
         ],
         bullets: [
           "Desktop 1440 + Mobile 390 in one Figma file",
-          "Genre-inspired IA: Work eras → Studio → Ethos → Set SHIFT → Contact form",
+          "IA: Work eras → Studio → Ethos → Set SHIFT → Contact form",
           "Stills pulled from northofreal.ai preview GIFs (letterbox cropped)",
           "No play overlays — frames read as stills, not fake players",
         ],
@@ -700,7 +700,7 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     reflection:
-      "Two AI studio sites can share a category and still feel unrelated. Genre’s light editorial system was the right north star for craft-first hybrid work.",
+      "Two AI studio sites can share a category and still feel unrelated. Light editorial pacing sells craft-first hybrid work; dark signal color sells generative heat.",
   },
 ];
 
