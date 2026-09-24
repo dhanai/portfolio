@@ -11,24 +11,24 @@ type ImageProps = {
   params: Promise<{ token: string }>;
 };
 
-async function loadFont(family: string, weight: number) {
+async function loadFont(weight: number) {
   const css = await (
     await fetch(
-      `https://fonts.googleapis.com/css2?family=${family}:wght@${weight}`,
+      `https://fonts.googleapis.com/css2?family=Inter:wght@${weight}`,
       { cache: "force-cache" },
     )
   ).text();
   const match = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/);
-  if (!match?.[1]) throw new Error(`Failed to load font ${family}`);
+  if (!match?.[1]) throw new Error("Failed to load font");
   return fetch(match[1]).then((res) => res.arrayBuffer());
 }
 
 export default async function Image({ params }: ImageProps) {
   const { token } = await params;
   const proposal = await prisma.proposal.findUnique({ where: { token } });
-  const [manrope, serif] = await Promise.all([
-    loadFont("Manrope", 600),
-    loadFont("Instrument+Serif", 400),
+  const [fontMedium, fontSemi] = await Promise.all([
+    loadFont(500),
+    loadFont(600),
   ]);
 
   const number = proposal?.number ?? "Proposal";
@@ -81,7 +81,7 @@ export default async function Image({ params }: ImageProps) {
             position: "relative",
             display: "flex",
             justifyContent: "space-between",
-            fontFamily: "Manrope",
+            fontFamily: "Inter Semi",
             fontSize: 22,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
@@ -89,7 +89,7 @@ export default async function Image({ params }: ImageProps) {
           }}
         >
           <div style={{ display: "flex" }}>Proposal</div>
-          <div style={{ display: "flex", fontFamily: "Manrope" }}>{number}</div>
+          <div style={{ display: "flex" }}>{number}</div>
         </div>
 
         <div
@@ -102,7 +102,7 @@ export default async function Image({ params }: ImageProps) {
         >
           <div
             style={{
-              fontFamily: "Manrope",
+              fontFamily: "Inter Medium",
               fontSize: 26,
               color: "#5a6b78",
               marginBottom: 18,
@@ -112,10 +112,10 @@ export default async function Image({ params }: ImageProps) {
           </div>
           <div
             style={{
-              fontFamily: "Instrument Serif",
-              fontSize: 64,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
+              fontFamily: "Inter Medium",
+              fontSize: 58,
+              lineHeight: 1.08,
+              letterSpacing: "-0.03em",
               color: "#12181e",
             }}
           >
@@ -135,7 +135,7 @@ export default async function Image({ params }: ImageProps) {
         >
           <div
             style={{
-              fontFamily: "Manrope",
+              fontFamily: "Inter Medium",
               fontSize: 26,
               color: "#1a2229",
             }}
@@ -145,8 +145,9 @@ export default async function Image({ params }: ImageProps) {
           {amount ? (
             <div
               style={{
-                fontFamily: "Instrument Serif",
-                fontSize: 48,
+                fontFamily: "Inter Semi",
+                fontSize: 44,
+                letterSpacing: "-0.02em",
                 color: "#12181e",
               }}
             >
@@ -159,13 +160,8 @@ export default async function Image({ params }: ImageProps) {
     {
       ...size,
       fonts: [
-        { name: "Manrope", data: manrope, weight: 600, style: "normal" },
-        {
-          name: "Instrument Serif",
-          data: serif,
-          weight: 400,
-          style: "normal",
-        },
+        { name: "Inter Medium", data: fontMedium, weight: 500, style: "normal" },
+        { name: "Inter Semi", data: fontSemi, weight: 600, style: "normal" },
       ],
     },
   );

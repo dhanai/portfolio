@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Instrument_Serif, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
@@ -15,17 +14,6 @@ import {
 } from "@/lib/proposals";
 
 export const dynamic = "force-dynamic";
-
-const display = Instrument_Serif({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const sans = Manrope({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 type PageProps = {
   params: Promise<{ token: string }>;
@@ -104,9 +92,7 @@ export default async function PublicProposalPage({ params }: PageProps) {
   const nextIndex = () => String(section++).padStart(2, "0");
 
   return (
-    <div
-      className={`${sans.className} relative min-h-screen overflow-hidden text-[#1a2229]`}
-    >
+    <div className="relative min-h-screen overflow-hidden text-[#1a2229]">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[#dfe6eb]"
@@ -158,9 +144,7 @@ export default async function PublicProposalPage({ params }: PageProps) {
           <p className="text-sm text-[#5a6b78]">
             Prepared for {clientLabel} · {formatProposalDate(proposal.createdAt)}
           </p>
-          <h1
-            className={`${display.className} mt-4 text-[2.5rem] leading-[1.08] tracking-[-0.02em] text-[#12181e] sm:text-[3.35rem]`}
-          >
+          <h1 className="mt-4 text-[2.35rem] font-medium leading-[1.1] tracking-[-0.03em] text-[#12181e] sm:text-[3.1rem]">
             {proposal.title}
           </h1>
         </header>
@@ -194,9 +178,7 @@ export default async function PublicProposalPage({ params }: PageProps) {
           {proposal.goals ? (
             <section>
               <SectionLabel index={nextIndex()}>Goals &amp; objectives</SectionLabel>
-              <p
-                className={`${display.className} whitespace-pre-wrap text-[1.35rem] leading-[1.45] text-[#1f2a33] sm:text-[1.5rem]`}
-              >
+              <p className="whitespace-pre-wrap text-base leading-relaxed text-[#1f2a33] sm:text-lg">
                 {proposal.goals}
               </p>
             </section>
@@ -228,9 +210,7 @@ export default async function PublicProposalPage({ params }: PageProps) {
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b7c8a]">
                   Timeframe
                 </p>
-                <p
-                  className={`${display.className} mt-4 text-3xl leading-none text-[#12181e]`}
-                >
+                <p className="mt-4 text-2xl font-medium tracking-tight text-[#12181e]">
                   {proposal.timeframe}
                 </p>
               </div>
@@ -251,9 +231,7 @@ export default async function PublicProposalPage({ params }: PageProps) {
                 <p className="max-w-md text-base leading-snug text-[#d5dde3]">
                   {proposal.quoteLabel}
                 </p>
-                <p
-                  className={`${display.className} text-4xl tracking-tight sm:text-5xl`}
-                >
+                <p className="font-mono text-3xl font-medium tracking-tight sm:text-4xl">
                   {formatMoney(proposal.amount)}
                 </p>
               </div>
@@ -275,9 +253,7 @@ export default async function PublicProposalPage({ params }: PageProps) {
             <ol className="mt-8 space-y-6">
               {nextSteps.map((step, index) => (
                 <li key={step} className="flex gap-5">
-                  <span
-                    className={`${display.className} w-10 shrink-0 text-2xl text-[#1fa89a]`}
-                  >
+                  <span className="w-10 shrink-0 font-mono text-lg font-medium text-[#1fa89a]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <p className="pt-1 text-[15px] leading-relaxed text-[#1f2a33]">
