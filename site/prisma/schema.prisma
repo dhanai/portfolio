@@ -44,12 +44,13 @@ model Invoice {
   number        String   @unique
   clientName    String
   clientEmail   String
-  description   String
-  /** hourly | fixed */
-  rateType      String
-  /** Dollars (stored as float for simplicity; display with 2dp) */
-  rate          Float
+  /** Legacy single-line fields (kept for older rows; prefer lineItems) */
+  description   String   @default("")
+  rateType      String   @default("fixed")
+  rate          Float    @default(0)
   hours         Float?
+  /** JSON InvoiceLineItem[] */
+  lineItems     String   @default("[]")
   /** Cached total in dollars */
   amount        Float
   /** draft | sent | paid */

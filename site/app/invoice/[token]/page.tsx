@@ -4,8 +4,10 @@ import { prisma } from "@/lib/prisma";
 import {
   formatInvoiceDate,
   formatMoney,
+  getInvoiceLineItems,
   INVOICE_ISSUER,
   INVOICE_PAYMENT_OPTIONS,
+  lineItemsHaveHours,
 } from "@/lib/invoices";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +34,8 @@ export default async function PublicInvoicePage({ params }: PageProps) {
   const invoice = await prisma.invoice.findUnique({ where: { token } });
   if (!invoice) notFound();
 
-  const isHourly = invoice.rateType === "hourly";
+  const lineItems = getInvoiceLineItems(invoice);
+  const showHours = lineItemsHaveHours(lineItems);
 
   return (
     <div className="min-h-screen bg-[#f4f4f5] text-[#111111]">
@@ -89,22 +92,17 @@ export default async function PublicInvoicePage({ params }: PageProps) {
           </section>
 
           <section className="px-5 py-6 sm:px-8 sm:py-8">
-            <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
-              Services
-            </p>
-            <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-[#27272a]">
-              {invoice.description}
-            </p>
-
-            <div className="mt-8 overflow-hidden border border-[#e4e4e7]">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto border border-[#e4e4e7]">
+              <table className="w-full min-w-[28rem] text-left text-sm">
                 <thead className="bg-[#fafafa] text-[10px] uppercase tracking-[0.14em] text-[#71717a]">
                   <tr>
-                    <th className="px-3 py-2.5 font-medium sm:px-4">Item</th>
-                    <th className="px-3 py-2.5 text-right font-medium sm:px-4">
-                      {isHourly ? "Rate" : "Fee"}
+                    <th className="px-3 py-2.5 font-medium sm:px-4">
+                      Description
                     </th>
-                    {isHourly ? (
+                    <th className="px-3 py-2.5 text-right font-medium sm:px-4">
+                      Rate
+                    </th>
+                    {showHours ? (
                       <th className="px-3 py-2.5 text-right font-medium sm:px-4">
                         Hours
                       </th>
@@ -115,28 +113,30 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-[#e4e4e7]">
-                    <td className="px-3 py-3 align-top sm:px-4">
-                      {isHourly ? "Professional services" : "Project fee"}
-                    </td>
-                    <td className="px-3 py-3 text-right font-mono sm:px-4">
-                      {formatMoney(invoice.rate)}
-                      {isHourly ? "/hr" : ""}
-                    </td>
-                    {isHourly ? (
-                      <td className="px-3 py-3 text-right font-mono sm:px-4">
-                        {invoice.hours}
+                  {lineItems.map((item) => (
+                    <tr key={item.id} className="border-t border-[#e4e4e7]">
+                      <td className="max-w-[12rem] px-3 py-3 align-top whitespace-pre-wrap text-[#27272a] sm:max-w-none sm:px-4">
+                        {item.description}
                       </td>
-                    ) : null}
-                    <td className="px-3 py-3 text-right font-mono sm:px-4">
-                      {formatMoney(invoice.amount)}
-                    </td>
-                  </tr>
+                      <td className="px-3 py-3 text-right font-mono align-top whitespace-nowrap sm:px-4">
+                        {formatMoney(item.rate)}
+                        {item.rateType === "hourly" ? "/hr" : ""}
+                      </td>
+                      {showHours ? (
+                        <td className="px-3 py-3 text-right font-mono align-top sm:px-4">
+                          {item.rateType === "hourly" ? item.hours : "—"}
+                        </td>
+                      ) : null}
+                      <td className="px-3 py-3 text-right font-mono align-top whitespace-nowrap sm:px-4">
+                        {formatMoney(item.amount)}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
                 <tfoot>
                   <tr className="border-t border-[#e4e4e7] bg-[#fafafa]">
                     <td
-                      colSpan={isHourly ? 3 : 2}
+                      colSpan={showHours ? 3 : 2}
                       className="px-3 py-3 text-right text-[10px] font-medium uppercase tracking-[0.14em] text-[#71717a] sm:px-4"
                     >
                       Total due
