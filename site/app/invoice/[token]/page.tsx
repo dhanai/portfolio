@@ -10,6 +10,8 @@ import {
   INVOICE_W9_FILENAME,
   INVOICE_W9_LABEL,
   INVOICE_W9_PUBLIC_PATH,
+  invoicePdfFilename,
+  invoicePdfPath,
   lineItemsHaveHours,
 } from "@/lib/invoices";
 
@@ -55,6 +57,13 @@ export default async function PublicInvoicePage({ params }: PageProps) {
               <p className="mt-2 text-sm text-[#52525b]">
                 {formatInvoiceDate(invoice.createdAt)}
               </p>
+              <a
+                href={invoicePdfPath(invoice.token)}
+                download={invoicePdfFilename(invoice.number)}
+                className="mt-4 inline-flex items-center border border-[#18181b] bg-[#18181b] px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-white hover:bg-[#27272a]"
+              >
+                Download invoice
+              </a>
             </div>
             <div className="sm:text-right">
               <p

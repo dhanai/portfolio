@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@prisma/client", "prisma", "sharp"],
+  serverExternalPackages: [
+    "@prisma/client",
+    "prisma",
+    "sharp",
+    "@react-pdf/renderer",
+  ],
   experimental: {
     serverActions: {
       bodySizeLimit: "12mb",

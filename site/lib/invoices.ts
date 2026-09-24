@@ -114,6 +114,14 @@ export function invoicePublicPath(token: string) {
   return `/invoice/${token}`;
 }
 
+export function invoicePdfPath(token: string) {
+  return `/api/invoice/${token}/pdf`;
+}
+
+export function invoicePdfFilename(number: string) {
+  return `${number}.pdf`;
+}
+
 export function emptyLineItem(): InvoiceLineItem {
   return {
     id: createLineItemId(),
