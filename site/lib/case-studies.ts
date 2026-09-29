@@ -30,6 +30,9 @@ export type CaseStudy = {
   reflection: string;
 };
 
+const SPEC_BLOB =
+  "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/spec";
+
 export const caseStudies: CaseStudy[] = [
   {
     slug: "takeout-order",
@@ -701,6 +704,270 @@ export const caseStudies: CaseStudy[] = [
     ],
     reflection:
       "Two AI studio sites can share a category and still feel unrelated. Light editorial pacing sells craft-first hybrid work; dark signal color sells generative heat.",
+  },
+  {
+    slug: "arden",
+    title: "Arden",
+    subtitle: "Spec brand and landing for a concierge primary care membership",
+    tags: ["Spec", "Brand", "Web"],
+    year: "2026",
+    role: "Brand · Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${SPEC_BLOB}/arden/desktop-layout.webp`,
+    galleryLayout: "frames",
+    gallery: [
+      {
+        src: `${SPEC_BLOB}/arden/desktop-layout.webp`,
+        alt: "Arden desktop landing — full 1440 layout from Figma",
+        caption: "Desktop 1440",
+      },
+      {
+        src: `${SPEC_BLOB}/arden/mobile-layout.webp`,
+        alt: "Arden mobile landing — full 390 layout from Figma",
+        caption: "Mobile 390",
+      },
+      {
+        src: `${SPEC_BLOB}/arden/still-visit.webp`,
+        alt: "Clinician and patient laughing at a wooden table in a sunlit room",
+        caption: "Art direction — the visit",
+      },
+      {
+        src: `${SPEC_BLOB}/arden/still-labs.webp`,
+        alt: "Three blood draw tubes on a steel tray over linen by a window",
+        caption: "Art direction — labs at home",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Arden is a fictional membership primary care practice: hour-long visits, same-week appointments, and a clinician who texts back. Brand, landing, and art-directed photography are all spec.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Healthtech landings default to blue gradients and stock smiles. Concierge care is selling time and attention, so the page had to feel like a calm, well-lit room rather than an app store listing.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Cream field, ink type, rust for action, deep moss for trust. Newsreader Light display over Inter. The mark is two overlapping squares, patient and clinician.",
+        ],
+        bullets: [
+          "Editorial split hero: oversized serif headline, copy and CTAs parked bottom-right",
+          "Wide photo band with a live “Next visit” card as the product proof",
+          "Generated photography directed for warm, late-afternoon natural light",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in one Figma file, ready to build. Part of a four-brand spec set exploring how far layout and art direction can push distinct categories apart.",
+        ],
+      },
+    ],
+    reflection:
+      "Care brands earn trust with restraint. The photography does the reassuring; the type just has to stay out of the way.",
+  },
+  {
+    slug: "trestle",
+    title: "Trestle",
+    subtitle: "Spec brand and landing for a real-time freight and cold-chain carrier",
+    tags: ["Spec", "Brand", "Web"],
+    year: "2026",
+    role: "Brand · Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${SPEC_BLOB}/trestle/desktop-layout.webp`,
+    galleryLayout: "frames",
+    gallery: [
+      {
+        src: `${SPEC_BLOB}/trestle/desktop-layout.webp`,
+        alt: "Trestle desktop landing — full 1440 layout from Figma",
+        caption: "Desktop 1440",
+      },
+      {
+        src: `${SPEC_BLOB}/trestle/mobile-layout.webp`,
+        alt: "Trestle mobile landing — full 390 layout from Figma",
+        caption: "Mobile 390",
+      },
+      {
+        src: `${SPEC_BLOB}/trestle/still-highway.webp`,
+        alt: "Aerial of a red semi on a canyon highway at sunrise",
+        caption: "Art direction — the lane",
+      },
+      {
+        src: `${SPEC_BLOB}/trestle/still-reefer.webp`,
+        alt: "Frosted refrigerated trailer interior with produce crates",
+        caption: "Art direction — cold chain",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Trestle is a fictional full-truckload and reefer carrier whose pitch is radical visibility: GPS, temperature, and dock events on every load.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Logistics sites either look like a trucking brochure or a generic SaaS dashboard. Shippers want proof the freight is real and moving, so the page needed cinematic scale and hard data in the same frame.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Near-black field, bone type, signal orange. Archivo Black set in caps for the display, with JetBrains Mono for every data point. The mark is a steel truss.",
+        ],
+        bullets: [
+          "Full-bleed photography with a live load panel overlaid on the hero",
+          "Lane board and reefer readouts treated as product UI, not decoration",
+          "Mobile turns the table into stacked load cards",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in one Figma file. The darkest, densest page in the four-brand spec set.",
+        ],
+      },
+    ],
+    reflection:
+      "Operational brands sell certainty. Mono data on top of big photography says both “we’re real” and “we’re watching.”",
+  },
+  {
+    slug: "wedge",
+    title: "Wedge",
+    subtitle: "Spec brand and landing for same-day payroll for film crews",
+    tags: ["Spec", "Brand", "Web"],
+    year: "2026",
+    role: "Brand · Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${SPEC_BLOB}/wedge/desktop-layout.webp`,
+    galleryLayout: "frames",
+    gallery: [
+      {
+        src: `${SPEC_BLOB}/wedge/desktop-layout.webp`,
+        alt: "Wedge desktop landing — full 1440 layout from Figma",
+        caption: "Desktop 1440",
+      },
+      {
+        src: `${SPEC_BLOB}/wedge/mobile-layout.webp`,
+        alt: "Wedge mobile landing — full 390 layout from Figma",
+        caption: "Mobile 390",
+      },
+      {
+        src: `${SPEC_BLOB}/wedge/still-crew.webp`,
+        alt: "Flash photo of a laughing film crew around a camera dolly",
+        caption: "Art direction — wrap day",
+      },
+      {
+        src: `${SPEC_BLOB}/wedge/still-card.webp`,
+        alt: "Black payment card on a craft services table with coffee and a donut",
+        caption: "Art direction — the card",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Wedge is a fictional payroll app and card for film and TV crews: day rates, kit fees, and per diems paid the moment the shift wraps.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Fintech landings all look like the same glossy phone mockup. Crews are loud, tired, and paid late, so the brand had to feel like set life: flash photos, stickers, and a little attitude.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Poppy red field, deep indigo, lemon highlight. Bricolage Grotesque ExtraBold at poster sizes over Instrument Sans. The mark is a wedge and a dot, a doorstop and a sun.",
+        ],
+        bullets: [
+          "Hero collage of tilted flash photos with a deposit notification and sticker",
+          "Marquee of pay types, three colored step cards, petty-cash card section",
+          "Giant lowercase wordmark as the footer",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in one Figma file. The loudest page in the four-brand spec set.",
+        ],
+      },
+    ],
+    reflection:
+      "Money products can be fun when the audience is. Flash photography makes the brand feel like it was on set, not in a bank.",
+  },
+  {
+    slug: "vesper",
+    title: "Vesper",
+    subtitle: "Spec brand and landing for a luxury red-light skincare device",
+    tags: ["Spec", "Brand", "Web"],
+    year: "2026",
+    role: "Brand · Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${SPEC_BLOB}/vesper/desktop-layout.webp`,
+    galleryLayout: "frames",
+    gallery: [
+      {
+        src: `${SPEC_BLOB}/vesper/desktop-layout.webp`,
+        alt: "Vesper desktop landing — full 1440 layout from Figma",
+        caption: "Desktop 1440",
+      },
+      {
+        src: `${SPEC_BLOB}/vesper/mobile-layout.webp`,
+        alt: "Vesper mobile landing — full 390 layout from Figma",
+        caption: "Mobile 390",
+      },
+      {
+        src: `${SPEC_BLOB}/vesper/still-skin.webp`,
+        alt: "Close-up profile of skin lit in soft red light",
+        caption: "Art direction — 630 nm",
+      },
+      {
+        src: `${SPEC_BLOB}/vesper/still-studio.webp`,
+        alt: "Arched plaster treatment room with a cream chair under a skylight",
+        caption: "Art direction — the studio",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Vesper is a fictional at-home red-light and near-infrared device with a small network of treatment studios.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Beauty tech tends to shout, with neon masks and before-and-afters. A premium device needed to feel like a quiet object on a stone plinth, with clinical proof delivered softly.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Porcelain field, oxblood, brass hairlines. Cormorant Garamond Light and Italic with DM Mono for specs. The mark is a rising arc of light.",
+        ],
+        bullets: [
+          "Centered, symmetrical hero with the product flanked by spec columns",
+          "Full-bleed red-light close-up as the single moment of color",
+          "Arched studio image echoing the mark",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in one Figma file. The quietest page in the four-brand spec set.",
+        ],
+      },
+    ],
+    reflection:
+      "Luxury is mostly what you leave out. One accent color, lots of air, and a product shot you could put in a gallery.",
   },
 ];
 

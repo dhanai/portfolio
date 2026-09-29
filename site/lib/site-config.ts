@@ -53,5 +53,9 @@ export const accentColors = {
   petshirts: "#FF3EA5",
   undeniable: "#C8F542",
   northOfReal: "#1FA89A",
+  arden: "#B8432F",
+  trestle: "#FF4A1C",
+  wedge: "#E8412A",
+  vesper: "#5E1F2B",
   default: "#FF453A",
 } as const;
