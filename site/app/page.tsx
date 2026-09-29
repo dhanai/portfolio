@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { CreativeShowcaseSection } from "@/components/creative-showcase-section";
 import { FadeIn } from "@/components/project-card";
-import { ResumeActions } from "@/components/resume-actions";
 import { WorkScrollRail } from "@/components/work-scroll-rail";
 import {
   getAboutContent,
@@ -64,14 +63,13 @@ export default async function HomePage() {
               <p className="mt-4 text-xs leading-relaxed text-muted md:text-sm">
                 {about.ctaBody}
               </p>
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="mt-8">
                 <a
                   href={`mailto:${site.links.email}`}
                   className="inline-flex items-center justify-center bg-foreground px-5 py-2.5 text-xs font-medium text-background transition-opacity hover:opacity-90"
                 >
                   Get in touch
                 </a>
-                <ResumeActions />
               </div>
               <Link
                 href="/resume"
