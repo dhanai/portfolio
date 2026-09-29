@@ -29,15 +29,15 @@ export default async function AiPage() {
   const hasItems = showcase.enabled && showcase.items.length > 0;
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <header className="mb-16 max-w-2xl">
+    <div className="mx-auto max-w-6xl px-6 pb-16 pt-10 md:pb-20 md:pt-12">
+      <header className="mb-8 max-w-2xl">
         <FadeIn>
           <p className="label-caps text-muted">{showcase.eyebrow}</p>
-          <h1 className="mt-4 font-display text-4xl font-medium tracking-tight text-foreground md:text-5xl">
+          <h1 className="mt-2 font-display text-4xl font-medium tracking-tight text-foreground md:text-5xl">
             {showcase.title}
           </h1>
           {showcase.subtitle ? (
-            <p className="mt-4 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
+            <p className="mt-2 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
               {showcase.subtitle}
             </p>
           ) : null}

@@ -100,143 +100,141 @@ export function CreativeShowcaseLightbox({
 
   return (
     <div
-      className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-black/85 backdrop-blur-sm"
+      className="fixed inset-0 z-[80] overflow-y-auto overscroll-contain bg-black lg:overflow-hidden"
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className="flex min-h-full items-start justify-center px-4 py-4 sm:px-8 sm:py-10 md:items-center">
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleId}
-          className="relative my-auto grid w-full max-w-5xl gap-5 pb-8 md:grid-cols-[minmax(0,380px)_minmax(0,1fr)] md:items-end md:gap-8 md:pb-0"
-          onMouseDown={(event) => event.stopPropagation()}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="relative flex min-h-full flex-col lg:mx-auto lg:h-dvh lg:max-w-6xl lg:min-h-0 lg:flex-row lg:items-center lg:gap-12 lg:px-10"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <button
+          ref={closeRef}
+          type="button"
+          onClick={onClose}
+          className="absolute top-3 right-3 z-20 flex h-11 w-11 items-center justify-center text-white/80 transition-colors hover:text-white lg:top-6 lg:right-6"
+          aria-label="Close"
         >
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            className="sticky top-0 z-20 ml-auto flex h-10 w-10 items-center justify-center text-[#a3a3a3] transition-colors hover:text-white md:absolute md:-top-2 md:-right-2 md:ml-0"
-            aria-label="Close"
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden
           >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden
-            >
-              <path
-                d="M4 4l8 8M12 4l-8 8"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
+            <path
+              d="M4 4l8 8M12 4l-8 8"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+
+        <div className="relative w-full shrink-0 lg:w-[min(49.5dvh,484px)]">
+          <div className="aspect-[9/16] w-full overflow-hidden bg-[#0a0a0a]">
+            {item.type === "video" ? (
+              <video
+                key={item.id}
+                ref={videoRef}
+                className="h-full w-full object-cover"
+                src={item.src}
+                poster={item.poster}
+                controls
+                playsInline
+                loop
+                autoPlay
+                muted={muted}
+                preload="auto"
+                aria-label={item.alt}
               />
-            </svg>
-          </button>
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={item.src}
+                alt={item.alt}
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
 
-          <div className="relative mx-auto flex w-full max-w-[min(100%,380px)] justify-center">
-            <div className="aspect-[9/16] h-[min(62dvh,560px)] max-h-[62dvh] max-w-full overflow-hidden border border-white/10 bg-[#0a0a0a]">
-              {item.type === "video" ? (
-                <video
-                  key={item.id}
-                  ref={videoRef}
-                  className="h-full w-full object-cover"
-                  src={item.src}
-                  poster={item.poster}
-                  controls
-                  playsInline
-                  loop
-                  autoPlay
-                  muted={muted}
-                  preload="auto"
-                  aria-label={item.alt}
-                />
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  className="h-full w-full object-cover"
-                />
-              )}
-            </div>
+          {item.type === "video" && (
+            <button
+              type="button"
+              onClick={() => setMuted((value) => !value)}
+              className="absolute bottom-3 left-3 border border-white/15 bg-black/70 px-2.5 py-1.5 text-[10px] uppercase tracking-wider text-white transition-colors hover:border-white/40"
+            >
+              {muted ? "Unmute" : "Mute"}
+            </button>
+          )}
+        </div>
 
-            {item.type === "video" && (
+        <div className="min-w-0 px-5 pt-6 pb-[max(2rem,env(safe-area-inset-bottom))] lg:max-w-md lg:px-0 lg:pt-0 lg:pb-0">
+          <p className="label-caps text-[#737373]">
+            {index + 1} / {items.length}
+          </p>
+          <h2
+            id={titleId}
+            className="mt-3 font-display text-2xl font-medium tracking-tight text-white md:text-3xl"
+          >
+            {item.title || "Untitled"}
+          </h2>
+          {item.direction || item.caption ? (
+            <p className="mt-4 text-sm leading-relaxed text-[#a3a3a3]">
+              {item.direction || item.caption}
+            </p>
+          ) : null}
+
+          {hasPrevNext && (
+            <div className="mt-6 flex flex-wrap items-center gap-3">
               <button
                 type="button"
-                onClick={() => setMuted((value) => !value)}
-                className="absolute bottom-3 left-3 border border-white/15 bg-black/70 px-2.5 py-1.5 text-[10px] uppercase tracking-wider text-white transition-colors hover:border-white/40"
+                onClick={() =>
+                  onChangeIndex((index - 1 + items.length) % items.length)
+                }
+                className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
+                aria-label="Previous piece"
               >
-                {muted ? "Unmute" : "Mute"}
+                ← Prev
               </button>
-            )}
-          </div>
+              <button
+                type="button"
+                onClick={() => onChangeIndex((index + 1) % items.length)}
+                className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
+                aria-label="Next piece"
+              >
+                Next →
+              </button>
+              <button
+                type="button"
+                onClick={() => void copyShareLink()}
+                className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
+              >
+                {copied ? "Copied" : "Copy link"}
+              </button>
+            </div>
+          )}
 
-          <div className="min-w-0 md:pb-2">
-            <p className="label-caps text-[#737373]">
-              {index + 1} / {items.length}
-            </p>
-            <h2
-              id={titleId}
-              className="mt-3 font-display text-2xl font-medium tracking-tight text-white md:text-3xl"
-            >
-              {item.title || "Untitled"}
-            </h2>
-            {item.direction || item.caption ? (
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-[#a3a3a3]">
-                {item.direction || item.caption}
-              </p>
-            ) : null}
+          {!hasPrevNext && (
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => void copyShareLink()}
+                className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
+              >
+                {copied ? "Copied" : "Copy link"}
+              </button>
+            </div>
+          )}
 
-            {hasPrevNext && (
-              <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-8">
-                <button
-                  type="button"
-                  onClick={() =>
-                    onChangeIndex((index - 1 + items.length) % items.length)
-                  }
-                  className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
-                  aria-label="Previous piece"
-                >
-                  ← Prev
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onChangeIndex((index + 1) % items.length)}
-                  className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
-                  aria-label="Next piece"
-                >
-                  Next →
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void copyShareLink()}
-                  className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
-                >
-                  {copied ? "Copied" : "Copy link"}
-                </button>
-              </div>
-            )}
-
-            {!hasPrevNext && (
-              <div className="mt-6 sm:mt-8">
-                <button
-                  type="button"
-                  onClick={() => void copyShareLink()}
-                  className="border border-white/15 px-3 py-2 text-xs text-[#a3a3a3] transition-colors hover:border-white/40 hover:text-white"
-                >
-                  {copied ? "Copied" : "Copy link"}
-                </button>
-              </div>
-            )}
-
-            <p className="mt-5 hidden text-[10px] uppercase tracking-wider text-[#525252] sm:block">
-              Esc to close · arrows to browse
-            </p>
-          </div>
+          <p className="mt-5 hidden text-[10px] uppercase tracking-wider text-[#525252] lg:block">
+            Esc to close · arrows to browse
+          </p>
         </div>
       </div>
     </div>
