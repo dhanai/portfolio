@@ -104,6 +104,13 @@ async function readCreativeShowcaseRaw(): Promise<CreativeShowcaseData> {
     return {
       ...defaultCreativeShowcase,
       ...parsed,
+      eyebrow:
+        String(parsed.eyebrow ?? "").trim() || defaultCreativeShowcase.eyebrow,
+      title: String(parsed.title ?? "").trim() || defaultCreativeShowcase.title,
+      subtitle:
+        parsed.subtitle == null
+          ? defaultCreativeShowcase.subtitle
+          : String(parsed.subtitle).trim(),
       items: Array.isArray(parsed.items) ? parsed.items : [],
     };
   } catch {
@@ -118,14 +125,27 @@ export async function saveCreativeShowcaseItems(
   const current = await readCreativeShowcaseRaw();
   return saveCreativeShowcase({
     enabled: current.enabled,
+    eyebrow: current.eyebrow,
     title: current.title,
     subtitle: current.subtitle,
     items,
   });
 }
 
+export async function saveWorkSectionTitle(
+  title: string,
+): Promise<ActionResult> {
+  await requireAdmin();
+  const trimmed = title.trim();
+  if (!trimmed) return { error: "Section title is required" };
+  const { getSiteContent } = await import("@/lib/content");
+  const current = await getSiteContent();
+  return saveSiteContent({ ...current, workSectionTitle: trimmed });
+}
+
 export async function saveCreativeShowcaseSection(input: {
   enabled: boolean;
+  eyebrow: string;
   title: string;
   subtitle: string;
 }): Promise<ActionResult> {
@@ -135,6 +155,7 @@ export async function saveCreativeShowcaseSection(input: {
   const current = await readCreativeShowcaseRaw();
   return saveCreativeShowcase({
     enabled: input.enabled,
+    eyebrow: input.eyebrow.trim() || "Generative",
     title,
     subtitle: input.subtitle.trim(),
     items: current.items,

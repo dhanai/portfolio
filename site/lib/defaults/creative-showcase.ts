@@ -19,6 +19,8 @@ export type CreativeShowcaseItem = {
 
 export type CreativeShowcaseData = {
   enabled: boolean;
+  /** Small label above the heading on /ai */
+  eyebrow: string;
   title: string;
   subtitle: string;
   items: CreativeShowcaseItem[];
@@ -26,8 +28,9 @@ export type CreativeShowcaseData = {
 
 export const defaultCreativeShowcase: CreativeShowcaseData = {
   enabled: true,
-  title: "Art & direction",
+  eyebrow: "Generative",
+  title: "Generative AI",
   subtitle:
-    "AI generative, directed shoots, and social — 9×16 campaigns and daily creative practice.",
+    "Directed generative campaigns, stills, and motion — taste as the production system.",
   items: [],
 };

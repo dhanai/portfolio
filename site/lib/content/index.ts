@@ -88,6 +88,13 @@ export async function getCreativeShowcase(options?: {
   return {
     ...defaultCreativeShowcase,
     ...parsed,
+    eyebrow:
+      String(parsed.eyebrow ?? "").trim() || defaultCreativeShowcase.eyebrow,
+    title: String(parsed.title ?? "").trim() || defaultCreativeShowcase.title,
+    subtitle:
+      parsed.subtitle == null
+        ? defaultCreativeShowcase.subtitle
+        : String(parsed.subtitle).trim(),
     items: options?.includeHidden
       ? items
       : items.filter((item) => !item.hidden),

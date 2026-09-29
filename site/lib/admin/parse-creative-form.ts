@@ -89,6 +89,9 @@ export async function parseCreativeShowcaseForm(
   return {
     data: {
       enabled,
+      eyebrow:
+        String(formData.get("eyebrow") ?? "").trim() ||
+        "Generative",
       title,
       subtitle,
       items,

@@ -31,12 +31,27 @@ export default async function AdminDashboardPage() {
         <ul className="mt-4 space-y-2 text-sm text-[#a3a3a3]">
           <li>
             <Link href="/admin/site" className="hover:text-white">
-              Hero &amp; homepage work count
+              Site &amp; homepage
             </Link>
           </li>
           <li>
             <Link href="/admin/work" className="hover:text-white">
-              Selected work (cards + sort)
+              Work
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/creative" className="hover:text-white">
+              Creative showcase
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/about" className="hover:text-white">
+              About
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/resume" className="hover:text-white">
+              Resume
             </Link>
           </li>
           <li>
@@ -47,36 +62,6 @@ export default async function AdminDashboardPage() {
           <li>
             <Link href="/admin/proposals" className="hover:text-white">
               Proposals
-            </Link>
-          </li>
-          <li>
-            <Link href="/admin/creative" className="hover:text-white">
-              Creative showcase rail
-            </Link>
-          </li>
-          <li>
-            <Link href="/admin/about" className="hover:text-white">
-              About + resume CTA copy
-            </Link>
-          </li>
-          <li>
-            <Link href="/admin/resume" className="hover:text-white">
-              Resume (web JSON + PDF path)
-            </Link>
-          </li>
-          <li>
-            <Link href="/admin/invoices/new" className="hover:text-[#ff453a]">
-              + New invoice
-            </Link>
-          </li>
-          <li>
-            <Link href="/admin/proposals/new" className="hover:text-[#ff453a]">
-              + New proposal
-            </Link>
-          </li>
-          <li>
-            <Link href="/admin/work/new" className="hover:text-[#ff453a]">
-              + New work item
             </Link>
           </li>
         </ul>

@@ -18,13 +18,15 @@ export function CreativeShowcaseSection({
         <FadeIn>
           <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="label-caps text-muted">Creative</p>
+              <p className="label-caps text-muted">{showcase.eyebrow}</p>
               <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
                 {showcase.title}
               </h2>
-              <p className="mt-3 max-w-2xl text-xs leading-relaxed text-muted md:text-sm">
-                {showcase.subtitle}
-              </p>
+              {showcase.subtitle ? (
+                <p className="mt-3 max-w-2xl text-xs leading-relaxed text-muted md:text-sm">
+                  {showcase.subtitle}
+                </p>
+              ) : null}
             </div>
             <Link
               href="/ai"

@@ -27,6 +27,8 @@ export type SiteContentData = {
   };
   /** How many published work items to show on the homepage Selected work grid */
   homepageWorkCount: number;
+  /** Homepage Work section heading (eyebrow stays “Work”) */
+  workSectionTitle: string;
   now: {
     label: string;
     title: string;
@@ -57,6 +59,7 @@ export const defaultSiteContent: SiteContentData = {
     titleMuted: "product design",
   },
   homepageWorkCount: 12,
+  workSectionTitle: "Selected work",
   now: {
     label: "Now",
     title: "Building Doomsy",

@@ -38,10 +38,12 @@ export function WorkForm({
   work,
   action,
   removeAction,
+  className = "mt-8 space-y-6",
 }: {
   work?: Work;
   action: (formData: FormData) => Promise<ActionResult | void>;
   removeAction?: () => Promise<void>;
+  className?: string;
 }) {
   const tags = work ? JSON.parse(work.tags).join(", ") : "";
   const sectionsJson = work
@@ -56,7 +58,7 @@ export function WorkForm({
     <AdminForm
       action={action}
       alwaysEnableSubmit={!work}
-      className="mt-8 space-y-6"
+      className={className}
     >
       {work?.id && <input type="hidden" name="id" value={work.id} />}
 

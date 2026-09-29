@@ -1,36 +1,45 @@
 import Link from "next/link";
+import { AdminCreateDrawer } from "@/components/admin/admin-create-drawer";
+import { InvoiceCreateForm } from "@/components/admin/invoice-create-form";
 import { prisma } from "@/lib/prisma";
 import { formatInvoiceDate, formatMoney } from "@/lib/invoices";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminInvoicesPage() {
+export default async function AdminInvoicesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ new?: string }>;
+}) {
+  const { new: create } = await searchParams;
   const invoices = await prisma.invoice.findMany({
     orderBy: { createdAt: "desc" },
   });
 
   return (
     <div>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-medium">Invoices</h1>
           <p className="mt-2 text-sm text-[#737373]">
             Create invoices behind admin, then share the unique client link.
           </p>
         </div>
-        <Link
-          href="/admin/invoices/new"
-          className="inline-flex items-center justify-center bg-white px-4 py-2 text-sm font-medium text-black hover:opacity-90"
+        <AdminCreateDrawer
+          title="New invoice"
+          description="Totals calculate automatically. After you create it, you get a unique link to send the client."
+          triggerLabel="+ New invoice"
+          queryOpen={create === "1"}
         >
-          + New invoice
-        </Link>
+          <InvoiceCreateForm className="space-y-8" />
+        </AdminCreateDrawer>
       </div>
 
       <div className="mt-8 overflow-hidden border border-white/10">
         {invoices.length === 0 ? (
           <p className="px-4 py-10 text-center text-sm text-[#737373]">
             No invoices yet.{" "}
-            <Link href="/admin/invoices/new" className="text-white underline">
+            <Link href="/admin/invoices?new=1" className="text-white underline">
               Create one
             </Link>
             .

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { AdminCreateDrawer } from "@/components/admin/admin-create-drawer";
+import { ProposalCreateForm } from "@/components/admin/proposal-create-form";
 import { prisma } from "@/lib/prisma";
 import {
   formatMoney,
@@ -8,33 +10,40 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminProposalsPage() {
+export default async function AdminProposalsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ new?: string }>;
+}) {
+  const { new: create } = await searchParams;
   const proposals = await prisma.proposal.findMany({
     orderBy: { createdAt: "desc" },
   });
 
   return (
     <div>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-medium">Proposals</h1>
           <p className="mt-2 text-sm text-[#737373]">
             Create proposals behind admin, then share the unique client link.
           </p>
         </div>
-        <Link
-          href="/admin/proposals/new"
-          className="inline-flex items-center justify-center bg-white px-4 py-2 text-sm font-medium text-black hover:opacity-90"
+        <AdminCreateDrawer
+          title="New proposal"
+          description="Flat quote with deliverables, timeframe, and terms. After you create it, you get a unique link to send the client."
+          triggerLabel="+ New proposal"
+          queryOpen={create === "1"}
         >
-          + New proposal
-        </Link>
+          <ProposalCreateForm className="space-y-8" />
+        </AdminCreateDrawer>
       </div>
 
       <div className="mt-8 overflow-hidden border border-white/10">
         {proposals.length === 0 ? (
           <p className="px-4 py-10 text-center text-sm text-[#737373]">
             No proposals yet.{" "}
-            <Link href="/admin/proposals/new" className="text-white underline">
+            <Link href="/admin/proposals?new=1" className="text-white underline">
               Create one
             </Link>
             .

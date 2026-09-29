@@ -1,7 +1,13 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import type { SiteConfigView } from "@/lib/site-config";
 
 export function SiteFooter({ config }: { config: SiteConfigView }) {
+  const pathname = usePathname();
   const year = new Date().getFullYear();
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <footer className="site-footer mt-auto border-t border-border">

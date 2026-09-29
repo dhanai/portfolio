@@ -13,6 +13,7 @@ import {
 import { DragHandle, useDragReorder } from "@/components/admin/drag-reorder";
 import { FileDropZone } from "@/components/admin/file-drop-zone";
 import { useToast } from "@/components/toast";
+import { useConfirm } from "@/components/admin/confirm-dialog";
 
 type ItemMedia = { src: string; type: "image" | "video" };
 
@@ -131,7 +132,7 @@ function PieceModal({
   onProcessPoster: (file: File) => Promise<void>;
 }) {
   const titleId = useId();
-  const titleRef = useRef<HTMLInputElement>(null);
+  const { confirm } = useConfirm();
   const previewSrc = draft.localSrc ?? draft.media.src;
   const dirty = draftSignature(draft) !== draft.baseline;
   const canSave =
@@ -143,7 +144,6 @@ function PieceModal({
   useEffect(() => {
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    titleRef.current?.focus();
     return () => {
       document.body.style.overflow = previous;
     };
@@ -153,37 +153,40 @@ function PieceModal({
     function onKeyDown(event: KeyboardEvent) {
       if (event.key !== "Escape") return;
       event.preventDefault();
-      if (dirty && !window.confirm("Discard unsaved changes to this piece?")) {
-        return;
-      }
-      onClose();
+      void requestClose();
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [dirty, onClose]);
+  }, [dirty, onClose, confirm]);
 
-  function requestClose() {
-    if (dirty && !window.confirm("Discard unsaved changes to this piece?")) {
-      return;
+  async function requestClose() {
+    if (dirty) {
+      const discard = await confirm({
+        title: "Discard unsaved changes?",
+        message: "This piece has edits that haven’t been saved.",
+        confirmLabel: "Discard",
+        tone: "danger",
+      });
+      if (!discard) return;
     }
     onClose();
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-4 sm:items-center"
-      role="presentation"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) requestClose();
-      }}
-    >
+    <div className="fixed inset-0 z-50">
+      <button
+        type="button"
+        className="absolute inset-0 hidden bg-black/60 lg:block"
+        aria-label="Close"
+        onClick={() => void requestClose()}
+      />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="flex max-h-[min(92vh,900px)] w-full max-w-3xl flex-col overflow-hidden border border-white/10 bg-[#050505] shadow-2xl"
+        className="absolute inset-0 flex flex-col bg-[#0c0c0c] lg:inset-y-0 lg:left-auto lg:right-0 lg:w-full lg:max-w-xl lg:border-l lg:border-white/10 lg:shadow-2xl"
       >
-        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-white/10 px-4 py-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-5">
           <div>
             <p id={titleId} className="text-sm font-medium text-white">
               {draft.isNew ? "Add piece" : "Edit piece"}
@@ -195,7 +198,7 @@ function PieceModal({
           <button
             type="button"
             onClick={requestClose}
-            className="flex h-8 w-8 items-center justify-center text-[#737373] transition-colors hover:text-white"
+            className="flex h-11 w-11 shrink-0 items-center justify-center text-[#737373] transition-colors hover:text-white"
             aria-label="Close"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -209,54 +212,124 @@ function PieceModal({
           </button>
         </div>
 
-        <div className="grid min-h-0 flex-1 gap-6 overflow-y-auto p-5 md:grid-cols-[200px_1fr]">
-          <div className="space-y-3">
-            <div className="aspect-[9/16] overflow-hidden border border-white/10 bg-[#0a0a0a]">
-              <ThumbMedia
-                src={previewSrc}
-                type={draft.media.type}
-                poster={draft.localPoster ?? draft.item.poster}
-                alt={draft.item.title || "Preview"}
-              />
+        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+          <FileDropZone
+            accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+            disabled={compressing || saving}
+            onFile={onProcessMedia}
+            className="p-4"
+          >
+            <p className="mb-3 text-sm text-white">
+              {previewSrc
+                ? "Replace the video, or drop another file"
+                : "Drop a 9×16 video, or choose a file"}
+            </p>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) void onProcessMedia(file);
+              }}
+              disabled={compressing || saving}
+              aria-label={previewSrc ? "Replace video" : "Choose video"}
+              className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
+            />
+            {compressing && (
+              <p className="mt-2 text-xs text-[#737373]">Processing…</p>
+            )}
+            {uploadNote && !compressing && (
+              <p className="mt-2 text-xs text-[#737373]">{uploadNote}</p>
+            )}
+            {uploadError && (
+              <p className="mt-2 text-xs text-[#ff453a]">{uploadError}</p>
+            )}
+          </FileDropZone>
+
+          <div
+            className={
+              previewSrc
+                ? "grid grid-cols-[7.5rem_minmax(0,1fr)] items-start gap-4 sm:grid-cols-[9rem_minmax(0,1fr)]"
+                : undefined
+            }
+          >
+            {previewSrc ? (
+              <div className="aspect-[9/16] overflow-hidden border border-white/10 bg-[#0a0a0a]">
+                <ThumbMedia
+                  src={previewSrc}
+                  type={draft.media.type}
+                  poster={draft.localPoster ?? draft.item.poster}
+                  alt={draft.item.title || "Preview"}
+                />
+              </div>
+            ) : null}
+
+            <div className="space-y-4">
+              <label className="block">
+                <span className="text-xs uppercase tracking-wider text-[#737373]">
+                  Title
+                </span>
+                <input
+                  value={draft.item.title}
+                  onChange={(e) =>
+                    onChange({
+                      item: { ...draft.item, title: e.target.value },
+                    })
+                  }
+                  placeholder="Campaign or piece title"
+                  className="mt-1.5 w-full border border-white/10 bg-[#0a0a0a] px-3 py-3 text-base text-white outline-none focus:border-[#ff453a] sm:py-2 sm:text-sm"
+                />
+              </label>
+
+              <label className="block">
+                <span className="text-xs uppercase tracking-wider text-[#737373]">
+                  Concept & direction
+                </span>
+                <textarea
+                  value={draft.item.direction ?? ""}
+                  onChange={(e) =>
+                    onChange({
+                      item: { ...draft.item, direction: e.target.value },
+                    })
+                  }
+                  rows={4}
+                  placeholder="Optional. Concept, direction, tools…"
+                  className="mt-1.5 w-full border border-white/10 bg-[#0a0a0a] px-3 py-3 text-base text-white outline-none focus:border-[#ff453a] sm:py-2 sm:text-sm"
+                />
+              </label>
+
+              {draft.media.type === "video" ? (
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-[#737373]">
+                    Poster
+                  </span>
+                  <FileDropZone
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    disabled={compressing || saving}
+                    onFile={onProcessPoster}
+                    className="mt-1.5 p-3"
+                  >
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) void onProcessPoster(file);
+                      }}
+                      disabled={compressing || saving}
+                      aria-label="Poster image"
+                      className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
+                    />
+                  </FileDropZone>
+                </div>
+              ) : null}
             </div>
           </div>
+        </div>
 
-          <div className="space-y-4">
-            <label className="block">
-              <span className="text-xs uppercase tracking-wider text-[#737373]">
-                Title
-              </span>
-              <input
-                ref={titleRef}
-                value={draft.item.title}
-                onChange={(e) =>
-                  onChange({
-                    item: { ...draft.item, title: e.target.value },
-                  })
-                }
-                placeholder="Campaign or piece title"
-                className="mt-1.5 w-full border border-white/10 bg-[#0a0a0a] px-3 py-2 text-sm text-white outline-none focus:border-[#ff453a]"
-              />
-            </label>
-
-            <label className="block">
-              <span className="text-xs uppercase tracking-wider text-[#737373]">
-                Concept & direction
-              </span>
-              <textarea
-                value={draft.item.direction ?? ""}
-                onChange={(e) =>
-                  onChange({
-                    item: { ...draft.item, direction: e.target.value },
-                  })
-                }
-                rows={5}
-                placeholder="Concept, art direction, tools, what you directed vs generated…"
-                className="mt-1.5 w-full border border-white/10 bg-[#0a0a0a] px-3 py-2 text-sm text-white outline-none focus:border-[#ff453a]"
-              />
-            </label>
-
-            <label className="flex cursor-pointer items-start gap-3 border border-white/10 bg-[#0a0a0a] px-3 py-3">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-white/10 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-5">
+          <div className="flex items-center gap-4">
+            <label className="flex cursor-pointer items-center gap-2">
               <input
                 type="checkbox"
                 checked={Boolean(draft.item.hidden)}
@@ -265,80 +338,10 @@ function PieceModal({
                     item: { ...draft.item, hidden: e.target.checked },
                   })
                 }
-                className="mt-0.5 h-4 w-4 accent-[#ff453a]"
+                className="h-4 w-4 accent-[#ff453a]"
               />
-              <span>
-                <span className="block text-sm text-white">Hidden</span>
-                <span className="mt-0.5 block text-xs text-[#737373]">
-                  Keep in the CMS but hide from the homepage rail and /ai
-                </span>
-              </span>
+              <span className="text-xs text-white">Hide</span>
             </label>
-
-            <div className="block">
-              <span className="text-xs uppercase tracking-wider text-[#737373]">
-                Media
-              </span>
-              <FileDropZone
-                accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
-                disabled={compressing || saving}
-                onFile={onProcessMedia}
-                className="mt-1.5 p-3"
-              >
-                <p className="mb-2 text-xs text-[#525252]">
-                  Drop a 9×16 image or video, or choose a file
-                </p>
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) void onProcessMedia(file);
-                  }}
-                  disabled={compressing || saving}
-                  className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
-                />
-              </FileDropZone>
-              {compressing && (
-                <p className="mt-1 text-xs text-[#737373]">Processing…</p>
-              )}
-              {uploadNote && !compressing && (
-                <p className="mt-1 text-xs text-[#737373]">{uploadNote}</p>
-              )}
-              {uploadError && (
-                <p className="mt-1 text-xs text-[#ff453a]">{uploadError}</p>
-              )}
-            </div>
-
-            {draft.media.type === "video" && (
-              <div className="block">
-                <span className="text-xs uppercase tracking-wider text-[#737373]">
-                  Poster (optional)
-                </span>
-                <FileDropZone
-                  accept="image/jpeg,image/png,image/webp,image/gif"
-                  disabled={compressing || saving}
-                  onFile={onProcessPoster}
-                  className="mt-1.5 p-3"
-                >
-                  <input
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/gif"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) void onProcessPoster(file);
-                    }}
-                    disabled={compressing || saving}
-                    className="block w-full text-sm text-[#a3a3a3] file:mr-4 file:border-0 file:bg-white file:px-3 file:py-2 file:text-sm file:font-medium file:text-black hover:file:opacity-90 disabled:opacity-50"
-                  />
-                </FileDropZone>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 px-5 py-4">
-          <div>
             {!draft.isNew && onDelete ? (
               <button
                 type="button"
@@ -348,11 +351,7 @@ function PieceModal({
               >
                 Delete piece
               </button>
-            ) : (
-              <span className="text-xs text-[#525252]">
-                {saving ? "Saving…" : dirty ? "Unsaved edits" : "Ready"}
-              </span>
-            )}
+            ) : null}
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -388,6 +387,7 @@ export function CreativeShowcaseEditor({
   initialItems: CreativeShowcaseItem[];
 }) {
   const { success, error: toastError } = useToast();
+  const { confirm } = useConfirm();
   const [items, setItems] = useState(initialItems);
   const itemsRef = useRef(items);
   itemsRef.current = items;
@@ -667,7 +667,13 @@ export function CreativeShowcaseEditor({
 
   async function deleteFromModal() {
     if (!modal || modal.isNew) return;
-    if (!window.confirm(`Delete “${modal.item.title || "this piece"}”?`)) return;
+    const discard = await confirm({
+      title: `Delete “${modal.item.title || "this piece"}”?`,
+      message: "This removes it from the gallery.",
+      confirmLabel: "Delete",
+      tone: "danger",
+    });
+    if (!discard) return;
 
     const id = modal.item.id;
     const previous = itemsRef.current;
@@ -758,18 +764,9 @@ export function CreativeShowcaseEditor({
           <button
             type="button"
             onClick={openCreate}
-            className="flex h-9 w-9 items-center justify-center border border-white/15 text-white transition-colors hover:border-[#ff453a] hover:text-[#ff453a]"
-            aria-label="Add piece"
-            title="Add piece"
+            className="bg-white px-4 py-2 text-sm font-medium text-black hover:opacity-90"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-              <path
-                d="M8 3v10M3 8h10"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
+            + Add piece
           </button>
         </div>
       </div>

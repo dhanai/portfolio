@@ -24,7 +24,7 @@ export function SiteHeader({ config }: { config: SiteConfigView }) {
           className="group flex items-center gap-2 text-sm font-medium tracking-tight text-foreground"
         >
           <span className="h-2 w-2 rounded-full bg-accent transition-shadow group-hover:shadow-[0_0_12px_var(--accent)]" />
-          {config.fullName}
+          {config.name}
         </Link>
         <nav className="flex items-center gap-8">
           {config.nav.map((item) => {

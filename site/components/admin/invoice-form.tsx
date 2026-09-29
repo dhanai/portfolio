@@ -26,19 +26,21 @@ export function InvoiceForm({
   submitLabel,
   pendingLabel,
   successMessage,
+  className = "mt-8 space-y-8",
 }: {
   action: (formData: FormData) => Promise<ActionResult | void>;
   initial?: Partial<InvoiceFormValues>;
   submitLabel: string;
   pendingLabel: string;
   successMessage: string;
+  className?: string;
 }) {
   return (
     <AdminForm
       action={action}
       successMessage={successMessage}
       alwaysEnableSubmit
-      className="mt-8 space-y-8"
+      className={className}
     >
       {initial?.id ? <input type="hidden" name="id" value={initial.id} /> : null}
 

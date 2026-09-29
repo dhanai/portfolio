@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     getCreativeShowcase(),
   ]);
   return {
-    title: "AI creative",
+    title: showcase.title || "AI creative",
     description:
       showcase.subtitle ||
       `Generative art direction and campaign craft — ${config.fullName}`,
@@ -32,14 +32,15 @@ export default async function AiPage() {
     <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
       <header className="mb-16 max-w-2xl">
         <FadeIn>
-          <p className="label-caps text-muted">Generative</p>
+          <p className="label-caps text-muted">{showcase.eyebrow}</p>
           <h1 className="mt-4 font-display text-4xl font-medium tracking-tight text-foreground md:text-5xl">
-            {showcase.title || "AI creative"}
+            {showcase.title}
           </h1>
-          <p className="mt-4 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
-            {showcase.subtitle ||
-              "Directed generative campaigns, stills, and motion — taste as the production system."}
-          </p>
+          {showcase.subtitle ? (
+            <p className="mt-4 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
+              {showcase.subtitle}
+            </p>
+          ) : null}
         </FadeIn>
       </header>
 

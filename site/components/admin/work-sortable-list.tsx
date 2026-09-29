@@ -74,7 +74,7 @@ export function WorkSortableList({ works: initialWorks }: { works: WorkRow[] }) 
     return (
       <p className="p-8 text-center text-sm text-[#737373]">
         No work items yet.{" "}
-        <Link href="/admin/work/new" className="text-white underline">
+        <Link href="/admin/work?new=1" className="text-white underline">
           Create one
         </Link>{" "}
         or run <code className="text-[#ff453a]">npm run db:seed</code>

@@ -44,6 +44,7 @@ export default async function AdminSitePage() {
         if (!Number.isFinite(n)) return current.homepageWorkCount;
         return Math.min(24, Math.max(1, Math.round(n)));
       })(),
+      workSectionTitle: current.workSectionTitle,
       // Homepage no longer renders "Now" — preserve existing CMS values.
       now: current.now,
     });
