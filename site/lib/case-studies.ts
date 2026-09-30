@@ -28,6 +28,8 @@ export type CaseStudy = {
   galleryLayout?: "devices" | "frames";
   /** Label above gallery items after the first two frames */
   stillsLabel?: string;
+  /** Full-width process boards (user flows, state specs) */
+  boards?: CaseStudyGalleryItem[];
   sections: CaseStudySection[];
   reflection: string;
 };
@@ -150,6 +152,18 @@ export const caseStudies: CaseStudy[] = [
         caption: "Brand system — voice, cast, insights",
       },
     ],
+    boards: [
+      {
+        src: `${WORK_BLOB}/doomsy/flow-board.webp`,
+        alt: "Doomsy key flow: drop a URL, agent reads the site, swipe the feed, like or pass, edit, hand off to Director",
+        caption: "Key flow: your taps on top, the agent’s work underneath",
+      },
+      {
+        src: `${WORK_BLOB}/doomsy/states-board.webp`,
+        alt: "Doomsy states: reading the site, first batch loading, failed render, out of credits, unreadable URL",
+        caption: "States spec: first run, loading, error, limit, and a bad URL",
+      },
+    ],
     sections: [
       {
         heading: "Overview",
@@ -174,6 +188,18 @@ export const caseStudies: CaseStudy[] = [
           "Clear hierarchy for photos, carousels, and reels in one feed",
           "Edit-in-plain-English as a product affordance, not a hidden power feature",
           "Director mode for autonomous fill, model tiers, cast sheets, and brand voice",
+        ],
+      },
+      {
+        heading: "Key flow",
+        paragraphs: [
+          "The flow runs in two lanes: what you do, and what the agent does between your taps. Your input is taste — like, pass, keep, edit. Every swipe feeds the next batch, so the feed gets more on-brand the more you use it, with no settings page to tune.",
+        ],
+      },
+      {
+        heading: "States & edge cases",
+        paragraphs: [
+          "Generative products spend a lot of time in between: reading a site, drafting, failing, running out of credits. I designed those screens as carefully as the feed. Each one says what is happening, keeps finished work safe, and offers one next step.",
         ],
       },
       {
@@ -404,6 +430,18 @@ export const caseStudies: CaseStudy[] = [
         caption: "Profile — handicap, social graph, hosting",
       },
     ],
+    boards: [
+      {
+        src: `${WORK_BLOB}/parfade/flow-board.webp`,
+        alt: "Parfade key flow: host plans a round, invites, Parfade pushes, players accept or decline, round locks, side games, recap",
+        caption: "Key flow: host, Parfade, and players in one round",
+      },
+      {
+        src: `${WORK_BLOB}/parfade/states-board.webp`,
+        alt: "Parfade states: invite with course and time, planning vs locked, round full, pending approval, empty My rounds",
+        caption: "States spec: invite, round status, too late, pending, and empty",
+      },
+    ],
     sections: [
       {
         heading: "Overview",
@@ -429,6 +467,18 @@ export const caseStudies: CaseStudy[] = [
           "Planning vs locked tee time as clear states; course and time on the notification and accept screen (after a friend accepted then texted “which course?”)",
           "Games, scoring, and recaps so the app isn’t only useful for five minutes of RSVP",
           "Groups and profiles so regular foursomes stick around after the round",
+        ],
+      },
+      {
+        heading: "Key flow",
+        paragraphs: [
+          "The host picks friends or a group, and Parfade pushes the invite with the course and time attached. The first players to accept fill the round, and a full round flips from planning to locked. Players can also find open rounds in Discover and either join instantly or request approval, depending on how the host set the round up.",
+        ],
+      },
+      {
+        heading: "States & edge cases",
+        paragraphs: [
+          "Most invite confusion is about status: am I in, is it booked, did the host see my request. Each state answers one of those directly, including the ones nobody likes to design: too late, still waiting, and nothing here yet.",
         ],
       },
       {
@@ -491,6 +541,18 @@ export const caseStudies: CaseStudy[] = [
         caption: "Cart — checkout via Shopify",
       },
     ],
+    boards: [
+      {
+        src: `${WORK_BLOB}/petshirts/flow-board.webp`,
+        alt: "Petshirts key flow: land, pick a style, upload, generate preview, regenerate or add to cart, Shopify checkout, 4K print file, print and ship",
+        caption: "Key flow: customer, system, and what happens after payment",
+      },
+      {
+        src: `${WORK_BLOB}/petshirts/states-board.webp`,
+        alt: "Petshirts states: uploading, painting the preview, failed preview, rate limited, empty cart",
+        caption: "States spec: upload, generating, error, rate limit, and empty cart",
+      },
+    ],
     sections: [
       {
         heading: "Overview",
@@ -515,6 +577,18 @@ export const caseStudies: CaseStudy[] = [
           "Live flat-lay preview on Comfort Colors blanks (tee, sweatshirt, long sleeve)",
           "Collections (Bootleg, Gallery, Saturday Morning, Fridge Door, Holiday, Club…) with a prompt library behind the UI",
           "Headless Shopify checkout with design URLs on line items for operators",
+        ],
+      },
+      {
+        heading: "Key flow",
+        paragraphs: [
+          "Three lanes: the customer, the system, and what happens after payment. The customer only makes taste calls — style, love it or regenerate, garment and size. Abuse guards, preview generation, the 4K print file, and the handoff to the operator all happen out of view.",
+        ],
+      },
+      {
+        heading: "States & edge cases",
+        paragraphs: [
+          "Generation is slow, sometimes fails, and costs money, so rate limits are real. The states keep the pet and the tee on screen, never lose the customer’s photo or finished designs, and always leave one clear next step.",
         ],
       },
       {

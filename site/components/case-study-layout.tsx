@@ -166,7 +166,38 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
         </div>
       ) : null}
 
-      {study.diagram && (
+      {study.boards && study.boards.length > 0 ? (
+        <div className="border-b border-border">
+          <div className="mx-auto max-w-6xl px-6 py-14 md:py-20">
+            <p className="label-caps text-muted">Process</p>
+            <h2 className="mt-3 text-xl font-medium tracking-tight text-foreground">
+              Flows and states
+            </h2>
+            <div className="mt-10 space-y-14">
+              {study.boards.map((item) => (
+                <figure key={item.src}>
+                  <a
+                    href={item.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block overflow-hidden border border-border bg-surface"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.src} alt={item.alt} className="w-full" />
+                  </a>
+                  {item.caption ? (
+                    <figcaption className="mt-3 text-sm text-muted">
+                      {item.caption}
+                    </figcaption>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {study.diagram && !study.boards?.length && (
         <div className="border-b border-border bg-surface">
           <div className="mx-auto max-w-4xl px-6 py-14">
             {/* eslint-disable-next-line @next/next/no-img-element */}
