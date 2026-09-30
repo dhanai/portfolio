@@ -15,9 +15,9 @@ const STILLS = "/Applications/MAMP/htdocs/dev/portfolio/assets/undeniable-stills
 
 const ITEMS = [
   {
-    local: path.join(ROOT, "undeniable-5x4.png"),
-    blobKey: "work/undeniable.webp",
-    publicName: "undeniable",
+    local: path.join(ROOT, "undeniable-5x4-layout.png"),
+    blobKey: "work/undeniable-cover.webp",
+    publicName: "undeniable-cover",
     mode: "preview" as const,
   },
   {

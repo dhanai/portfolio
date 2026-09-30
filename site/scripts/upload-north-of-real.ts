@@ -15,9 +15,9 @@ const EXP = path.join(ROOT, "exports");
 
 const ITEMS = [
   {
-    local: path.join(EXP, "north-of-real-5x4.png"),
-    blobKey: "work/north-of-real.webp",
-    publicName: "north-of-real",
+    local: path.join(EXP, "north-of-real-5x4-layout.png"),
+    blobKey: "work/north-of-real-cover.webp",
+    publicName: "north-of-real-cover",
     mode: "preview" as const,
   },
   {

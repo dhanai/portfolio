@@ -33,7 +33,7 @@ export const projects: Project[] = [
     subtitle: "AI generative video studio — brand + landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
-    image: `${BLOB}/undeniable.webp`,
+    image: `${BLOB}/undeniable-cover.webp`,
     color: accentColors.undeniable,
   },
   {
@@ -42,7 +42,7 @@ export const projects: Project[] = [
     subtitle: "Hybrid AI production studio — brand + landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
-    image: `${BLOB}/north-of-real.webp`,
+    image: `${BLOB}/north-of-real-cover.webp`,
     color: accentColors.northOfReal,
   },
   {
