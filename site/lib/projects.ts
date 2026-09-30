@@ -87,7 +87,7 @@ export const projects: Project[] = [
     subtitle: "Product UX for an AI creative feed",
     tags: ["Product", "Brand", "AI"],
     year: "2026–present",
-    image: `${BLOB}/doomsy.webp`,
+    image: `${BLOB}/doomsy-thumb-v2.webp`,
     color: accentColors.doomsy,
   },
   {
@@ -124,7 +124,7 @@ export const projects: Project[] = [
     subtitle: "Product design · golf rounds & side games",
     tags: ["Product", "iOS", "Social"],
     year: "2026–present",
-    image: `${BLOB}/parfade.webp`,
+    image: `${BLOB}/parfade-thumb-v2.webp`,
     color: accentColors.parfade,
   },
   {
@@ -133,7 +133,7 @@ export const projects: Project[] = [
     subtitle: "AI pet art → print-ready apparel",
     tags: ["Product", "Brand", "AI"],
     year: "2026–present",
-    image: `${BLOB}/petshirts.webp`,
+    image: `${BLOB}/petshirts-thumb-v2.webp`,
     color: accentColors.petshirts,
   },
 ];
