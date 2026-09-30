@@ -9,7 +9,7 @@ export function CreativeShowcaseRail({
 }: {
   items: CreativeShowcaseItem[];
 }) {
-  const railRef = useHorizontalRailWheel<HTMLDivElement>();
+  const railRef = useHorizontalRailWheel<HTMLDivElement>("creative");
 
   return (
     <div

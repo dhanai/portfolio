@@ -5,7 +5,7 @@ import { useHorizontalRailWheel } from "@/components/use-horizontal-rail";
 import type { Project } from "@/lib/projects";
 
 export function WorkScrollRail({ projects }: { projects: Project[] }) {
-  const railRef = useHorizontalRailWheel<HTMLDivElement>();
+  const railRef = useHorizontalRailWheel<HTMLDivElement>("work");
 
   if (projects.length === 0) {
     return <p className="px-6 py-10 text-sm text-muted">No work yet.</p>;

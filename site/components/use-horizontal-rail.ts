@@ -2,9 +2,41 @@
 
 import { useEffect, useRef } from "react";
 
-/** Sideways wheel moves the rail. Vertical wheel keeps scrolling the page. */
-export function useHorizontalRailWheel<T extends HTMLElement>() {
+/**
+ * Sideways wheel moves the rail. Vertical wheel keeps scrolling the page.
+ * With a storageKey, the rail's scroll position survives navigating away and back.
+ */
+export function useHorizontalRailWheel<T extends HTMLElement>(storageKey?: string) {
   const railRef = useRef<T>(null);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail || !storageKey) return;
+
+    const key = `rail-scroll:${storageKey}`;
+    const saved = Number(sessionStorage.getItem(key));
+    if (saved > 0) {
+      rail.scrollLeft = saved;
+      // Layout can settle a frame late after client navigation.
+      requestAnimationFrame(() => {
+        rail.scrollLeft = saved;
+      });
+    }
+
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        sessionStorage.setItem(key, String(Math.round(rail.scrollLeft)));
+      });
+    };
+
+    rail.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      rail.removeEventListener("scroll", onScroll);
+    };
+  }, [storageKey]);
 
   useEffect(() => {
     const rail = railRef.current;
