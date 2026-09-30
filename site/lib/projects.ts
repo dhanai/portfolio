@@ -42,7 +42,7 @@ export const projects: Project[] = [
     subtitle: "Hybrid AI production studio — brand + landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
-    image: `${BLOB}/north-of-real-cover.webp`,
+    image: `${BLOB}/north-of-real-cover-v2.webp`,
     color: accentColors.northOfReal,
   },
   {

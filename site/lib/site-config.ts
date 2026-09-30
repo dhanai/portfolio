@@ -57,5 +57,9 @@ export const accentColors = {
   trestle: "#FF4A1C",
   wedge: "#E8412A",
   vesper: "#5E1F2B",
+  uav: "#FF4D00",
+  sunworld: "#C0512B",
+  pacificMattress: "#2E3486",
+  strumly: "#D6F20A",
   default: "#FF453A",
 } as const;

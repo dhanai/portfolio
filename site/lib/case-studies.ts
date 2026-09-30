@@ -26,12 +26,18 @@ export type CaseStudy = {
   gallery?: CaseStudyGalleryItem[];
   /** How to render gallery: device thumbs (default) or full page frames */
   galleryLayout?: "devices" | "frames";
+  /** Label above gallery items after the first two frames */
+  stillsLabel?: string;
   sections: CaseStudySection[];
   reflection: string;
 };
 
 const SPEC_BLOB =
   "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/spec";
+
+const WORK_BLOB = "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work";
+
+const REFRESH_BLOB = `${WORK_BLOB}/refresh`;
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -618,22 +624,22 @@ export const caseStudies: CaseStudy[] = [
     slug: "north-of-real",
     title: "North of Real",
     subtitle:
-      "Hybrid live-action × AI production studio — light editorial landing",
+      "Hybrid live-action × AI production studio — bold editorial landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
     role: "Brand · Product Design · Art Direction",
     externalUrl: "https://www.figma.com/design/HIgLRDb6hh5B1gjHNC6VKe",
     heroImage:
-      "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/desktop-layout.webp",
+      "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/desktop-layout-v2.webp",
     galleryLayout: "frames",
     gallery: [
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/desktop-layout.webp",
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/desktop-layout-v2.webp",
         alt: "North of Real desktop landing — full 1440 layout from Figma",
         caption: "Desktop 1440",
       },
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/mobile-layout.webp",
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/mobile-layout-v2.webp",
         alt: "North of Real mobile landing — full 390 layout from Figma",
         caption: "Mobile 390",
       },
@@ -662,48 +668,53 @@ export const caseStudies: CaseStudy[] = [
         alt: "Set SHIFT pipeline breakdown — North of Real",
         caption: "Set SHIFT",
       },
+      {
+        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-ivy.webp",
+        alt: "Ivy-wrapped fist — North of Real ethos still",
+        caption: "Ethos still",
+      },
     ],
     sections: [
       {
         heading: "Overview",
         paragraphs: [
-          "North of Real is a speculative brand and desktop/mobile landing for a Los Angeles hybrid studio — live-action craft fused with AI pipelines like Set SHIFT. Built as a light, gallery-paced production-house site rather than another dark AI SaaS landing.",
+          "North of Real is a speculative brand and desktop/mobile landing for a Los Angeles hybrid studio — live-action craft fused with AI pipelines like Set SHIFT. Built as a bold, film-poster production-house site rather than another dark AI SaaS landing.",
           "Their own copy and work titles lead: THE LOST YEARS, Nike Giannis, Super Bowl LX, Jeep UNBOUND, plus the Set SHIFT product story.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Hybrid production houses need a site that reads as prestige filmmaking first — light, gallery-paced, era-organized work — while still explaining an AI-assisted pipeline without looking like every other generative studio.",
+          "Hybrid production houses need a site that reads as prestige filmmaking first — confident type, cinematic frames, work that sells itself — while still explaining an AI-assisted pipeline without looking like every other generative studio.",
         ],
       },
       {
         heading: "Design system",
         paragraphs: [
-          "Cool near-white field (#F5F6F5), ink type, teal accent (#1FA89A). Manrope ExtraLight display with a split wordmark (teal “of”), NR monogram, film-gate corners, and hairline meta. Work is structured as ERA timeline cards with media + meta rails.",
+          "Warm bone paper (#ECE8E1) against ink (#0F0F0E) bands, with a single teal signal (#1FA89A). Montserrat ExtraBold caps carry the poster-scale headlines, Instrument Serif Italic softens the “of” in the wordmark and the contact line, and IBM Plex Mono handles credits, captions, and meta like a film slate.",
         ],
         bullets: [
           "Desktop 1440 + Mobile 390 in one Figma file",
-          "IA: Work eras → Studio → Ethos → Set SHIFT → Contact form",
-          "Stills pulled from northofreal.ai preview GIFs (letterbox cropped)",
-          "No play overlays — frames read as stills, not fake players",
+          "IA: Hero reel frame → Credits strip → Selected work → Set SHIFT → Ethos → Contact",
+          "Hero frame cropped to 2.39:1 with a “Now showing” caption rail",
+          "Set SHIFT runs full-bleed, with its pipeline columns set on ink",
         ],
       },
       {
         heading: "Product design",
         paragraphs: [
-          "Information architecture mirrors a next-gen production house: selected work by era, about + ethos, then Set SHIFT as the capability/product block with live-action / pipeline / delivery columns, closing on a real inquiry form and hello@northofreal.ai.",
+          "Information architecture mirrors a next-gen production house: a cinematic hero frame, a credits strip, then selected work as an asymmetric grid. Set SHIFT is the capability block, with live-action, pipeline, and delivery columns. The page moves through the ethos and closes on a real inquiry form and hello@northofreal.ai.",
         ],
       },
       {
         heading: "Outcome",
         paragraphs: [
-          "A coherent alternate studio-site system — proof I can art-direct the same category as Undeniable in a completely different visual register when the brief calls for editorial light, not signal-color dark.",
+          "A coherent alternate studio-site system — proof I can art-direct the same category as Undeniable in a completely different visual register when the brief calls for warm editorial paper, not signal-color dark.",
         ],
       },
     ],
     reflection:
-      "Two AI studio sites can share a category and still feel unrelated. Light editorial pacing sells craft-first hybrid work; dark signal color sells generative heat.",
+      "Two AI studio sites can share a category and still feel unrelated. Poster type on warm paper sells craft-first hybrid work; dark signal color sells generative heat.",
   },
   {
     slug: "arden",
@@ -968,6 +979,258 @@ export const caseStudies: CaseStudy[] = [
     ],
     reflection:
       "Luxury is mostly what you leave out. One accent color, lots of air, and a product shot you could put in a gallery.",
+  },
+  {
+    slug: "uav",
+    title: "UAV",
+    subtitle: "Redesign — a Swiss-grid site for an aerial cinematography crew",
+    tags: ["Redesign", "Brand", "Web"],
+    year: "2026",
+    role: "Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${REFRESH_BLOB}/uav/desktop-layout.webp`,
+    galleryLayout: "frames",
+    stillsLabel: "Before",
+    gallery: [
+      {
+        src: `${REFRESH_BLOB}/uav/desktop-layout.webp`,
+        alt: "UAVantage desktop redesign — full 1440 layout from Figma",
+        caption: "Redesign — desktop 1440",
+      },
+      {
+        src: `${REFRESH_BLOB}/uav/mobile-layout.webp`,
+        alt: "UAVantage mobile redesign — full 390 layout from Figma",
+        caption: "Redesign — mobile 390",
+      },
+      {
+        src: `${WORK_BLOB}/uav.webp`,
+        alt: "Original UAVantage site design",
+        caption: "Original design",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "UAVantage flies cinema-grade drone crews for film, broadcast, and real estate. I designed their original site; this is a 2026 pass that brings it up to how I'd design it today.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "The original was a mid-2010s layout: a dark side panel, a small drone photo, offset boxes, and a thin “We Love Flying” headline. The footage never got room to lead, and nothing signaled the licensing, insurance, and set experience producers hire for.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Pure white and true black with one signal orange. Barlow Condensed Bold in caps for display, Instrument Sans for body, Geist Mono for coordinates and figure captions. Square corners and hairline rules throughout.",
+        ],
+        bullets: [
+          "Full-width headline over an edge-to-edge hero, with a white copy card cut into the photo",
+          "Services as a three-column hairline grid instead of cards",
+          "Operations as a full-bleed top-down shot, brightened in the open area and shaded only where the type sits",
+          "Orange booking band and a giant wordmark footer",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in Figma. One of four legacy client sites refreshed together, each pushed into its own layout, palette, and type so the set never reads as one template.",
+        ],
+      },
+    ],
+    reflection:
+      "Aerial footage is already the spectacle. The site works best as a clean technical frame around it: grid, captions, and one color.",
+  },
+  {
+    slug: "sunworld",
+    title: "Sunworld",
+    subtitle: "Redesign — desert landscape care in sand, terracotta, and agave",
+    tags: ["Redesign", "Brand", "Web"],
+    year: "2026",
+    role: "Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${REFRESH_BLOB}/sunworld/desktop-layout.webp`,
+    galleryLayout: "frames",
+    stillsLabel: "Before",
+    gallery: [
+      {
+        src: `${REFRESH_BLOB}/sunworld/desktop-layout.webp`,
+        alt: "Sunworld desktop redesign — full 1440 layout from Figma",
+        caption: "Redesign — desktop 1440",
+      },
+      {
+        src: `${REFRESH_BLOB}/sunworld/mobile-layout.webp`,
+        alt: "Sunworld mobile redesign — full 390 layout from Figma",
+        caption: "Redesign — mobile 390",
+      },
+      {
+        src: `${WORK_BLOB}/sunworld.webp`,
+        alt: "Original Sunworld site design",
+        caption: "Original design",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Sunworld designs, builds, and maintains landscapes across the Southwest. I designed their original site; this 2026 refresh rebuilds it around the desert it works in.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "The original was a clean white layout with orange blocks and a lush, green hero. Sunworld's work is water-wise desert planting, and a year-round care plan is the real product, so the page needed to feel like the place and make the plan tangible.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Warm sand field, terracotta, deep agave green, and a sun-yellow highlight. Bricolage Grotesque for display over Hanken Grotesk. Arches and arcs are the recurring shape, from image crops to section edges.",
+        ],
+        bullets: [
+          "Centered hero over a full-bleed desert property with a booking ticker",
+          "Arched service photography in an offset collage",
+          "“A year of care” as a sun path arcing across twelve months on a terracotta band",
+          "Before/after slider for a featured project, then a green band for the quote and site-walk form",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in Figma, where the sun path becomes a vertical timeline on mobile. Part of a four-site legacy refresh.",
+        ],
+      },
+    ],
+    reflection:
+      "Service businesses sell the calendar as much as the craft. Drawing the year as the sun's path made maintenance feel like a plan instead of a chore.",
+  },
+  {
+    slug: "pacific-mattress",
+    title: "Pacific Mattress",
+    subtitle: "Redesign — a mattress site that scrolls from midnight to sunrise",
+    tags: ["Redesign", "Brand", "E-commerce"],
+    year: "2026",
+    role: "Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${REFRESH_BLOB}/pacific-mattress/desktop-layout.webp`,
+    galleryLayout: "frames",
+    stillsLabel: "Before",
+    gallery: [
+      {
+        src: `${REFRESH_BLOB}/pacific-mattress/desktop-layout.webp`,
+        alt: "Pacific Mattress desktop redesign — full 1440 layout from Figma",
+        caption: "Redesign — desktop 1440",
+      },
+      {
+        src: `${REFRESH_BLOB}/pacific-mattress/mobile-layout.webp`,
+        alt: "Pacific Mattress mobile redesign — full 390 layout from Figma",
+        caption: "Redesign — mobile 390",
+      },
+      {
+        src: `${WORK_BLOB}/pacific-mattress.webp`,
+        alt: "Original Pacific Mattress site design",
+        caption: "Original design (2016)",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Pacific Mattress makes two foam mattresses by hand in Los Angeles. I designed the original storefront; this 2026 refresh turns the whole page into one night's sleep.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "The 2016 original was a white storefront with a dim bedroom photo and teal buttons, the same template most bed-in-a-box brands shipped. The product is sleep, so the page needed a mood you could feel before reading a word.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "A single background gradient runs from midnight indigo through periwinkle and lavender to a peach sunrise. Instrument Serif with italics for display, DM Sans for body, seafoam as the accent. Everything is centered and soft: pills, circles, a crescent moon.",
+        ],
+        bullets: [
+          "Starfield hero with a crescent moon and the bedroom set in a wide pill",
+          "Both feels presented as glowing circular “moons” with a firmness dot scale",
+          "Foam layers called out around a single circle instead of a spec table",
+          "The 100-night trial sits on a rising sun at the bottom of the page",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in Figma. Part of a four-site legacy refresh, and the one where the scroll itself carries the concept.",
+        ],
+      },
+    ],
+    reflection:
+      "Commerce pages rarely get a narrative. Here the scroll is the story: you start at bedtime and check out at sunrise.",
+  },
+  {
+    slug: "strumly",
+    title: "Strumly",
+    subtitle: "Redesign — a neon collage landing for local live music",
+    tags: ["Redesign", "Brand", "Product"],
+    year: "2026",
+    role: "Web Design · Art Direction",
+    externalUrl: "https://www.figma.com/design/G3Yq5UWRVlt6as4jUw8dIU",
+    heroImage: `${REFRESH_BLOB}/strumly/desktop-layout.webp`,
+    galleryLayout: "frames",
+    stillsLabel: "Before",
+    gallery: [
+      {
+        src: `${REFRESH_BLOB}/strumly/desktop-layout.webp`,
+        alt: "Strumly desktop redesign — full 1440 layout from Figma",
+        caption: "Redesign — desktop 1440",
+      },
+      {
+        src: `${REFRESH_BLOB}/strumly/mobile-layout.webp`,
+        alt: "Strumly mobile redesign — full 390 layout from Figma",
+        caption: "Redesign — mobile 390",
+      },
+      {
+        src: `${WORK_BLOB}/strumly.webp`,
+        alt: "Original Strumly app landing design",
+        caption: "Original design",
+      },
+    ],
+    sections: [
+      {
+        heading: "Overview",
+        paragraphs: [
+          "Strumly is a live map of gigs, open mics, and basement shows, with tipping that goes straight to the artist on stage. I designed the original landing; this 2026 refresh gives it the energy of a show flyer.",
+        ],
+      },
+      {
+        heading: "Problem",
+        paragraphs: [
+          "The original looked like most music apps of its time: a dark photo hero, a phone mockup, and a green accent, close to a streaming service. Strumly is about small local shows, so it should feel like something stapled to a telephone pole.",
+        ],
+      },
+      {
+        heading: "Design system",
+        paragraphs: [
+          "Near-black field with lime, hot pink, and cobalt. The wordmark and key phrases cycle through pixel, grotesk, and hand-drawn glyphs letter by letter, over clean Inter caps. A chrome guitar and die-cut stickers carry the collage.",
+        ],
+        bullets: [
+          "Collage hero of photo cards, stickers, and live app screens under a mixed-glyph wordmark",
+          "Justified all-caps statement with inline color highlights",
+          "Wavy cobalt “Tip the band” poster with the tipping flow on a phone",
+          "Sticky-note reviews and a lime wave CTA",
+        ],
+      },
+      {
+        heading: "Outcome",
+        paragraphs: [
+          "Desktop 1440 and mobile 390 in Figma. Part of a four-site legacy refresh, and the loudest of the set.",
+        ],
+      },
+    ],
+    reflection:
+      "Local music is scrappy and handmade. Mixing glyphs and stickers let the brand feel DIY without looking unfinished.",
   },
 ];
 

@@ -15,27 +15,27 @@ const EXP = path.join(ROOT, "exports");
 
 const ITEMS = [
   {
-    local: path.join(EXP, "north-of-real-5x4-layout.png"),
-    blobKey: "work/north-of-real-cover.webp",
-    publicName: "north-of-real-cover",
+    local: path.join(EXP, "north-of-real-5x4-v2.png"),
+    blobKey: "work/north-of-real-cover-v2.webp",
+    publicName: "north-of-real-cover-v2",
     mode: "preview" as const,
   },
   {
-    local: path.join(EXP, "desktop-layout-2x.png"),
-    blobKey: "work/north-of-real/desktop-layout.webp",
-    publicName: "north-of-real/desktop-layout",
+    local: path.join(EXP, "desktop-layout-v2-2x.png"),
+    blobKey: "work/north-of-real/desktop-layout-v2.webp",
+    publicName: "north-of-real/desktop-layout-v2",
     mode: "fullpage" as const,
   },
   {
-    local: path.join(EXP, "mobile-layout-2x.png"),
-    blobKey: "work/north-of-real/mobile-layout.webp",
-    publicName: "north-of-real/mobile-layout",
+    local: path.join(EXP, "mobile-layout-v2-2x.png"),
+    blobKey: "work/north-of-real/mobile-layout-v2.webp",
+    publicName: "north-of-real/mobile-layout-v2",
     mode: "fullpage" as const,
   },
   {
-    local: path.join(EXP, "desktop-hero-2x.png"),
-    blobKey: "work/north-of-real/desktop-hero.webp",
-    publicName: "north-of-real/desktop-hero",
+    local: path.join(ROOT, "hero-ivy.jpg"),
+    blobKey: "work/north-of-real/still-ivy.webp",
+    publicName: "north-of-real/still-ivy",
     mode: "fullpage" as const,
   },
   {

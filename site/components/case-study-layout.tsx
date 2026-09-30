@@ -111,8 +111,16 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
             ) : null}
             {study.galleryLayout === "frames" && study.gallery.length > 2 ? (
               <div className="mt-14">
-                <p className="label-caps text-muted">Placement stills</p>
-                <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <p className="label-caps text-muted">
+                  {study.stillsLabel ?? "Placement stills"}
+                </p>
+                <div
+                  className={
+                    study.gallery.length === 3
+                      ? "mt-6 max-w-3xl"
+                      : "mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+                  }
+                >
                   {study.gallery.slice(2).map((item) => (
                     <figure key={item.src} className="group">
                       <div className="overflow-hidden border border-border bg-surface">

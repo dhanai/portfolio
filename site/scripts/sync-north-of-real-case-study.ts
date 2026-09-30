@@ -3,7 +3,7 @@ import { caseStudies } from "@/lib/case-studies";
 import { accentColors } from "@/lib/site-config";
 
 const IMAGE =
-  "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real-cover.webp";
+  "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real-cover-v2.webp";
 
 async function main() {
   const study = caseStudies.find((c) => c.slug === "north-of-real");
