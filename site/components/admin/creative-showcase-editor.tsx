@@ -2,7 +2,10 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { CreativeShowcaseItem } from "@/lib/defaults/creative-showcase";
-import { compressImageForUpload } from "@/lib/admin/compress-image-client";
+import {
+  captureVideoFrame,
+  compressImageForUpload,
+} from "@/lib/admin/compress-image-client";
 import { uploadCreativeVideoToBlob } from "@/lib/admin/upload-creative-blob-client";
 import { reorderList } from "@/lib/admin/reorder-list";
 import {
@@ -606,10 +609,13 @@ export function CreativeShowcaseEditor({
         type = uploaded.type;
       }
 
-      if (modal.pendingPoster) {
+      const posterFile =
+        modal.pendingPoster ??
+        (modal.pendingVideo ? await captureVideoFrame(modal.pendingVideo) : null);
+      if (posterFile) {
         const formData = new FormData();
         formData.set("itemId", modal.item.id);
-        formData.set("file", modal.pendingPoster);
+        formData.set("file", posterFile);
         const uploaded = await uploadCreativeItemPoster(formData);
         if ("error" in uploaded) throw new Error(uploaded.error);
         poster = uploaded.url;
@@ -632,7 +638,7 @@ export function CreativeShowcaseEditor({
       const exists = previous.some((item) => item.id === nextItem.id);
       const nextItems = exists
         ? previous.map((item) => (item.id === nextItem.id ? nextItem : item))
-        : [...previous, nextItem];
+        : [nextItem, ...previous];
 
       const ok = await persistItems(
         nextItems,

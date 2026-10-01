@@ -43,6 +43,56 @@ function canvasToBlob(
   });
 }
 
+/** Grab a still from a local video file to use as its poster. */
+export async function captureVideoFrame(
+  file: File,
+  atSeconds = 1,
+): Promise<File | null> {
+  const url = URL.createObjectURL(file);
+  const video = document.createElement("video");
+  video.muted = true;
+  video.playsInline = true;
+  video.preload = "auto";
+  video.src = url;
+
+  try {
+    await new Promise<void>((resolve, reject) => {
+      video.onloadedmetadata = () => resolve();
+      video.onerror = () => reject(new Error("Could not read video"));
+    });
+    video.currentTime = Math.min(atSeconds, (video.duration || 0) / 2);
+    await new Promise<void>((resolve, reject) => {
+      video.onseeked = () => resolve();
+      video.onerror = () => reject(new Error("Could not seek video"));
+    });
+
+    const { width, height } = scaleDimensions(
+      video.videoWidth,
+      video.videoHeight,
+      PRESETS.preview.maxWidth,
+      PRESETS.preview.maxHeight,
+    );
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+    ctx.drawImage(video, 0, 0, width, height);
+
+    const blob = await canvasToBlob(canvas, "image/jpeg", 0.88);
+    if (!blob) return null;
+    const baseName = file.name.replace(/\.[^.]+$/, "") || "poster";
+    return new File([blob], `${baseName}-poster.jpg`, {
+      type: "image/jpeg",
+      lastModified: Date.now(),
+    });
+  } catch {
+    return null;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 export async function compressImageForUpload(
   file: File,
   preset: CompressPreset = "preview",

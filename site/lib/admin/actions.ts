@@ -357,8 +357,8 @@ export async function saveWork(data: WorkFormData): Promise<ActionResult | void>
   } else {
     const conflict = await prisma.work.findUnique({ where: { slug } });
     if (conflict) return { error: "Slug already in use" };
-    const maxOrder = await prisma.work.aggregate({ _max: { sortOrder: true } });
-    payload.sortOrder = (maxOrder._max.sortOrder ?? -1) + 1;
+    const minOrder = await prisma.work.aggregate({ _min: { sortOrder: true } });
+    payload.sortOrder = (minOrder._min.sortOrder ?? 1) - 1;
     await prisma.work.create({ data: payload });
   }
 
