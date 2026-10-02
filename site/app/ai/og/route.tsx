@@ -32,10 +32,115 @@ async function toJpegDataUri(url: string, height: number) {
   return `data:image/jpeg;base64,${jpeg.toString("base64")}`;
 }
 
+const CACHE_HEADERS = { "Cache-Control": "public, max-age=3600, s-maxage=86400" };
+const TILE_GAP = 6;
+
+type Showcase = Awaited<ReturnType<typeof getCreativeShowcase>>;
+
+async function collectionImage(showcase: Showcase) {
+  const posters = showcase.items
+    .filter((entry) => !entry.hidden && entry.type === "video" && entry.poster)
+    .slice(0, 3)
+    .map((entry) => entry.poster as string);
+  if (posters.length === 0) return new Response("Not found", { status: 404 });
+
+  const tileW = Math.floor((WIDTH - TILE_GAP * (posters.length - 1)) / posters.length);
+  const [config, tiles, fontMedium, fontRegular] = await Promise.all([
+    getSiteConfigFromCms(),
+    Promise.all(posters.map((url) => toJpegDataUri(url, HEIGHT * 2))),
+    loadFont(500),
+    loadFont(400),
+  ]);
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          position: "relative",
+          background: "#030304",
+          gap: TILE_GAP,
+        }}
+      >
+        {tiles.map((src, index) => (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={index}
+            src={src}
+            alt=""
+            width={tileW}
+            height={HEIGHT}
+            style={{ width: tileW, height: HEIGHT, objectFit: "cover" }}
+          />
+        ))}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: WIDTH,
+            height: HEIGHT,
+            backgroundImage:
+              "linear-gradient(180deg, rgba(3,3,4,0) 40%, rgba(3,3,4,0.7) 70%, rgba(3,3,4,0.95) 100%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 64,
+            right: 64,
+            bottom: 56,
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ width: 56, height: 3, background: "#FF453A" }} />
+            <div
+              style={{
+                fontFamily: "Inter Medium",
+                fontSize: 72,
+                letterSpacing: "-0.03em",
+                lineHeight: 1,
+                color: "#f5f5f5",
+              }}
+            >
+              {showcase.title}
+            </div>
+          </div>
+          <div
+            style={{
+              fontFamily: "Inter Medium",
+              fontSize: 28,
+              color: "#e5e5e5",
+              paddingBottom: 6,
+            }}
+          >
+            {config.fullName}
+          </div>
+        </div>
+      </div>
+    ),
+    {
+      width: WIDTH,
+      height: HEIGHT,
+      headers: CACHE_HEADERS,
+      fonts: [
+        { name: "Inter Medium", data: fontMedium, weight: 500, style: "normal" },
+        { name: "Inter Regular", data: fontRegular, weight: 400, style: "normal" },
+      ],
+    },
+  );
+}
+
 export async function GET(request: Request) {
   const id = new URL(request.url).searchParams.get("v");
   const showcase = await getCreativeShowcase();
-  const item = id ? showcase.items.find((entry) => entry.id === id) : undefined;
+  if (!id) return collectionImage(showcase);
+  const item = showcase.items.find((entry) => entry.id === id);
   const imageUrl = item?.poster ?? (item?.type === "image" ? item.src : undefined);
   if (!item || !imageUrl) {
     return new Response("Not found", { status: 404 });
@@ -164,7 +269,7 @@ export async function GET(request: Request) {
     {
       width: WIDTH,
       height: HEIGHT,
-      headers: { "Cache-Control": "public, max-age=3600, s-maxage=86400" },
+      headers: CACHE_HEADERS,
       fonts: [
         { name: "Inter Medium", data: fontMedium, weight: 500, style: "normal" },
         { name: "Inter Regular", data: fontRegular, weight: 400, style: "normal" },

@@ -19,14 +19,36 @@ export async function generateMetadata({
     getCreativeShowcase(),
     searchParams,
   ]);
+  const pageTitle = showcase.title || "AI creative";
+  const pageDescription =
+    showcase.subtitle ||
+    `Generative art direction and campaign craft — ${config.fullName}`;
+  const collectionImage = {
+    url: "/ai/og",
+    width: 1200,
+    height: 630,
+    alt: `${pageTitle} by ${config.fullName}`,
+  };
   const base: Metadata = {
-    title: showcase.title || "AI creative",
-    description:
-      showcase.subtitle ||
-      `Generative art direction and campaign craft — ${config.fullName}`,
+    title: pageTitle,
+    description: pageDescription,
     robots: {
       index: true,
       follow: true,
+    },
+    openGraph: {
+      title: `${pageTitle} · ${config.name}`,
+      description: pageDescription,
+      url: "/ai",
+      siteName: config.name,
+      type: "website",
+      images: [collectionImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${pageTitle} · ${config.name}`,
+      description: pageDescription,
+      images: [collectionImage.url],
     },
   };
 
