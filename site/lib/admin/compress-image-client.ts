@@ -53,18 +53,44 @@ export async function captureVideoFrame(
   video.muted = true;
   video.playsInline = true;
   video.preload = "auto";
-  video.src = url;
+  // Safari won't reliably load or seek a detached video.
+  video.style.cssText =
+    "position:fixed;left:-9999px;top:0;width:2px;height:2px;opacity:0;pointer-events:none";
+  document.body.appendChild(video);
+
+  // Some browsers never fire loadedmetadata/seeked for codecs they can't decode.
+  const waitFor = (event: "loadeddata" | "seeked") =>
+    new Promise<void>((resolve, reject) => {
+      const timer = window.setTimeout(
+        () => reject(new Error(`Timed out waiting for ${event}`)),
+        8000,
+      );
+      video.addEventListener(
+        event,
+        () => {
+          window.clearTimeout(timer);
+          resolve();
+        },
+        { once: true },
+      );
+      video.addEventListener(
+        "error",
+        () => {
+          window.clearTimeout(timer);
+          reject(new Error("Could not read video"));
+        },
+        { once: true },
+      );
+    });
 
   try {
-    await new Promise<void>((resolve, reject) => {
-      video.onloadedmetadata = () => resolve();
-      video.onerror = () => reject(new Error("Could not read video"));
-    });
+    const loaded = waitFor("loadeddata");
+    video.src = url;
+    await loaded;
+    const seeked = waitFor("seeked");
     video.currentTime = Math.min(atSeconds, (video.duration || 0) / 2);
-    await new Promise<void>((resolve, reject) => {
-      video.onseeked = () => resolve();
-      video.onerror = () => reject(new Error("Could not seek video"));
-    });
+    await seeked;
+    if (!video.videoWidth || !video.videoHeight) return null;
 
     const { width, height } = scaleDimensions(
       video.videoWidth,
@@ -89,6 +115,9 @@ export async function captureVideoFrame(
   } catch {
     return null;
   } finally {
+    video.removeAttribute("src");
+    video.load();
+    video.remove();
     URL.revokeObjectURL(url);
   }
 }

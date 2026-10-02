@@ -609,16 +609,24 @@ export function CreativeShowcaseEditor({
         type = uploaded.type;
       }
 
-      const posterFile =
-        modal.pendingPoster ??
-        (modal.pendingVideo ? await captureVideoFrame(modal.pendingVideo) : null);
-      if (posterFile) {
+      if (modal.pendingPoster) {
         const formData = new FormData();
         formData.set("itemId", modal.item.id);
-        formData.set("file", posterFile);
+        formData.set("file", modal.pendingPoster);
         const uploaded = await uploadCreativeItemPoster(formData);
         if ("error" in uploaded) throw new Error(uploaded.error);
         poster = uploaded.url;
+      } else if (modal.pendingVideo) {
+        const captured = await captureVideoFrame(modal.pendingVideo);
+        if (captured) {
+          const formData = new FormData();
+          formData.set("itemId", modal.item.id);
+          formData.set("file", captured);
+          const uploaded = await uploadCreativeItemPoster(formData).catch(
+            () => null,
+          );
+          if (uploaded && "url" in uploaded) poster = uploaded.url;
+        }
       }
 
       if (!src) throw new Error("Media upload did not return a URL");
