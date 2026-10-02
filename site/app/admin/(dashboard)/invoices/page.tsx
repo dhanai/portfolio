@@ -15,6 +15,10 @@ export default async function AdminInvoicesPage({
   const invoices = await prisma.invoice.findMany({
     orderBy: { createdAt: "desc" },
   });
+  const unpaid = invoices.filter((inv) => inv.status === "sent");
+  const unpaidTotal = unpaid.reduce((sum, inv) => sum + inv.amount, 0);
+  const drafts = invoices.filter((inv) => inv.status === "draft");
+  const draftTotal = drafts.reduce((sum, inv) => sum + inv.amount, 0);
 
   return (
     <div>
@@ -34,6 +38,24 @@ export default async function AdminInvoicesPage({
           <InvoiceCreateForm className="space-y-8" />
         </AdminCreateDrawer>
       </div>
+
+      {invoices.length > 0 ? (
+        <div className="mt-8 border border-white/10 p-5">
+          <p className="text-xs uppercase tracking-wider text-[#737373]">
+            Unpaid
+          </p>
+          <p className="mt-2 font-mono text-3xl font-medium">
+            {formatMoney(unpaidTotal)}
+          </p>
+          <p className="mt-1 text-xs text-[#737373]">
+            {unpaid.length} {unpaid.length === 1 ? "invoice" : "invoices"} sent
+            and awaiting payment
+            {drafts.length > 0
+              ? ` · ${formatMoney(draftTotal)} in ${drafts.length} ${drafts.length === 1 ? "draft" : "drafts"}`
+              : ""}
+          </p>
+        </div>
+      ) : null}
 
       <div className="mt-8 overflow-hidden border border-white/10">
         {invoices.length === 0 ? (
