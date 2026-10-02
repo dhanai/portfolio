@@ -4,6 +4,7 @@ import { AdminForm } from "@/components/admin/admin-form";
 import { AdminSubmit } from "@/components/admin/admin-submit";
 import {
   deleteInvoiceAction,
+  duplicateInvoiceAction,
   markInvoicePaidAction,
 } from "@/lib/admin/invoice-actions";
 import {
@@ -20,7 +21,7 @@ export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ created?: string; saved?: string }>;
+  searchParams: Promise<{ created?: string; saved?: string; duplicated?: string }>;
 };
 
 export default async function AdminInvoiceDetailPage({
@@ -28,7 +29,7 @@ export default async function AdminInvoiceDetailPage({
   searchParams,
 }: PageProps) {
   const { id } = await params;
-  const { created, saved } = await searchParams;
+  const { created, saved, duplicated } = await searchParams;
   const invoice = await prisma.invoice.findUnique({ where: { id } });
   if (!invoice) notFound();
 
@@ -50,6 +51,12 @@ export default async function AdminInvoiceDetailPage({
       {created ? (
         <div className="mb-6 border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
           Invoice created. Copy the link below and send it to your client.
+        </div>
+      ) : null}
+      {duplicated ? (
+        <div className="mb-6 border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+          Duplicated from {duplicated}. Edit the line items if anything changed,
+          then send the new link.
         </div>
       ) : null}
       {saved ? (
@@ -137,6 +144,19 @@ export default async function AdminInvoiceDetailPage({
         >
           Edit
         </Link>
+        <AdminForm
+          action={duplicateInvoiceAction}
+          successMessage="Duplicated"
+          alwaysEnableSubmit
+        >
+          <input type="hidden" name="id" value={invoice.id} />
+          <button
+            type="submit"
+            className="border border-white/20 px-5 py-2.5 text-sm text-white hover:border-white/40"
+          >
+            Duplicate
+          </button>
+        </AdminForm>
         {invoice.status !== "paid" ? (
           <AdminForm
             action={markInvoicePaidAction}

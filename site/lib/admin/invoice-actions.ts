@@ -10,6 +10,7 @@ import {
   createInvoiceNumber,
   createInvoiceToken,
   createLineItemId,
+  getInvoiceLineItems,
   parseLineItemsJson,
   sumLineItems,
   type InvoiceLineItem,
@@ -106,6 +107,42 @@ export async function createInvoiceAction(
   revalidatePath("/admin/invoices");
   revalidatePath(`/invoice/${invoice.token}`);
   redirect(`/admin/invoices/${invoice.id}?created=1`);
+}
+
+export async function duplicateInvoiceAction(
+  formData: FormData,
+): Promise<ActionResult> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return { error: "Missing invoice id" };
+
+  const source = await prisma.invoice.findUnique({ where: { id } });
+  if (!source) return { error: "Invoice not found" };
+
+  const lineItems = getInvoiceLineItems(source).map((item) => ({
+    ...item,
+    id: createLineItemId(),
+  }));
+
+  const invoice = await prisma.invoice.create({
+    data: {
+      token: createInvoiceToken(),
+      number: createInvoiceNumber(),
+      clientName: source.clientName,
+      clientEmail: source.clientEmail,
+      lineItems: JSON.stringify(lineItems),
+      amount: sumLineItems(lineItems),
+      description: source.description,
+      rateType: source.rateType,
+      rate: source.rate,
+      hours: source.hours,
+      includeW9: source.includeW9,
+      status: "sent",
+    },
+  });
+
+  revalidatePath("/admin/invoices");
+  redirect(`/admin/invoices/${invoice.id}?duplicated=${encodeURIComponent(source.number)}`);
 }
 
 export async function updateInvoiceAction(
