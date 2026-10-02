@@ -6,7 +6,11 @@ const nextConfig: NextConfig = {
     "prisma",
     "sharp",
     "@react-pdf/renderer",
+    "ffmpeg-static",
   ],
+  outputFileTracingIncludes: {
+    "/admin/**": ["./node_modules/ffmpeg-static/ffmpeg"],
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "12mb",

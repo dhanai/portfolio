@@ -2,13 +2,11 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { CreativeShowcaseItem } from "@/lib/defaults/creative-showcase";
-import {
-  captureVideoFrame,
-  compressImageForUpload,
-} from "@/lib/admin/compress-image-client";
+import { compressImageForUpload } from "@/lib/admin/compress-image-client";
 import { uploadCreativeVideoToBlob } from "@/lib/admin/upload-creative-blob-client";
 import { reorderList } from "@/lib/admin/reorder-list";
 import {
+  generateCreativeItemPoster,
   saveCreativeShowcaseItems,
   uploadCreativeItemMedia,
   uploadCreativeItemPoster,
@@ -616,17 +614,12 @@ export function CreativeShowcaseEditor({
         const uploaded = await uploadCreativeItemPoster(formData);
         if ("error" in uploaded) throw new Error(uploaded.error);
         poster = uploaded.url;
-      } else if (modal.pendingVideo) {
-        const captured = await captureVideoFrame(modal.pendingVideo);
-        if (captured) {
-          const formData = new FormData();
-          formData.set("itemId", modal.item.id);
-          formData.set("file", captured);
-          const uploaded = await uploadCreativeItemPoster(formData).catch(
-            () => null,
-          );
-          if (uploaded && "url" in uploaded) poster = uploaded.url;
-        }
+      } else if (modal.pendingVideo && src) {
+        const generated = await generateCreativeItemPoster(
+          modal.item.id,
+          src,
+        ).catch(() => null);
+        if (generated && "url" in generated) poster = generated.url;
       }
 
       if (!src) throw new Error("Media upload did not return a URL");

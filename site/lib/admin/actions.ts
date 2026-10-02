@@ -207,6 +207,39 @@ export async function uploadCreativeItemPoster(
   }
 }
 
+export async function generateCreativeItemPoster(
+  itemId: string,
+  videoUrl: string,
+): Promise<{ url: string } | { error: string }> {
+  await requireAdmin();
+  const id = itemId.trim();
+  if (!id) return { error: "Missing item id" };
+  let host: string;
+  try {
+    host = new URL(videoUrl).hostname;
+  } catch {
+    return { error: "Invalid video URL" };
+  }
+  if (!host.endsWith(".public.blob.vercel-storage.com")) {
+    return { error: "Posters can only be generated from uploaded videos" };
+  }
+  try {
+    const [{ extractVideoPoster }, { saveCreativeImage }] = await Promise.all([
+      import("@/lib/admin/video-poster"),
+      import("@/lib/admin/upload-creative-media"),
+    ]);
+    const frame = await extractVideoPoster(videoUrl);
+    const file = new File([new Uint8Array(frame)], `${id}-poster.jpg`, {
+      type: "image/jpeg",
+    });
+    return { url: await saveCreativeImage(file, `${id}-poster`) };
+  } catch (err) {
+    return {
+      error: err instanceof Error ? err.message : "Failed to generate poster",
+    };
+  }
+}
+
 export async function saveCreativeShowcaseFromForm(
   formData: FormData,
 ): Promise<ActionResult> {
