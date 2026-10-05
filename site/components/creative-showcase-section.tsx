@@ -5,15 +5,17 @@ import type { CreativeShowcaseData } from "@/lib/defaults/creative-showcase";
 
 export function CreativeShowcaseSection({
   showcase,
+  className = "border-t border-border py-24 md:py-28",
 }: {
   showcase: CreativeShowcaseData;
+  className?: string;
 }) {
   if (!showcase.enabled || showcase.items.length === 0) {
     return null;
   }
 
   return (
-    <section className="border-t border-border py-24 md:py-28">
+    <section className={className}>
       <div className="mx-auto max-w-6xl px-6">
         <FadeIn>
           <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
