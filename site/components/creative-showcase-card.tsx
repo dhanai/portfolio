@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { CreativeShowcaseItem } from "@/lib/defaults/creative-showcase";
+
+const HOVER_DELAY_MS = 200;
 
 export function CreativeShowcaseCard({
   item,
@@ -16,47 +18,53 @@ export function CreativeShowcaseCard({
   /** Deep link to this piece (e.g. /ai?v=id). Used with onOpen for shareable URLs. */
   href?: string;
 }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const hoverTimer = useRef<number | null>(null);
+  const [canPreview, setCanPreview] = useState(false);
+  const [hoverPlay, setHoverPlay] = useState(false);
 
   useEffect(() => {
-    if (item.type !== "video") return;
-    const video = videoRef.current;
-    if (!video) return;
+    const hover = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setCanPreview(hover.matches && !reduce.matches);
+    update();
+    hover.addEventListener("change", update);
+    reduce.addEventListener("change", update);
+    return () => {
+      hover.removeEventListener("change", update);
+      reduce.removeEventListener("change", update);
+      if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    };
+  }, []);
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (prefersReduced) return;
+  function startPreview() {
+    if (!canPreview || item.type !== "video") return;
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setHoverPlay(true), HOVER_DELAY_MS);
+  }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          void video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.45 },
-    );
+  function stopPreview() {
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = null;
+    setHoverPlay(false);
+  }
 
-    observer.observe(video);
-    return () => observer.disconnect();
-  }, [item.type]);
+  const preview =
+    item.type === "video"
+      ? { onMouseEnter: startPreview, onMouseLeave: stopPreview }
+      : {};
 
   const media = (
     <>
       {item.type === "video" ? (
-        <video
-          ref={videoRef}
-          className="h-full w-full object-cover"
-          src={item.src}
-          poster={item.poster}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-label={item.alt}
-        />
+        item.poster ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.poster}
+            alt={item.alt}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : null
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -66,6 +74,19 @@ export function CreativeShowcaseCard({
           loading="lazy"
         />
       )}
+
+      {hoverPlay && item.type === "video" ? (
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src={item.src}
+          muted
+          loop
+          playsInline
+          autoPlay
+          preload="none"
+          aria-hidden="true"
+        />
+      ) : null}
 
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-80"
@@ -106,6 +127,7 @@ export function CreativeShowcaseCard({
       return (
         <a
           href={href}
+          {...preview}
           onClick={(event) => {
             if (
               event.defaultPrevented ||
@@ -132,6 +154,7 @@ export function CreativeShowcaseCard({
     return (
       <button
         type="button"
+        {...preview}
         onClick={onOpen}
         className={`${shellClass} w-full cursor-zoom-in text-left`}
         style={shellStyle}
@@ -144,14 +167,14 @@ export function CreativeShowcaseCard({
 
   if (href) {
     return (
-      <a href={href} className={`${shellClass} block`} style={shellStyle}>
+      <a href={href} {...preview} className={`${shellClass} block`} style={shellStyle}>
         {media}
       </a>
     );
   }
 
   return (
-    <figure className={shellClass} style={shellStyle}>
+    <figure className={shellClass} style={shellStyle} {...preview}>
       {media}
     </figure>
   );
