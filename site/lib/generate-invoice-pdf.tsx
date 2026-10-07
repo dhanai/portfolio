@@ -44,5 +44,8 @@ export async function generateInvoicePdf(
       includeW9={Boolean(invoice.includeW9)}
     />,
   );
-  return { buffer, filename: invoicePdfFilename(invoice.number) };
+  return {
+    buffer,
+    filename: invoicePdfFilename(invoice.number, invoice.jobNumber),
+  };
 }

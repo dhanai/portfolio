@@ -100,7 +100,7 @@ export default async function PublicInvoicePage({ params }: PageProps) {
               </p>
               <a
                 href={invoicePdfPath(invoice.token)}
-                download={invoicePdfFilename(invoice.number)}
+                download={invoicePdfFilename(invoice.number, invoice.jobNumber)}
                 className="mt-4 inline-flex items-center border border-[#18181b] bg-[#18181b] px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-white hover:bg-[#27272a]"
               >
                 Download invoice

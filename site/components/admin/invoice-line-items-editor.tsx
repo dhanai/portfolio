@@ -24,6 +24,17 @@ function withAmount(item: InvoiceLineItem): InvoiceLineItem {
   };
 }
 
+function orderByDay(items: InvoiceLineItem[]) {
+  const dated: InvoiceLineItem[] = [];
+  const undated: InvoiceLineItem[] = [];
+  for (const item of items) {
+    if (item.workedOn) dated.push(item);
+    else undated.push(item);
+  }
+  dated.sort((a, b) => a.workedOn!.localeCompare(b.workedOn!));
+  return [...dated, ...undated];
+}
+
 export function InvoiceLineItemsEditor({
   initialItems,
 }: {
@@ -52,14 +63,13 @@ export function InvoiceLineItemsEditor({
   const drag = useDragReorder(onReorder);
 
   function patchItem(id: string, patch: Partial<InvoiceLineItem>) {
-    updateItems(
-      items.map((item) => {
-        if (item.id !== id) return item;
-        const next = { ...item, ...patch };
-        if (patch.rateType === "fixed") next.hours = null;
-        return next;
-      }),
-    );
+    const next = items.map((item) => {
+      if (item.id !== id) return item;
+      const updated = { ...item, ...patch };
+      if (patch.rateType === "fixed") updated.hours = null;
+      return updated;
+    });
+    updateItems("workedOn" in patch ? orderByDay(next) : next);
   }
 
   function removeItem(id: string) {

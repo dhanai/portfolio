@@ -124,8 +124,12 @@ export function invoicePdfPath(token: string) {
   return `/api/invoice/${token}/pdf`;
 }
 
-export function invoicePdfFilename(number: string) {
-  return `${number}.pdf`;
+export function invoicePdfFilename(number: string, jobNumber?: string | null) {
+  const job = String(jobNumber ?? "")
+    .trim()
+    .replace(/[^\w.-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return job ? `${number}-${job}.pdf` : `${number}.pdf`;
 }
 
 export function emptyLineItem(): InvoiceLineItem {
