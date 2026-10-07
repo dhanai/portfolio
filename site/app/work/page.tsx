@@ -22,13 +22,13 @@ export default async function WorkPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
-        <header className="mb-16 max-w-2xl border-b border-border pb-10">
+      <div className="mx-auto max-w-6xl px-6 pb-16 pt-10 md:pb-20 md:pt-12">
+        <header className="mb-8 max-w-2xl">
           <p className="label-caps text-muted">Portfolio</p>
-          <h1 className="mt-4 text-4xl font-medium tracking-tight text-foreground md:text-5xl">
+          <h1 className="mt-2 text-4xl font-medium tracking-tight text-foreground md:text-5xl">
             Work
           </h1>
-          <p className="mt-4 text-muted leading-relaxed">
+          <p className="mt-2 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
             Founder-led projects — from hand-drawn apparel to agent-native ops and
             consumer mobile.
           </p>
