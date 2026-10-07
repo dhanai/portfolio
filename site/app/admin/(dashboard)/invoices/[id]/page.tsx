@@ -8,8 +8,10 @@ import {
   markInvoicePaidAction,
 } from "@/lib/admin/invoice-actions";
 import {
+  daysWorked,
   formatInvoiceDate,
   formatMoney,
+  formatWorkedOn,
   getInvoiceLineItems,
   invoicePublicPath,
 } from "@/lib/invoices";
@@ -36,6 +38,7 @@ export default async function AdminInvoiceDetailPage({
   const path = invoicePublicPath(invoice.token);
   const absoluteUrl = `${siteConfig.url}${path}`;
   const lineItems = getInvoiceLineItems(invoice);
+  const worked = daysWorked(lineItems);
 
   return (
     <div>
@@ -107,6 +110,40 @@ export default async function AdminInvoiceDetailPage({
             <p className="mt-1 text-white">{invoice.clientName}</p>
             <p className="text-[#a3a3a3]">{invoice.clientEmail}</p>
           </div>
+          {invoice.jobNumber ? (
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[#737373]">
+                Job number
+              </p>
+              <p className="mt-1 text-white">{invoice.jobNumber}</p>
+            </div>
+          ) : null}
+          {invoice.role ? (
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[#737373]">
+                Role
+              </p>
+              <p className="mt-1 text-white">{invoice.role}</p>
+            </div>
+          ) : null}
+          {invoice.budgetLine ? (
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[#737373]">
+                Budget line
+              </p>
+              <p className="mt-1 text-white">{invoice.budgetLine}</p>
+            </div>
+          ) : null}
+          {worked.length > 0 ? (
+            <div>
+              <p className="text-xs uppercase tracking-wider text-[#737373]">
+                Days worked
+              </p>
+              <p className="mt-1 text-white">
+                {worked.map((day) => formatWorkedOn(day)).join(", ")}
+              </p>
+            </div>
+          ) : null}
           <div>
             <p className="text-xs uppercase tracking-wider text-[#737373]">
               Lines
@@ -124,6 +161,11 @@ export default async function AdminInvoiceDetailPage({
               className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-start sm:justify-between"
             >
               <p className="min-w-0 whitespace-pre-wrap text-[#d4d4d4]">
+                {item.workedOn ? (
+                  <span className="font-mono text-[#737373]">
+                    {formatWorkedOn(item.workedOn)} ·{" "}
+                  </span>
+                ) : null}
                 {item.description}
               </p>
               <p className="shrink-0 font-mono text-[#a3a3a3] sm:text-right">

@@ -2,6 +2,7 @@ export const INVOICE_ISSUER = {
   name: "Dhanai Holtzclaw",
   addressLines: ["3883 Latrobe St", "Los Angeles, CA 90031"],
   email: "dhanai@undeniable.io",
+  phone: "702.321.1971",
 } as const;
 
 export const INVOICE_PAYMENT_OPTIONS = [
@@ -20,6 +21,8 @@ export type InvoiceRateType = "hourly" | "fixed";
 export type InvoiceLineItem = {
   id: string;
   description: string;
+  /** Day the work happened, YYYY-MM-DD. One line per task. */
+  workedOn: string | null;
   rateType: InvoiceRateType;
   rate: number;
   hours: number | null;
@@ -37,6 +40,9 @@ export type InvoiceRecord = {
   rate: number;
   hours: number | null;
   lineItems: string;
+  jobNumber: string;
+  role: string;
+  budgetLine: string;
   amount: number;
   status: string;
   notes: string | null;
@@ -126,11 +132,49 @@ export function emptyLineItem(): InvoiceLineItem {
   return {
     id: createLineItemId(),
     description: "",
+    workedOn: null,
     rateType: "hourly",
     rate: 0,
     hours: null,
     amount: 0,
   };
+}
+
+export function normalizeWorkedOn(value: unknown): string | null {
+  const raw = String(value ?? "").trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return null;
+  const [year, month, day] = raw.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return raw;
+}
+
+export function formatWorkedOn(iso: string) {
+  const normalized = normalizeWorkedOn(iso);
+  if (!normalized) return iso;
+  const [year, month, day] = normalized.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year, month - 1, day)));
+}
+
+export function daysWorked(items: InvoiceLineItem[]) {
+  return [
+    ...new Set(
+      items
+        .map((item) => item.workedOn)
+        .filter((day): day is string => Boolean(day)),
+    ),
+  ].sort();
 }
 
 export function parseLineItemsJson(raw: string | null | undefined): InvoiceLineItem[] {
@@ -153,6 +197,7 @@ export function parseLineItemsJson(raw: string | null | undefined): InvoiceLineI
             ? null
             : Number(row.hours);
         const description = String(row.description ?? "").trim();
+        const workedOn = normalizeWorkedOn(row.workedOn);
         const amount = calculateLineAmount(
           rateType,
           Number.isFinite(rate) ? rate : 0,
@@ -161,6 +206,7 @@ export function parseLineItemsJson(raw: string | null | undefined): InvoiceLineI
         return {
           id: String(row.id ?? createLineItemId()),
           description,
+          workedOn,
           rateType,
           rate: Number.isFinite(rate) ? rate : 0,
           hours:
@@ -204,6 +250,7 @@ export function getInvoiceLineItems(invoice: {
     {
       id: "legacy",
       description: description || "Services",
+      workedOn: null,
       rateType,
       rate: Number.isFinite(rate) ? rate : 0,
       hours: hours != null && Number.isFinite(hours) ? hours : null,

@@ -85,8 +85,8 @@ export function InvoiceLineItemsEditor({
             Line items
           </h2>
           <p className="mt-1 text-xs text-[#525252]">
-            Add, edit, remove, and drag to reorder. Each row is a line on the
-            invoice.
+            Add, edit, remove, and drag to reorder. Put the day on each line
+            when the client wants tasks broken out by day.
           </p>
         </div>
         <button
@@ -168,7 +168,23 @@ export function InvoiceLineItemsEditor({
                   ))}
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  <label className="block">
+                    <span className="text-xs uppercase tracking-wider text-[#737373]">
+                      Day
+                    </span>
+                    <input
+                      type="date"
+                      value={item.workedOn ?? ""}
+                      onChange={(e) => {
+                        patchItem(item.id, {
+                          workedOn: e.target.value || null,
+                        });
+                        notifyFormChanged(e.currentTarget);
+                      }}
+                      className="mt-1.5 w-full border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none [color-scheme:dark] focus:border-[#ff453a]"
+                    />
+                  </label>
                   <label className="block">
                     <span className="text-xs uppercase tracking-wider text-[#737373]">
                       {item.rateType === "hourly" ? "Rate (USD/hr)" : "Fee (USD)"}

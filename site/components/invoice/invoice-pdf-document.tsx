@@ -6,8 +6,10 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 import {
+  daysWorked,
   formatInvoiceDate,
   formatMoney,
+  formatWorkedOn,
   INVOICE_ISSUER,
   INVOICE_PAYMENT_OPTIONS,
   lineItemsHaveHours,
@@ -119,6 +121,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     fontSize: 9,
   },
+  colDay: { width: 78 },
   colDesc: { flex: 2.4 },
   colRate: { width: 72, textAlign: "right" },
   colHours: { width: 52, textAlign: "right" },
@@ -167,6 +170,8 @@ const styles = StyleSheet.create({
   paymentValue: {
     fontFamily: "Courier",
     fontSize: 9,
+    maxWidth: "68%",
+    textAlign: "right",
   },
   notes: {
     marginTop: 12,
@@ -194,6 +199,10 @@ export type InvoicePdfProps = {
   notes: string | null;
   createdAt: Date;
   lineItems: InvoiceLineItem[];
+  jobNumber?: string;
+  role?: string;
+  budgetLine?: string;
+  includeW9?: boolean;
 };
 
 export function InvoicePdfDocument({
@@ -205,9 +214,26 @@ export function InvoicePdfDocument({
   notes,
   createdAt,
   lineItems,
+  jobNumber = "",
+  role = "",
+  budgetLine = "",
+  includeW9 = false,
 }: InvoicePdfProps) {
   const showHours = lineItemsHaveHours(lineItems);
+  const worked = daysWorked(lineItems);
+  const showDays = worked.length > 0;
   const statusLabel = status === "paid" ? "Paid" : "Amount due";
+  const jobFacts = [
+    jobNumber ? { label: "Job number", value: jobNumber } : null,
+    role ? { label: "Role", value: role } : null,
+    budgetLine ? { label: "Budget line", value: budgetLine } : null,
+    showDays
+      ? {
+          label: "Days worked",
+          value: worked.map((day) => formatWorkedOn(day)).join(", "),
+        }
+      : null,
+  ].filter((fact): fact is { label: string; value: string } => fact != null);
 
   return (
     <Document
@@ -238,6 +264,7 @@ export function InvoicePdfDocument({
               </Text>
             ))}
             <Text style={styles.partyLine}>{INVOICE_ISSUER.email}</Text>
+            <Text style={styles.partyLine}>{INVOICE_ISSUER.phone}</Text>
           </View>
           <View style={styles.party}>
             <Text style={styles.label}>Bill to</Text>
@@ -246,8 +273,18 @@ export function InvoicePdfDocument({
           </View>
         </View>
 
+        {jobFacts.map((fact) => (
+          <View key={fact.label} style={styles.paymentRow} wrap={false}>
+            <Text style={styles.paymentLabel}>{fact.label}</Text>
+            <Text style={styles.paymentValue}>{fact.value}</Text>
+          </View>
+        ))}
+
         <View style={styles.table}>
           <View style={styles.tableHead}>
+            {showDays ? (
+              <Text style={[styles.th, styles.colDay]}>Day</Text>
+            ) : null}
             <Text style={[styles.th, styles.colDesc]}>Description</Text>
             <Text style={[styles.th, styles.colRate]}>Rate</Text>
             {showHours ? (
@@ -257,6 +294,11 @@ export function InvoicePdfDocument({
           </View>
           {lineItems.map((item) => (
             <View key={item.id} style={styles.tableRow} wrap={false}>
+              {showDays ? (
+                <Text style={[styles.td, styles.colDay]}>
+                  {item.workedOn ? formatWorkedOn(item.workedOn) : "—"}
+                </Text>
+              ) : null}
               <Text style={[styles.td, styles.colDesc]}>{item.description}</Text>
               <Text style={[styles.td, styles.colRate, styles.mono]}>
                 {formatMoney(item.rate)}
@@ -285,6 +327,12 @@ export function InvoicePdfDocument({
             <Text style={styles.paymentValue}>{opt.value}</Text>
           </View>
         ))}
+        {includeW9 ? (
+          <View style={styles.paymentRow} wrap={false}>
+            <Text style={styles.paymentLabel}>Tax form</Text>
+            <Text style={styles.paymentValue}>W-9 on the invoice page</Text>
+          </View>
+        ) : null}
 
         {notes ? <Text style={styles.notes}>{notes}</Text> : null}
 

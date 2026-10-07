@@ -15,6 +15,9 @@ export type InvoiceFormValues = {
   id?: string;
   clientName: string;
   clientEmail: string;
+  jobNumber?: string;
+  role?: string;
+  budgetLine?: string;
   notes: string;
   includeW9?: boolean;
   lineItems?: InvoiceLineItem[];
@@ -58,6 +61,29 @@ export function InvoiceForm({
           required
           defaultValue={initial?.clientEmail ?? ""}
         />
+      </section>
+
+      <section className="grid gap-6 border border-white/10 p-6 sm:grid-cols-2">
+        <AdminField
+          label="Job number"
+          name="jobNumber"
+          defaultValue={initial?.jobNumber ?? ""}
+          hint="One invoice per job. Paste the Slack channel name."
+        />
+        <AdminField
+          label="Role"
+          name="role"
+          defaultValue={initial?.role ?? ""}
+          hint="Your role on this job, if they named one."
+        />
+        <div className="sm:col-span-2">
+          <AdminField
+            label="Budget line item"
+            name="budgetLine"
+            defaultValue={initial?.budgetLine ?? ""}
+            hint="Their budget line, if they provided one."
+          />
+        </div>
       </section>
 
       <InvoiceLineItemsEditor initialItems={initial?.lineItems} />

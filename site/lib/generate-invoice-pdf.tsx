@@ -13,6 +13,10 @@ export type InvoicePdfSource = {
   status: string;
   notes: string | null;
   createdAt: Date;
+  jobNumber?: string | null;
+  role?: string | null;
+  budgetLine?: string | null;
+  includeW9?: boolean | null;
   description?: string | null;
   rateType?: string | null;
   rate?: number | null;
@@ -34,6 +38,10 @@ export async function generateInvoicePdf(
       notes={invoice.notes}
       createdAt={invoice.createdAt}
       lineItems={lineItems}
+      jobNumber={invoice.jobNumber ?? ""}
+      role={invoice.role ?? ""}
+      budgetLine={invoice.budgetLine ?? ""}
+      includeW9={Boolean(invoice.includeW9)}
     />,
   );
   return { buffer, filename: invoicePdfFilename(invoice.number) };

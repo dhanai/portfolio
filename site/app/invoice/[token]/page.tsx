@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
+  daysWorked,
   formatInvoiceDate,
   formatMoney,
+  formatWorkedOn,
   getInvoiceLineItems,
   INVOICE_ISSUER,
   INVOICE_PAYMENT_OPTIONS,
@@ -63,6 +65,23 @@ export default async function PublicInvoicePage({ params }: PageProps) {
 
   const lineItems = getInvoiceLineItems(invoice);
   const showHours = lineItemsHaveHours(lineItems);
+  const worked = daysWorked(lineItems);
+  const showDays = worked.length > 0;
+  const jobFacts = [
+    invoice.jobNumber
+      ? { label: "Job number", value: invoice.jobNumber }
+      : null,
+    invoice.role ? { label: "Role", value: invoice.role } : null,
+    invoice.budgetLine
+      ? { label: "Budget line", value: invoice.budgetLine }
+      : null,
+    showDays
+      ? {
+          label: "Days worked",
+          value: worked.map((day) => formatWorkedOn(day)).join(", "),
+        }
+      : null,
+  ].filter((fact): fact is { label: string; value: string } => fact != null);
 
   return (
     <div className="min-h-screen bg-[#f4f4f5] text-[#111111]">
@@ -115,6 +134,7 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                 </p>
               ))}
               <p className="mt-1 text-sm text-[#52525b]">{INVOICE_ISSUER.email}</p>
+              <p className="text-sm text-[#52525b]">{INVOICE_ISSUER.phone}</p>
             </div>
             <div>
               <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
@@ -125,11 +145,27 @@ export default async function PublicInvoicePage({ params }: PageProps) {
             </div>
           </section>
 
+          {jobFacts.length > 0 ? (
+            <section className="grid gap-5 border-b border-[#e4e4e7] px-5 py-6 sm:grid-cols-2 sm:px-8 sm:py-8">
+              {jobFacts.map((fact) => (
+                <div key={fact.label}>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#a1a1aa]">
+                    {fact.label}
+                  </p>
+                  <p className="mt-2 text-sm text-[#18181b]">{fact.value}</p>
+                </div>
+              ))}
+            </section>
+          ) : null}
+
           <section className="px-5 py-6 sm:px-8 sm:py-8">
             <div className="overflow-x-auto border border-[#e4e4e7]">
               <table className="w-full min-w-[28rem] text-left text-sm">
                 <thead className="bg-[#fafafa] text-[10px] uppercase tracking-[0.14em] text-[#71717a]">
                   <tr>
+                    {showDays ? (
+                      <th className="px-3 py-2.5 font-medium sm:px-4">Day</th>
+                    ) : null}
                     <th className="px-3 py-2.5 font-medium sm:px-4">
                       Description
                     </th>
@@ -149,6 +185,11 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                 <tbody>
                   {lineItems.map((item) => (
                     <tr key={item.id} className="border-t border-[#e4e4e7]">
+                      {showDays ? (
+                        <td className="px-3 py-3 align-top whitespace-nowrap text-[#27272a] sm:px-4">
+                          {item.workedOn ? formatWorkedOn(item.workedOn) : "—"}
+                        </td>
+                      ) : null}
                       <td className="max-w-[12rem] px-3 py-3 align-top whitespace-pre-wrap text-[#27272a] sm:max-w-none sm:px-4">
                         {item.description}
                       </td>
@@ -170,7 +211,7 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                 <tfoot>
                   <tr className="border-t border-[#e4e4e7] bg-[#fafafa]">
                     <td
-                      colSpan={showHours ? 3 : 2}
+                      colSpan={(showHours ? 3 : 2) + (showDays ? 1 : 0)}
                       className="px-3 py-3 text-right text-[10px] font-medium uppercase tracking-[0.14em] text-[#71717a] sm:px-4"
                     >
                       Total due

@@ -57,6 +57,12 @@ model Invoice {
   status        String   @default("sent")
   /** Show W-9 download link on the client invoice */
   includeW9     Boolean  @default(false)
+  /** Client job id, often the Slack channel name. One invoice per job. */
+  jobNumber     String   @default("")
+  /** Role on the job, when the client names one. */
+  role          String   @default("")
+  /** Client budget line item, when they provide one. */
+  budgetLine    String   @default("")
   notes         String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

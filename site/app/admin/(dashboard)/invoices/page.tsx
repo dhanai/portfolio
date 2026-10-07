@@ -104,6 +104,13 @@ export default async function AdminInvoicesPage({
                       <span className="font-mono text-[#a3a3a3]">
                         {inv.number}
                       </span>
+                      {inv.jobNumber ? (
+                        <>
+                          {" "}
+                          <span className="text-[#525252]">·</span>{" "}
+                          <span className="text-[#a3a3a3]">{inv.jobNumber}</span>
+                        </>
+                      ) : null}
                     </p>
                     <FirstLinePreview invoice={inv} />
                     <p className="mt-1 truncate text-xs text-[#737373]">
