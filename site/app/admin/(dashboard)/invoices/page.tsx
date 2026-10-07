@@ -2,9 +2,32 @@ import Link from "next/link";
 import { AdminCreateDrawer } from "@/components/admin/admin-create-drawer";
 import { InvoiceCreateForm } from "@/components/admin/invoice-create-form";
 import { prisma } from "@/lib/prisma";
-import { formatInvoiceDate, formatMoney } from "@/lib/invoices";
+import {
+  formatInvoiceDate,
+  formatMoney,
+  getInvoiceLineItems,
+} from "@/lib/invoices";
 
 export const dynamic = "force-dynamic";
+
+function FirstLinePreview({
+  invoice,
+}: {
+  invoice: Parameters<typeof getInvoiceLineItems>[0];
+}) {
+  const items = getInvoiceLineItems(invoice);
+  const first = items[0];
+  const description = first?.description.replace(/\s+/g, " ").trim();
+  if (!description) return null;
+  const extra = items.length - 1;
+
+  return (
+    <p className="mt-1 truncate text-xs text-[#a3a3a3]">
+      {description}
+      {extra > 0 ? <span className="text-[#525252]"> · +{extra}</span> : null}
+    </p>
+  );
+}
 
 export default async function AdminInvoicesPage({
   searchParams,
@@ -82,6 +105,7 @@ export default async function AdminInvoicesPage({
                         {inv.number}
                       </span>
                     </p>
+                    <FirstLinePreview invoice={inv} />
                     <p className="mt-1 truncate text-xs text-[#737373]">
                       {inv.clientEmail} · {formatInvoiceDate(inv.createdAt)}
                     </p>
