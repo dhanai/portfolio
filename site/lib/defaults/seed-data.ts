@@ -63,7 +63,7 @@ export const defaultSiteContent: SiteContentData = {
   now: {
     label: "Now",
     title: "Building Doomsy",
-    body: "A creative feed for brands — paste a catalog link, get on-brand photos and reels without a shoot.",
+    body: "An AI film studio on your phone — one idea in, a finished film out, cut in a real editor.",
     linkUrl: "https://doomsy.ai",
     linkLabel: "doomsy.ai",
   },

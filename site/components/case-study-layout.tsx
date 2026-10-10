@@ -84,9 +84,10 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
               {study.galleryLayout === "frames" ? "Layouts" : "Product screens"}
             </p>
             <h2 className="mt-3 text-xl font-medium tracking-tight text-foreground">
-              {study.galleryLayout === "frames"
-                ? "Desktop and mobile"
-                : "The loop in the hand"}
+              {study.galleryTitle ??
+                (study.galleryLayout === "frames"
+                  ? "Desktop and mobile"
+                  : "The loop in the hand")}
             </h2>
             {study.galleryLayout === "frames" ? (
               <div className="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_minmax(0,280px)]">

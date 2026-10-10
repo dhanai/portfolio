@@ -84,10 +84,10 @@ export const projects: Project[] = [
   {
     slug: "doomsy",
     title: "Doomsy",
-    subtitle: "Product UX for an AI creative feed",
-    tags: ["Product", "Brand", "AI"],
+    subtitle: "An AI film studio on your phone",
+    tags: ["Product", "AI", "Film", "Mobile"],
     year: "2026–present",
-    image: `${BLOB}/doomsy-thumb-v2.webp`,
+    image: `${BLOB}/doomsy/film/thumb.webp`,
     color: accentColors.doomsy,
   },
   {

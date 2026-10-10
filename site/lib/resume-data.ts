@@ -44,8 +44,8 @@ export const resumeData = {
       role: "Founder · Product Design & Creative",
       period: "2026 — Present",
       bullets: [
-        "Designed and shipped a creative feed product for brands with catalog ingest, a private feed, a like/pass loop, and natural-language image edits.",
-        "Owned product UX and creative quality bar: on-brand photos and reels without a shoot, with taste and systems thinking in the same surface.",
+        "Designing and building an iOS app that turns one idea into a finished short film: brief, cast, shot lists, takes, voices, music, and an editor sized for a phone.",
+        "Modeled the product on a real production, with every step manual or AI-assisted, after pivoting it from an earlier creative feed for brands.",
       ],
     },
     {

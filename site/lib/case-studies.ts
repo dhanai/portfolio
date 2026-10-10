@@ -26,6 +26,8 @@ export type CaseStudy = {
   gallery?: CaseStudyGalleryItem[];
   /** How to render gallery: device thumbs (default) or full page frames */
   galleryLayout?: "devices" | "frames";
+  /** Heading above the gallery; defaults by layout */
+  galleryTitle?: string;
   /** Label above gallery items after the first two frames */
   stillsLabel?: string;
   /** Full-width process boards (user flows, state specs) */
@@ -98,125 +100,100 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "doomsy",
     title: "Doomsy",
-    subtitle: "Product UX for an AI creative feed — brand taste as the quality bar",
-    tags: ["Product", "Brand", "AI"],
+    subtitle: "An AI film studio on your phone — one idea in, a finished film out",
+    tags: ["Product", "AI", "Film", "Mobile"],
     year: "2026–present",
     role: "Founder · Product Design · Creative Direction",
     externalUrl: "https://doomsy.ai",
-    heroImage:
-      "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy-hero.webp",
+    heroImage: `${WORK_BLOB}/doomsy/film/hero.webp`,
+    galleryTitle: "From idea to edit",
     gallery: [
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/landing.webp",
-        alt: "Doomsy mobile onboarding — Your brand’s content, on easy mode",
-        caption: "Onboarding — drop a URL, free to try",
+        src: `${WORK_BLOB}/doomsy/film/editor.webp`,
+        alt: "Doomsy editor with a video viewer, V1–V3 and A1–A3 tracks, and Shot, Upload, Music, Voice, Captions, and Ask",
+        caption: "Editor — a real timeline, sized for a phone",
       },
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/feed.webp",
-        alt: "Doomsy home feed with product stories and Well Shucks post",
-        caption: "Home feed — stories + product posts",
+        src: `${WORK_BLOB}/doomsy/film/project.webp`,
+        alt: "Doomsy project page for Train Wreck with the edit, cast, World look, and scenes",
+        caption: "Project — the edit, the cast, the look, the scenes",
       },
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/feed-post.webp",
-        alt: "Doomsy feed post for Crashing Out T-shirt with like and pass actions",
-        caption: "Post detail — like, pass, edit, share",
+        src: `${WORK_BLOB}/doomsy/film/shots.webp`,
+        alt: "Doomsy take brief and shot list with cast names tagged in each shot",
+        caption: "Shot list — a camera, a moment, the cast in frame",
       },
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/story.webp",
-        alt: "Doomsy story view for Touching Grass T-shirt",
-        caption: "Stories — full-bleed product moments",
+        src: `${WORK_BLOB}/doomsy/film/take.webp`,
+        alt: "Doomsy scene page with a swipeable take, shots strip, and Generate again",
+        caption: "Takes — swipe between them, or generate again",
       },
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/reel.webp",
-        alt: "Doomsy reels with Generate, Like, and Pass",
-        caption: "Reels — Generate + like/pass loop",
+        src: `${WORK_BLOB}/doomsy/film/cast.webp`,
+        alt: "Doomsy character page for Sasha with variants and Edit, Variant, Same look, and Pin",
+        caption: "Cast — every character keeps its variants",
       },
       {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/edit-image.webp",
-        alt: "Doomsy edit image sheet — describe the change in plain English",
-        caption: "Edit image — plain-English revisions",
-      },
-      {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/agent-chat.webp",
-        alt: "Doomsy agent chat creating a post with art-direction brief",
-        caption: "Agent chat — brief, queue, deliver",
-      },
-      {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/director.webp",
-        alt: "Doomsy director settings — autonomous fill and model tiers",
-        caption: "Director — autonomous fill + model pick",
-      },
-      {
-        src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/doomsy/brand-settings.webp",
-        alt: "Doomsy brand settings — voice, cast, insights, liked, hidden",
-        caption: "Brand system — voice, cast, insights",
-      },
-    ],
-    boards: [
-      {
-        src: `${WORK_BLOB}/doomsy/flow-board.webp`,
-        alt: "Doomsy key flow: drop a URL, agent reads the site, swipe the feed, like or pass, edit, hand off to Director",
-        caption: "Key flow: your taps on top, the agent’s work underneath",
-      },
-      {
-        src: `${WORK_BLOB}/doomsy/states-board.webp`,
-        alt: "Doomsy states: reading the site, first batch loading, failed render, out of credits, unreadable URL",
-        caption: "States spec: first run, loading, error, limit, and a bad URL",
+        src: `${WORK_BLOB}/doomsy/film/audio.webp`,
+        alt: "Doomsy Audio tab with dialogue voices and music tracks",
+        caption: "Audio — voices and music, ready for the edit",
       },
     ],
     sections: [
       {
         heading: "Overview",
         paragraphs: [
-          "Doomsy is a creative feed for brands: paste a catalog link, get on-brand photos and reels in a private feed. Like the keepers, pass on the rest — no prompt box as the main UI.",
-          "I designed the product loop and set the creative quality bar so generative output feels directed, not dumped. The screens below walk the path from onboarding through feed, reels, edits, agent chat, and director controls.",
+          "Doomsy turns one idea into a finished short film. It writes the shots, casts them, voices them, scores them, and renders every take. Then you cut the film yourself in a real editor on your phone.",
+          "I design and build the iOS app and the landing at doomsy.ai, and I direct the sample films in it. The screens here are from the current build.",
+        ],
+      },
+      {
+        heading: "Where it started",
+        paragraphs: [
+          "Doomsy began as a creative feed for brands: paste a catalog link, swipe through on-brand photos and reels. The new version keeps the same idea — taste over prompts — and moves it from single posts to finished films.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Shop owners know what good looks like but don't have a studio on call. Existing tools still center prompts and bulk farms — not a feed they already understand, steered by taste.",
+          "AI video tools hand you a clip. A film needs a cast that stays the same from shot to shot, shots that cut together, voices, music, and an edit. That work is usually spread across several tools and a desktop editor.",
         ],
       },
       {
         heading: "Product design",
         paragraphs: [
-          "Centered the experience on a private feed and a like/pass loop that improves what comes next — catalog ingest, brand voice you can read, and natural-language edits without a reshoot.",
+          "I modeled the app on a real production, so every piece has an obvious home and nothing lives in a chat log.",
         ],
         bullets: [
-          "Signup → drop brand link → first posts → scroll / like / hide → save or ship",
-          "Clear hierarchy for photos, carousels, and reels in one feed",
-          "Edit-in-plain-English as a product affordance, not a hidden power feature",
-          "Director mode for autonomous fill, model tiers, cast sheets, and brand voice",
+          "Projects hold a brief, a look, a cast, and scenes",
+          "Scenes have takes, and each take has its own brief and shot list",
+          "Characters, locations, and props live in Assets, each with variants",
+          "Voices and music live in Audio and get laid over in the edit",
+          "Every step works by hand or with Doomsy's help — finish a brief, write the shots, generate the cast, tighten the cut",
         ],
       },
       {
-        heading: "Key flow",
+        heading: "The editor",
         paragraphs: [
-          "The flow runs in two lanes: what you do, and what the agent does between your taps. Your input is taste — like, pass, keep, edit. Every swipe feeds the next batch, so the feed gets more on-brand the more you use it, with no settings page to tune.",
-        ],
-      },
-      {
-        heading: "States & edge cases",
-        paragraphs: [
-          "Generative products spend a lot of time in between: reading a site, drafting, failing, running out of credits. I designed those screens as carefully as the feed. Each one says what is happening, keeps finished work safe, and offers one next step.",
+          "The editor is a simple NLE built for a phone: video and audio tracks, trim, split, slip, swap a take, dissolves, fades, and captions. Ask lets you describe a change in plain words, and one undo takes it all back.",
+          "Fixing a shot happens in the editor too. Swap to another take or regenerate the shot without leaving the cut, so the project page can stay a calm overview instead of a pile of edit controls.",
         ],
       },
       {
         heading: "Creative direction",
         paragraphs: [
-          "Treated generative production like a shoot: brand photography and voice as inputs, fidelity to product and fabric as constraints, taste as the acceptance criteria. Well Shucks posts in the product are the same art direction language as the brand — deadpan, nostalgic, on-product.",
+          "I treat each film like a shoot: a look set once for the whole project, a cast that carries across scenes, and taste as the acceptance criteria. Clean Glass and Train Wreck, a western micro dramedy, are films I directed in the app.",
         ],
       },
       {
         heading: "Outcome",
         paragraphs: [
-          "A live product at doomsy.ai that demonstrates product UX and art direction in one surface — useful for both product-design and brand/creative hiring conversations.",
+          "A working iOS app, a landing at doomsy.ai, and a matching set of App Store screenshots — product design, art direction, and the build in one seat.",
         ],
       },
     ],
     reflection:
-      "AI creative only works when product design protects taste. Doomsy is the feed pattern I wanted as a creative director — and built as a product designer.",
+      "AI makes the footage. The product still has to make it a film. Doomsy is how I'd want to run a production as a creative director, designed for the phone in my pocket.",
   },
   {
     slug: "studio",
