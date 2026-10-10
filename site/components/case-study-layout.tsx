@@ -172,7 +172,7 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
           <div className="mx-auto max-w-6xl px-6 py-14 md:py-20">
             <p className="label-caps text-muted">Process</p>
             <h2 className="mt-3 text-xl font-medium tracking-tight text-foreground">
-              Flows and states
+              {study.boardsTitle ?? "Flows and states"}
             </h2>
             <div className="mt-10 space-y-14">
               {study.boards.map((item) => (

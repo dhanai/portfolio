@@ -233,6 +233,7 @@ function workToCaseStudy(work: {
     galleryTitle: staticStudy?.galleryTitle,
     stillsLabel: staticStudy?.stillsLabel,
     boards: staticStudy?.boards,
+    boardsTitle: staticStudy?.boardsTitle,
     sections: parseJson<CaseStudySection[]>(work.sections, []),
     reflection: work.reflection,
   };

@@ -32,6 +32,8 @@ export type CaseStudy = {
   stillsLabel?: string;
   /** Full-width process boards (user flows, state specs) */
   boards?: CaseStudyGalleryItem[];
+  /** Heading above the boards; defaults to "Flows and states" */
+  boardsTitle?: string;
   sections: CaseStudySection[];
   reflection: string;
 };
@@ -139,6 +141,29 @@ export const caseStudies: CaseStudy[] = [
         caption: "Audio — voices and music, ready for the edit",
       },
     ],
+    boardsTitle: "How it got here",
+    boards: [
+      {
+        src: `${WORK_BLOB}/doomsy/film/board-evolution.webp`,
+        alt: "Doomsy timeline in five eras: brand feed, quality vs. guardrails, attachments, the pivot, and production plus editor",
+        caption: "Ten weeks in five eras, from a brand feed to a film studio",
+      },
+      {
+        src: `${WORK_BLOB}/doomsy/film/board-flow.webp`,
+        alt: "Doomsy flow map: Create sheet, project bin, new scene settings, shot list, confirm the cost, takes, editor, and export, with Assets and Audio feeding in",
+        caption: "Flow map: project, scenes, takes, then the cut. Ask helps at every step and never presses Generate for you",
+      },
+      {
+        src: `${WORK_BLOB}/doomsy/film/board-decision.webp`,
+        alt: "Before: the video page's shot menu and swap shot sheet. After: the project bin and the editor",
+        caption: "The key decision: swap shot turned into an editor, and the editor reorganized the app",
+      },
+      {
+        src: `${WORK_BLOB}/doomsy/film/board-principles.webp`,
+        alt: "Seven design principles and eight reversals, each with what was tried, what replaced it, and why",
+        caption: "The rules I kept coming back to, and what I changed my mind on",
+      },
+    ],
     sections: [
       {
         heading: "Overview",
@@ -150,7 +175,8 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Where it started",
         paragraphs: [
-          "Doomsy began as a creative feed for brands: paste a catalog link, swipe through on-brand photos and reels. The new version keeps the same idea — taste over prompts — and moves it from single posts to finished films.",
+          "Doomsy began as a creative feed for brands: paste a URL, swipe through on-brand photos and reels. I took it through App Store review, rebuilt payments when review required In-App Purchase, and spent weeks fighting the models on likeness blocks and product accuracy.",
+          "In October two things changed my mind. Chat models could now put anyone's product in an image, which made the image side of Doomsy close to obsolete. And short, character-driven video was taking off. I dropped brands and rebuilt the app around how a film actually gets made. The idea stayed the same — taste over prompts — but the output went from single posts to finished films.",
         ],
       },
       {
@@ -173,10 +199,24 @@ export const caseStudies: CaseStudy[] = [
         ],
       },
       {
-        heading: "The editor",
+        heading: "The key decision",
         paragraphs: [
-          "The editor is a simple NLE built for a phone: video and audio tracks, trim, split, slip, swap a take, dissolves, fades, and captions. Ask lets you describe a change in plain words, and one undo takes it all back.",
-          "Fixing a shot happens in the editor too. Swap to another take or regenerate the shot without leaving the cut, so the project page can stay a calm overview instead of a pile of edit controls.",
+          "At first the video page did the editing: tap a shot to regenerate it, swap in another take, download it, or delete it. Getting swap shot to work, I wrote in my notes: “We're essentially building a very simple NLE.”",
+          "So I built a real one, sized for a phone: three video and three audio tracks, trim, split, slip, dissolves, fades, and captions. Ask lets you describe a change in plain words, and one undo takes it all back.",
+          "Then I let the editor reorganize the app. If the editor holds the whole film, a project is more than one video. Projects now open on a bin of scenes, scenes hold takes, and the video page went back to just playing takes. Fixes happen in the edit, where you can see the whole film.",
+        ],
+      },
+      {
+        heading: "How I decided",
+        paragraphs: [
+          "A few rules kept settling arguments, with the agent and with myself:",
+        ],
+        bullets: [
+          "The user stays in control: Ask fills in the form, and you still press Generate",
+          "Never destroy work: every take, edit, and regenerated shot is kept",
+          "Show the cost, then confirm, before anything that spends credits",
+          "Don't overfit: no rules written for one product or one genre",
+          "Less copy: no subtext, helpers behind info icons, no machinery on screen",
         ],
       },
       {
