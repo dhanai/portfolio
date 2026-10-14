@@ -234,6 +234,7 @@ function workToCaseStudy(work: {
     stillsLabel: staticStudy?.stillsLabel,
     boards: staticStudy?.boards,
     boardsTitle: staticStudy?.boardsTitle,
+    process: staticStudy?.process,
     sections: parseJson<CaseStudySection[]>(work.sections, []),
     reflection: work.reflection,
   };

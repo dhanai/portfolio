@@ -10,6 +10,40 @@ export type CaseStudyGalleryItem = {
   caption?: string;
 };
 
+export type ProcessStep = {
+  n: string;
+  title: string;
+  body: string;
+  kind?: "step" | "system" | "decision";
+};
+
+export type ProcessLane = {
+  label: string;
+  steps: ProcessStep[];
+};
+
+export type CaseStudyProcess = {
+  decision?: {
+    kicker: string;
+    title: string;
+    before: { label: string; title: string; body: string; points: string[] };
+    notes: { when: string; lines: string[] };
+    after: { label: string; title: string; body: string };
+    changes: { title: string; body: string }[];
+  };
+  flow?: {
+    kicker: string;
+    title: string;
+    lanes: ProcessLane[];
+  };
+  states?: {
+    kicker: string;
+    title: string;
+    lede: string;
+    items: { label: string; title: string; body: string }[];
+  };
+};
+
 export type CaseStudy = {
   slug: string;
   title: string;
@@ -34,6 +68,8 @@ export type CaseStudy = {
   boards?: CaseStudyGalleryItem[];
   /** Heading above the boards; defaults to "Flows and states" */
   boardsTitle?: string;
+  /** Process drawn in the page, in place of a board image */
+  process?: CaseStudyProcess;
   sections: CaseStudySection[];
   reflection: string;
 };
@@ -131,14 +167,49 @@ export const caseStudies: CaseStudy[] = [
         caption: "Assets — the film's videos and previs",
       },
     ],
-    boardsTitle: "The decision",
-    boards: [
-      {
-        src: `${WORK_BLOB}/doomsy/film/board-decision.webp`,
-        alt: "Before: the video page's shot menu and swap shot sheet. After: the project bin and the editor",
-        caption: "Swap shot turned into an editor, and the editor reorganized the app",
+    process: {
+      decision: {
+        kicker: "Key decision",
+        title: "Swap shot turned into an editor, and the editor reorganized the app",
+        before: {
+          label: "Before",
+          title: "The video page did the editing",
+          body: "Tap a shot to regenerate it, edit it, swap in another take, download it, or delete it. Every fix lived on one screen.",
+          points: ["Regenerate", "Edit", "Swap shot", "Download", "Delete shot"],
+        },
+        notes: {
+          when: "Oct 8",
+          lines: [
+            "“We're essentially building a very simple NLE, where each cut is split into its own clips and we can drop in different versions.”",
+            "“If we have our editor, our current video screen doesn't need so many edit options. That will be handled in the edit.”",
+            "“Current projects are basically video takes if the editor holds the full project.”",
+          ],
+        },
+        after: {
+          label: "After",
+          title: "Projects open on a bin. The editor holds the cut.",
+          body: "A project houses scenes. Scenes house takes. Fixes happen in the edit, where you can see the whole film.",
+        },
+        changes: [
+          {
+            title: "Data model",
+            body: "Project, then scenes, then takes. Renamed in code too, so the words match the screen.",
+          },
+          {
+            title: "Video page",
+            body: "It sheds the edit menu and goes back to watching takes and generating again.",
+          },
+          {
+            title: "Navigation",
+            body: "Projects, Assets, Create, Audio, More. Create opens a sheet, so it doesn't fight the old button.",
+          },
+          {
+            title: "Reach",
+            body: "A polished editor is what lets a film run longer than a single clip.",
+          },
+        ],
       },
-    ],
+    },
     sections: [
       {
         heading: "Overview",
@@ -404,18 +475,71 @@ export const caseStudies: CaseStudy[] = [
         caption: "Profile — handicap, social graph, hosting",
       },
     ],
-    boards: [
-      {
-        src: `${WORK_BLOB}/parfade/flow-board.webp`,
-        alt: "Parfade key flow: host plans a round, invites, Parfade pushes, players accept or decline, round locks, side games, recap",
-        caption: "Key flow: host, Parfade, and players in one round",
+    process: {
+      flow: {
+        kicker: "Key flow",
+        title: "From “who’s free Saturday?” to a locked tee time",
+        lanes: [
+          {
+            label: "Host",
+            steps: [
+              { n: "01", title: "Start a planning round", body: "Course and time can wait. Find players first." },
+              { n: "02", title: "Pick friends or a group", body: "The invite goes to people, not into a group chat." },
+              { n: "06", title: "Round locks", body: "A full round flips from planning to a booked tee time." },
+              { n: "07", title: "Play side games", body: "Skins, Nassau, and the rest ride along with the round." },
+              { n: "09", title: "Recap lands", body: "Standings update when the scores post." },
+            ],
+          },
+          {
+            label: "Parfade",
+            steps: [
+              { n: "03", title: "Push the invite", body: "Course and time ride on the notification itself.", kind: "system" },
+              { n: "05", title: "Fill spots, first come", body: "First accepts are in. A full round flips to locked.", kind: "system" },
+              { n: "08", title: "Score and settle", body: "Skins and Nassau standings update as holes post.", kind: "system" },
+            ],
+          },
+          {
+            label: "Players",
+            steps: [
+              { n: "04", title: "Accept or decline", body: "Decline reopens the spot. Accept puts the round under My rounds, still planning.", kind: "decision" },
+              { n: "Alt", title: "Join from Discover", body: "Open rounds can be joined on the spot, or requested for the host to approve." },
+            ],
+          },
+        ],
       },
-      {
-        src: `${WORK_BLOB}/parfade/states-board.webp`,
-        alt: "Parfade states: invite with course and time, planning vs locked, round full, pending approval, empty My rounds",
-        caption: "States spec: invite, round status, too late, pending, and empty",
+      states: {
+        kicker: "States",
+        title: "An invite has to answer where and when",
+        lede: "Every state tells a player where they stand, so nobody has to ask in the group chat.",
+        items: [
+          {
+            label: "Invite",
+            title: "Where and when, up front",
+            body: "Course and time sit in the push and on the accept screen. A friend once accepted, then texted “which course?”",
+          },
+          {
+            label: "Round status",
+            title: "Planning vs locked",
+            body: "Planning shows who is in and that the course is still open. Locked means the tee time is booked.",
+          },
+          {
+            label: "Edge case",
+            title: "Too late to accept",
+            body: "First come means someone misses out. The closed invite says so, and points at open rounds nearby.",
+          },
+          {
+            label: "Pending",
+            title: "Waiting on approval",
+            body: "A request is its own state, so a player doesn't mistake “asked” for “in.”",
+          },
+          {
+            label: "Empty",
+            title: "First open",
+            body: "No rounds yet. Pick a day and find players first. One clear action.",
+          },
+        ],
       },
-    ],
+    },
     sections: [
       {
         heading: "Overview",
@@ -515,18 +639,73 @@ export const caseStudies: CaseStudy[] = [
         caption: "Cart — checkout via Shopify",
       },
     ],
-    boards: [
-      {
-        src: `${WORK_BLOB}/petshirts/flow-board.webp`,
-        alt: "Petshirts key flow: land, pick a style, upload, generate preview, regenerate or add to cart, Shopify checkout, 4K print file, print and ship",
-        caption: "Key flow: customer, system, and what happens after payment",
+    process: {
+      flow: {
+        kicker: "Key flow",
+        title: "Pet photo to paid order in about three minutes",
+        lanes: [
+          {
+            label: "Customer",
+            steps: [
+              { n: "01", title: "Land", body: "The shirt is the pitch. Create starts here." },
+              { n: "02", title: "Pick a style", body: "Taste leads. The library is the catalog." },
+              { n: "03", title: "Upload the pet", body: "One photo. The pet stays the subject." },
+              { n: "04", title: "Preview on a tee", body: "A fast preview on a real blank, so it feels like a product." },
+              { n: "05", title: "Love it?", body: "Yes goes to garment, color, and size. No makes another take.", kind: "decision" },
+              { n: "06", title: "Cart", body: "Checkout hands off to Shopify." },
+            ],
+          },
+          {
+            label: "System",
+            steps: [
+              { n: "03b", title: "Guard, then generate", body: "Turnstile and a rate limit first, then a fast 1K preview.", kind: "system" },
+              { n: "05b", title: "Regenerate", body: "Same pet, same style, a new take.", kind: "system" },
+            ],
+          },
+          {
+            label: "After payment",
+            steps: [
+              { n: "07", title: "Shopify checkout", body: "The headless cart hands off to Shopify to pay.", kind: "system" },
+              { n: "08", title: "Paid webhook", body: "The order lands. The design URL rides on the line item.", kind: "system" },
+              { n: "09", title: "4K print file", body: "Prepared only after payment. Previews stay 1K so the wait stays short.", kind: "system" },
+              { n: "10", title: "Print and ship", body: "An operator prints it on a Comfort Colors blank.", kind: "system" },
+            ],
+          },
+        ],
       },
-      {
-        src: `${WORK_BLOB}/petshirts/states-board.webp`,
-        alt: "Petshirts states: uploading, painting the preview, failed preview, rate limited, empty cart",
-        caption: "States spec: upload, generating, error, rate limit, and empty cart",
+      states: {
+        kicker: "States",
+        title: "Keep the joy up while the AI works",
+        lede: "Generation is slow, can fail, and is rate limited. Each state keeps the pet in front and offers one next step.",
+        items: [
+          {
+            label: "Upload",
+            title: "Photo on its way",
+            body: "The photo shows the moment it's picked. Tips sit under it. The error comes after, not during.",
+          },
+          {
+            label: "Loading",
+            title: "Painting the preview",
+            body: "The tee and the style are already there, so the wait never looks like a blank page.",
+          },
+          {
+            label: "Error",
+            title: "Preview failed",
+            body: "The photo stays. The only ways forward are try again or change style.",
+          },
+          {
+            label: "Limit",
+            title: "Rate limited",
+            body: "The sheet says when it resets, and the designs already made are still there.",
+          },
+          {
+            label: "Empty",
+            title: "Empty cart",
+            body: "Nothing here yet. The only action leads back to creating a shirt.",
+          },
+        ],
       },
-    ],
+    },
     sections: [
       {
         heading: "Overview",

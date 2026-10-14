@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CaseStudy } from "@/lib/case-studies";
 import type { Project } from "@/lib/projects";
+import { CaseStudyProcess } from "@/components/case-study-process";
 
 type CaseStudyLayoutProps = {
   study: CaseStudy;
@@ -167,7 +168,9 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
         </div>
       ) : null}
 
-      {study.boards && study.boards.length > 0 ? (
+      {study.process ? <CaseStudyProcess process={study.process} accent={accent} /> : null}
+
+      {study.boards && study.boards.length > 0 && !study.process ? (
         <div className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-14 md:py-20">
             <p className="label-caps text-muted">Process</p>
@@ -198,7 +201,7 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
         </div>
       ) : null}
 
-      {study.diagram && !study.boards?.length && (
+      {study.diagram && !study.boards?.length && !study.process && (
         <div className="border-b border-border bg-surface">
           <div className="mx-auto max-w-4xl px-6 py-14">
             {/* eslint-disable-next-line @next/next/no-img-element */}
