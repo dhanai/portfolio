@@ -19,6 +19,7 @@ const FILES: { slug: string; preset: CompressPreset }[] = [
   { slug: "take", preset: "preview" },
   { slug: "cast", preset: "preview" },
   { slug: "audio", preset: "preview" },
+  { slug: "previs", preset: "preview" },
   { slug: "board-evolution", preset: "lightbox" },
   { slug: "board-flow", preset: "lightbox" },
   { slug: "board-decision", preset: "lightbox" },

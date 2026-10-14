@@ -111,6 +111,11 @@ export const caseStudies: CaseStudy[] = [
     galleryTitle: "From idea to edit",
     gallery: [
       {
+        src: `${WORK_BLOB}/doomsy/film/previs.webp`,
+        alt: "Previs blocking a conversation: two stand-ins at a table, with the camera, lens, and timeline",
+        caption: "Previs — block the shot, then export the move",
+      },
+      {
         src: `${WORK_BLOB}/doomsy/film/editor.webp`,
         alt: "Doomsy editor with a video viewer, V1–V3 and A1–A3 tracks, and Shot, Upload, Music, Voice, Captions, and Ask",
         caption: "Editor — a real timeline, sized for a phone",
@@ -121,114 +126,66 @@ export const caseStudies: CaseStudy[] = [
         caption: "Project — the edit, the cast, the look, the scenes",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/shots.webp`,
-        alt: "Doomsy take brief and shot list with cast names tagged in each shot",
-        caption: "Shot list — a camera, a moment, the cast in frame",
-      },
-      {
-        src: `${WORK_BLOB}/doomsy/film/take.webp`,
-        alt: "Doomsy scene page with a swipeable take, shots strip, and Generate again",
-        caption: "Takes — swipe between them, or generate again",
-      },
-      {
         src: `${WORK_BLOB}/doomsy/film/cast.webp`,
         alt: "Doomsy character page for Sasha with variants and Edit, Variant, Same look, and Pin",
         caption: "Cast — every character keeps its variants",
       },
-      {
-        src: `${WORK_BLOB}/doomsy/film/audio.webp`,
-        alt: "Doomsy Audio tab with dialogue voices and music tracks",
-        caption: "Audio — voices and music, ready for the edit",
-      },
     ],
-    boardsTitle: "How it got here",
+    boardsTitle: "The decision",
     boards: [
-      {
-        src: `${WORK_BLOB}/doomsy/film/board-evolution.webp`,
-        alt: "Doomsy timeline in five eras: brand feed, quality vs. guardrails, attachments, the pivot, and production plus editor",
-        caption: "Ten weeks in five eras, from a brand feed to a film studio",
-      },
-      {
-        src: `${WORK_BLOB}/doomsy/film/board-flow.webp`,
-        alt: "Doomsy flow map: Create sheet, project bin, new scene settings, shot list, confirm the cost, takes, editor, and export, with Assets and Audio feeding in",
-        caption: "Flow map: project, scenes, takes, then the cut. Ask helps at every step and never presses Generate for you",
-      },
       {
         src: `${WORK_BLOB}/doomsy/film/board-decision.webp`,
         alt: "Before: the video page's shot menu and swap shot sheet. After: the project bin and the editor",
-        caption: "The key decision: swap shot turned into an editor, and the editor reorganized the app",
-      },
-      {
-        src: `${WORK_BLOB}/doomsy/film/board-principles.webp`,
-        alt: "Seven design principles and eight reversals, each with what was tried, what replaced it, and why",
-        caption: "The rules I kept coming back to, and what I changed my mind on",
+        caption: "Swap shot turned into an editor, and the editor reorganized the app",
       },
     ],
     sections: [
       {
         heading: "Overview",
         paragraphs: [
-          "Doomsy turns one idea into a finished short film. It writes the shots, casts them, voices them, scores them, and renders every take. Then you cut the film yourself in a real editor on your phone.",
-          "I design and build the iOS app and the landing at doomsy.ai, and I direct the sample films in it. The screens here are from the current build.",
-        ],
-      },
-      {
-        heading: "Where it started",
-        paragraphs: [
-          "Doomsy began as a creative feed for brands: paste a URL, swipe through on-brand photos and reels. I took it through App Store review, rebuilt payments when review required In-App Purchase, and spent weeks fighting the models on likeness blocks and product accuracy.",
-          "In October two things changed my mind. Chat models could now put anyone's product in an image, which made the image side of Doomsy close to obsolete. And short, character-driven video was taking off. I dropped brands and rebuilt the app around how a film actually gets made. The idea stayed the same — taste over prompts — but the output went from single posts to finished films.",
+          "Doomsy turns one idea into a short film on your phone. It casts the film, writes the shots, voices them, scores them, and renders the takes. You cut it yourself.",
+          "I design and build the iOS app, and I direct the films in it, including Clean Glass and Train Wreck. It started as a feed of on-brand posts. When image models made that easy for everyone, I dropped it and rebuilt around how a film actually gets made.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "AI video tools hand you a clip. A film needs a cast that stays the same from shot to shot, shots that cut together, voices, music, and an edit. That work is usually spread across several tools and a desktop editor.",
+          "AI video tools hand you a clip. A film needs a cast that holds from shot to shot, shots that cut together, voices, music, and an edit. That work usually lives across several tools and a desktop editor.",
         ],
       },
       {
         heading: "Product design",
         paragraphs: [
-          "I modeled the app on a real production, so every piece has an obvious home and nothing lives in a chat log.",
+          "I modeled the app on a real production, so every piece has an obvious home.",
         ],
         bullets: [
-          "Projects hold a brief, a look, a cast, and scenes",
-          "Scenes have takes, and each take has its own brief and shot list",
-          "Characters, locations, and props live in Assets, each with variants",
-          "Voices and music live in Audio and get laid over in the edit",
-          "Every step works by hand or with Doomsy's help — finish a brief, write the shots, generate the cast, tighten the cut",
+          "Previs blocks the shot before you generate: stand-ins, a camera you can walk, a lens, and a horizon. Then you export the move.",
+          "A project holds the brief, the look, the cast, and the scenes.",
+          "Characters, places, and props live in Assets, each with variants.",
+          "Voices and music live in Audio, then land in the edit.",
+          "Ask can fill in a step. You still press Generate.",
         ],
       },
       {
         heading: "The key decision",
         paragraphs: [
-          "At first the video page did the editing: tap a shot to regenerate it, swap in another take, download it, or delete it. Getting swap shot to work, I wrote in my notes: “We're essentially building a very simple NLE.”",
-          "So I built a real one, sized for a phone: three video and three audio tracks, trim, split, slip, dissolves, fades, and captions. Ask lets you describe a change in plain words, and one undo takes it all back.",
-          "Then I let the editor reorganize the app. If the editor holds the whole film, a project is more than one video. Projects now open on a bin of scenes, scenes hold takes, and the video page went back to just playing takes. Fixes happen in the edit, where you can see the whole film.",
+          "Editing first lived on the video page: regenerate a shot, swap a take, download it, or delete it. Getting swap to work, I wrote in my notes: “We're essentially building a very simple NLE.”",
+          "So I built one for a phone. Three picture tracks, three audio tracks, trim, split, and captions. Ask can describe a change, and one undo takes it back. Then I let the editor reorganize the app. A project opens on its scenes, and fixes happen in the edit, where you can see the whole film.",
         ],
       },
       {
         heading: "How I decided",
-        paragraphs: [
-          "A few rules kept settling arguments, with the agent and with myself:",
-        ],
+        paragraphs: ["Three rules kept settling the arguments:"],
         bullets: [
-          "The user stays in control: Ask fills in the form, and you still press Generate",
-          "Never destroy work: every take, edit, and regenerated shot is kept",
-          "Show the cost, then confirm, before anything that spends credits",
-          "Don't overfit: no rules written for one product or one genre",
-          "Less copy: no subtext, helpers behind info icons, no machinery on screen",
-        ],
-      },
-      {
-        heading: "Creative direction",
-        paragraphs: [
-          "I treat each film like a shoot: a look set once for the whole project, a cast that carries across scenes, and taste as the acceptance criteria. Clean Glass and Train Wreck, a western micro dramedy, are films I directed in the app.",
+          "You stay in control. Ask fills the form. You press Generate.",
+          "Nothing gets thrown away. Every take, edit, and regeneration stays.",
+          "Show the cost, then confirm, before anything spends credits.",
         ],
       },
       {
         heading: "Outcome",
         paragraphs: [
-          "A working iOS app, a landing at doomsy.ai, and a matching set of App Store screenshots — product design, art direction, and the build in one seat.",
+          "A working iOS app and a landing at doomsy.ai. Product design, art direction, and the build in one seat.",
         ],
       },
     ],
