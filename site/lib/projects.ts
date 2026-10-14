@@ -87,7 +87,7 @@ export const projects: Project[] = [
     subtitle: "An AI film studio on your phone",
     tags: ["Product", "AI", "Film", "Mobile"],
     year: "2026–present",
-    image: `${BLOB}/doomsy/film/thumb.webp`,
+    image: `${BLOB}/doomsy/film/thumb-2026-10.webp`,
     color: accentColors.doomsy,
   },
   {

@@ -107,7 +107,7 @@ export const caseStudies: CaseStudy[] = [
     year: "2026–present",
     role: "Founder · Product Design · Creative Direction",
     externalUrl: "https://doomsy.ai",
-    heroImage: `${WORK_BLOB}/doomsy/film/hero.webp`,
+    heroImage: `${WORK_BLOB}/doomsy/film/hero-2026-10.webp`,
     galleryTitle: "From idea to edit",
     gallery: [
       {
@@ -116,19 +116,19 @@ export const caseStudies: CaseStudy[] = [
         caption: "Previs — block the shot, then export the move",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/editor.webp`,
-        alt: "Doomsy editor with a video viewer, V1–V3 and A1–A3 tracks, and Shot, Upload, Music, Voice, Captions, and Ask",
+        src: `${WORK_BLOB}/doomsy/film/editor-2026-10.webp`,
+        alt: "The Train Wreck edit in the Doomsy editor, with the scene in the player and the cut on the timeline",
         caption: "Editor — a real timeline, sized for a phone",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/project.webp`,
-        alt: "Doomsy project page for Train Wreck with the edit, cast, World look, and scenes",
-        caption: "Project — the edit, the cast, the look, the scenes",
+        src: `${WORK_BLOB}/doomsy/film/project-2026-10.webp`,
+        alt: "Train Wreck project with the edit, the elements, and the scenes",
+        caption: "Project — the edit, the cast, and the scenes",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/cast.webp`,
-        alt: "Doomsy character page for Sasha with variants and Edit, Variant, Same look, and Pin",
-        caption: "Cast — every character keeps its variants",
+        src: `${WORK_BLOB}/doomsy/film/assets-2026-10.webp`,
+        alt: "Assets, with the film's shots and previs blockouts",
+        caption: "Assets — the film's videos and previs",
       },
     ],
     boardsTitle: "The decision",
