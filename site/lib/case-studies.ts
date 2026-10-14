@@ -147,14 +147,14 @@ export const caseStudies: CaseStudy[] = [
     galleryTitle: "From idea to edit",
     gallery: [
       {
+        src: `${WORK_BLOB}/doomsy/film/generate-2026-10.webp`,
+        alt: "New video form with the previs clip, cast, place, dialogue, and the generate cost",
+        caption: "New video — the previs, the cast, and the cost",
+      },
+      {
         src: `${WORK_BLOB}/doomsy/film/previs.webp`,
         alt: "Previs blocking a conversation: two stand-ins at a table, with the camera, lens, and timeline",
         caption: "Previs — block the shot, then export the move",
-      },
-      {
-        src: `${WORK_BLOB}/doomsy/film/editor-2026-10.webp`,
-        alt: "The Train Wreck edit in the Doomsy editor, with the scene in the player and the cut on the timeline",
-        caption: "Editor — a real timeline, sized for a phone",
       },
       {
         src: `${WORK_BLOB}/doomsy/film/project-2026-10.webp`,
@@ -165,6 +165,16 @@ export const caseStudies: CaseStudy[] = [
         src: `${WORK_BLOB}/doomsy/film/assets-2026-10.webp`,
         alt: "Assets, with the film's shots and previs blockouts",
         caption: "Assets — the film's videos and previs",
+      },
+      {
+        src: `${WORK_BLOB}/doomsy/film/music-2026-10.webp`,
+        alt: "Crooked Moon playing in Doomsy, with the cover, the prompt, and the model",
+        caption: "Music — the score, ready for the edit",
+      },
+      {
+        src: `${WORK_BLOB}/doomsy/film/editor-2026-10.webp`,
+        alt: "The Train Wreck edit in the Doomsy editor, with the scene in the player and the cut on the timeline",
+        caption: "Editor — a real timeline, sized for a phone",
       },
     ],
     process: {
