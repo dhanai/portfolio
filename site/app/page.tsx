@@ -31,11 +31,6 @@ export default async function HomePage() {
         </p>
       </section>
 
-      <CreativeShowcaseSection
-        showcase={showcase}
-        className="scroll-mt-24 py-10 md:py-14"
-      />
-
       <section id="work" className="scroll-mt-24 border-t border-border py-16 md:py-24">
         <div className="mx-auto mb-8 max-w-6xl px-6">
           <p className="label-caps text-muted">Work</p>
@@ -45,6 +40,11 @@ export default async function HomePage() {
         </div>
         <WorkScrollRail projects={projects} />
       </section>
+
+      <CreativeShowcaseSection
+        showcase={showcase}
+        className="scroll-mt-24 border-t border-border py-10 md:py-14"
+      />
 
       <section id="about" className="scroll-mt-24 border-t border-border">
         <div className="mx-auto grid max-w-6xl gap-16 px-6 py-24 md:py-28 lg:grid-cols-[1.45fr_1fr] lg:gap-24">
