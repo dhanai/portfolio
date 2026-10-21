@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { prisma } from "@/lib/prisma";
 import {
   formatMoney,
+  invoiceBalance,
   INVOICE_ISSUER,
 } from "@/lib/invoices";
 
@@ -36,9 +37,12 @@ export default async function Image({ params }: ImageProps) {
 
   const number = invoice?.number ?? "Invoice";
   const clientName = invoice?.clientName ?? "Client";
-  const amount = invoice ? formatMoney(invoice.amount) : "";
-  const statusLabel =
-    invoice?.status === "paid" ? "Paid" : "Amount due";
+  const isPaid = invoice?.status === "paid";
+  const isPartial = Boolean(invoice && !isPaid && invoice.amountPaid > 0);
+  const amount = invoice
+    ? formatMoney(isPartial ? invoiceBalance(invoice) : invoice.amount)
+    : "";
+  const statusLabel = isPaid ? "Paid" : isPartial ? "Balance due" : "Amount due";
 
   return new ImageResponse(
     (

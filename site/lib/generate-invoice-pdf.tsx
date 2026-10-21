@@ -10,6 +10,7 @@ export type InvoicePdfSource = {
   clientName: string;
   clientEmail: string;
   amount: number;
+  amountPaid?: number | null;
   status: string;
   notes: string | null;
   createdAt: Date;
@@ -34,6 +35,7 @@ export async function generateInvoicePdf(
       clientName={invoice.clientName}
       clientEmail={invoice.clientEmail}
       amount={invoice.amount}
+      amountPaid={invoice.amountPaid ?? 0}
       status={invoice.status}
       notes={invoice.notes}
       createdAt={invoice.createdAt}

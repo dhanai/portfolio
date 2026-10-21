@@ -27,6 +27,7 @@ export type InvoiceLineItem = {
   rate: number;
   hours: number | null;
   amount: number;
+  paid?: boolean;
 };
 
 export type InvoiceRecord = {
@@ -44,6 +45,7 @@ export type InvoiceRecord = {
   role: string;
   budgetLine: string;
   amount: number;
+  amountPaid: number;
   status: string;
   notes: string | null;
   createdAt: Date;
@@ -99,6 +101,28 @@ export function calculateInvoiceAmount(
 
 export function sumLineItems(items: InvoiceLineItem[]) {
   return roundMoney(items.reduce((sum, item) => sum + item.amount, 0));
+}
+
+export type InvoicePaymentStatus = "sent" | "partial" | "paid";
+
+export function paymentStatusFor(amount: number, amountPaid: number): InvoicePaymentStatus {
+  if (amountPaid <= 0) return "sent";
+  if (roundMoney(amountPaid) >= roundMoney(amount)) return "paid";
+  return "partial";
+}
+
+export function invoiceBalance(invoice: { amount: number; amountPaid?: number | null }) {
+  return roundMoney(Math.max(0, invoice.amount - (invoice.amountPaid ?? 0)));
+}
+
+/** Money still owed on unpaid and partially paid invoices; drafts don't count. */
+export function isAwaitingPayment(status: string) {
+  return status === "sent" || status === "partial";
+}
+
+export function invoiceStatusLabel(status: string) {
+  if (status === "partial") return "partially paid";
+  return status;
 }
 
 export function formatMoney(amount: number) {
@@ -218,6 +242,7 @@ export function parseLineItemsJson(raw: string | null | undefined): InvoiceLineI
               ? hours
               : null,
           amount,
+          ...(row.paid === true ? { paid: true } : {}),
         };
       })
       .filter((item): item is InvoiceLineItem => item != null);

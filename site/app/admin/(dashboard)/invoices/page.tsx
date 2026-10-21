@@ -6,6 +6,9 @@ import {
   formatInvoiceDate,
   formatMoney,
   getInvoiceLineItems,
+  invoiceBalance,
+  invoiceStatusLabel,
+  isAwaitingPayment,
 } from "@/lib/invoices";
 
 export const dynamic = "force-dynamic";
@@ -38,8 +41,8 @@ export default async function AdminInvoicesPage({
   const invoices = await prisma.invoice.findMany({
     orderBy: { createdAt: "desc" },
   });
-  const unpaid = invoices.filter((inv) => inv.status === "sent");
-  const unpaidTotal = unpaid.reduce((sum, inv) => sum + inv.amount, 0);
+  const unpaid = invoices.filter((inv) => isAwaitingPayment(inv.status));
+  const unpaidTotal = unpaid.reduce((sum, inv) => sum + invoiceBalance(inv), 0);
   const drafts = invoices.filter((inv) => inv.status === "draft");
   const draftTotal = drafts.reduce((sum, inv) => sum + inv.amount, 0);
 
@@ -71,8 +74,8 @@ export default async function AdminInvoicesPage({
             {formatMoney(unpaidTotal)}
           </p>
           <p className="mt-1 text-xs text-[#737373]">
-            {unpaid.length} {unpaid.length === 1 ? "invoice" : "invoices"} sent
-            and awaiting payment
+            {unpaid.length} {unpaid.length === 1 ? "invoice" : "invoices"}{" "}
+            awaiting payment
             {drafts.length > 0
               ? ` · ${formatMoney(draftTotal)} in ${drafts.length} ${drafts.length === 1 ? "draft" : "drafts"}`
               : ""}
@@ -122,13 +125,20 @@ export default async function AdminInvoicesPage({
                       className={`text-[10px] uppercase tracking-wider ${
                         inv.status === "paid"
                           ? "text-emerald-400"
-                          : "text-[#a3a3a3]"
+                          : inv.status === "partial"
+                            ? "text-amber-300"
+                            : "text-[#a3a3a3]"
                       }`}
                     >
-                      {inv.status}
+                      {invoiceStatusLabel(inv.status)}
                     </span>
-                    <span className="font-mono text-sm text-white">
+                    <span className="text-right font-mono text-sm text-white">
                       {formatMoney(inv.amount)}
+                      {inv.status === "partial" ? (
+                        <span className="block text-[11px] text-amber-300">
+                          {formatMoney(invoiceBalance(inv))} due
+                        </span>
+                      ) : null}
                     </span>
                   </div>
                 </Link>

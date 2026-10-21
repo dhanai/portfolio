@@ -53,7 +53,9 @@ model Invoice {
   lineItems     String   @default("[]")
   /** Cached total in dollars */
   amount        Float
-  /** draft | sent | paid */
+  /** Dollars received so far */
+  amountPaid    Float    @default(0)
+  /** draft | sent | partial | paid */
   status        String   @default("sent")
   /** Show W-9 download link on the client invoice */
   includeW9     Boolean  @default(false)

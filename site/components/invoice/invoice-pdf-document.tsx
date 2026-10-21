@@ -12,6 +12,7 @@ import {
   formatWorkedOn,
   INVOICE_ISSUER,
   INVOICE_PAYMENT_OPTIONS,
+  invoiceBalance,
   lineItemsHaveHours,
   type InvoiceLineItem,
 } from "@/lib/invoices";
@@ -21,6 +22,7 @@ const muted = "#52525b";
 const light = "#71717a";
 const border = "#e4e4e7";
 const wash = "#fafafa";
+const paid = "#047857";
 
 const styles = StyleSheet.create({
   page: {
@@ -148,6 +150,31 @@ const styles = StyleSheet.create({
     fontFamily: "Courier-Bold",
     textAlign: "right",
   },
+  subFoot: {
+    flexDirection: "row",
+  },
+  subFootValue: {
+    width: 78,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    fontSize: 9,
+    fontFamily: "Courier",
+    textAlign: "right",
+  },
+  paidTag: {
+    marginTop: 2,
+    fontSize: 6.5,
+    fontFamily: "Helvetica-Bold",
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+    color: paid,
+  },
+  paidSummary: {
+    marginTop: 3,
+    fontSize: 8,
+    fontFamily: "Courier",
+    color: light,
+  },
   paymentTitle: {
     marginBottom: 8,
   },
@@ -195,6 +222,7 @@ export type InvoicePdfProps = {
   clientName: string;
   clientEmail: string;
   amount: number;
+  amountPaid?: number;
   status: string;
   notes: string | null;
   createdAt: Date;
@@ -210,6 +238,7 @@ export function InvoicePdfDocument({
   clientName,
   clientEmail,
   amount,
+  amountPaid = 0,
   status,
   notes,
   createdAt,
@@ -222,7 +251,10 @@ export function InvoicePdfDocument({
   const showHours = lineItemsHaveHours(lineItems);
   const worked = daysWorked(lineItems);
   const showDays = worked.length > 0;
-  const statusLabel = status === "paid" ? "Paid" : "Amount due";
+  const isPaid = status === "paid";
+  const isPartial = !isPaid && amountPaid > 0;
+  const balance = invoiceBalance({ amount, amountPaid });
+  const statusLabel = isPaid ? "Paid" : isPartial ? "Balance due" : "Amount due";
   const jobFacts = [
     jobNumber ? { label: "Job number", value: jobNumber } : null,
     role ? { label: "Role", value: role } : null,
@@ -250,7 +282,14 @@ export function InvoicePdfDocument({
           </View>
           <View style={styles.amountBlock}>
             <Text style={styles.label}>{statusLabel}</Text>
-            <Text style={styles.amount}>{formatMoney(amount)}</Text>
+            <Text style={styles.amount}>
+              {formatMoney(isPartial ? balance : amount)}
+            </Text>
+            {isPartial ? (
+              <Text style={styles.paidSummary}>
+                {formatMoney(amountPaid)} of {formatMoney(amount)} paid
+              </Text>
+            ) : null}
           </View>
         </View>
 
@@ -309,14 +348,33 @@ export function InvoicePdfDocument({
                   {item.rateType === "hourly" ? String(item.hours ?? "") : "—"}
                 </Text>
               ) : null}
-              <Text style={[styles.td, styles.colAmount, styles.mono]}>
-                {formatMoney(item.amount)}
-              </Text>
+              <View style={[styles.td, styles.colAmount]}>
+                <Text style={styles.mono}>{formatMoney(item.amount)}</Text>
+                {item.paid && !isPaid ? <Text style={styles.paidTag}>Paid</Text> : null}
+              </View>
             </View>
           ))}
+          {isPartial ? (
+            <>
+              <View style={styles.subFoot}>
+                <Text style={[styles.footLabel, { paddingVertical: 6 }]}>Total</Text>
+                <Text style={styles.subFootValue}>{formatMoney(amount)}</Text>
+              </View>
+              <View style={[styles.subFoot, { borderBottomWidth: 1, borderBottomColor: border }]}>
+                <Text style={[styles.footLabel, { paddingVertical: 6, color: paid }]}>Paid</Text>
+                <Text style={[styles.subFootValue, { color: paid }]}>
+                  -{formatMoney(amountPaid)}
+                </Text>
+              </View>
+            </>
+          ) : null}
           <View style={styles.tableFoot}>
-            <Text style={styles.footLabel}>Total due</Text>
-            <Text style={styles.footAmount}>{formatMoney(amount)}</Text>
+            <Text style={styles.footLabel}>
+              {isPaid ? "Total paid" : isPartial ? "Balance due" : "Total due"}
+            </Text>
+            <Text style={styles.footAmount}>
+              {formatMoney(isPartial ? balance : amount)}
+            </Text>
           </View>
         </View>
 

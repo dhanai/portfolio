@@ -13,6 +13,8 @@ import {
   getInvoiceLineItems,
   parseLineItemsJson,
   normalizeWorkedOn,
+  paymentStatusFor,
+  roundMoney,
   sumLineItems,
   type InvoiceLineItem,
   type InvoiceRateType,
@@ -33,6 +35,7 @@ function normalizeLineItems(items: InvoiceLineItem[]) {
       rate,
       hours: rateType === "hourly" ? hours : null,
       amount: calculateLineAmount(rateType, rate, hours),
+      ...(item.paid ? { paid: true } : {}),
     } satisfies InvoiceLineItem;
   });
 }
@@ -130,6 +133,7 @@ export async function duplicateInvoiceAction(
   const lineItems = getInvoiceLineItems(source).map((item) => ({
     ...item,
     id: createLineItemId(),
+    paid: undefined,
   }));
 
   const invoice = await prisma.invoice.create({
@@ -170,9 +174,15 @@ export async function updateInvoiceAction(
   const parsed = parseInvoiceForm(formData);
   if ("error" in parsed && parsed.error) return { error: parsed.error };
 
+  const data = parsed.data!;
   await prisma.invoice.update({
     where: { id },
-    data: parsed.data!,
+    data: {
+      ...data,
+      ...(existing.status === "draft"
+        ? {}
+        : { status: paymentStatusFor(data.amount, existing.amountPaid) }),
+    },
   });
 
   revalidatePath("/admin/invoices");
@@ -204,12 +214,77 @@ export async function markInvoicePaidAction(
   const id = String(formData.get("id") ?? "").trim();
   if (!id) return { error: "Missing invoice id" };
 
+  const existing = await prisma.invoice.findUnique({ where: { id } });
+  if (!existing) return { error: "Invoice not found" };
+
+  const lineItems = getInvoiceLineItems(existing).map((item) => ({
+    ...item,
+    paid: true,
+  }));
+
   await prisma.invoice.update({
     where: { id },
-    data: { status: "paid" },
+    data: {
+      status: "paid",
+      amountPaid: existing.amount,
+      lineItems: JSON.stringify(lineItems),
+    },
   });
 
   revalidatePath("/admin/invoices");
   revalidatePath(`/admin/invoices/${id}`);
+  revalidatePath(`/invoice/${existing.token}`);
+  return { ok: true };
+}
+
+/**
+ * Sets what has been paid so far. Checked line items are marked paid; the
+ * amount defaults to their sum but can be any value up to the total.
+ */
+export async function recordInvoicePaymentAction(
+  formData: FormData,
+): Promise<ActionResult> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return { error: "Missing invoice id" };
+
+  const existing = await prisma.invoice.findUnique({ where: { id } });
+  if (!existing) return { error: "Invoice not found" };
+
+  const paidIds = new Set(formData.getAll("paidItem").map(String));
+  const lineItems: InvoiceLineItem[] = getInvoiceLineItems(existing).map((item) => ({
+    ...item,
+    paid: paidIds.has(item.id) ? true : undefined,
+  }));
+
+  const rawAmount = String(formData.get("amountPaid") ?? "").trim();
+  const amountPaid = rawAmount
+    ? roundMoney(Number(rawAmount.replace(/[$,]/g, "")))
+    : sumLineItems(lineItems.filter((item) => item.paid));
+
+  if (!Number.isFinite(amountPaid) || amountPaid < 0) {
+    return { error: "Enter a valid amount paid" };
+  }
+  if (amountPaid > existing.amount) {
+    return { error: "Amount paid can't be more than the invoice total" };
+  }
+
+  const status =
+    existing.status === "draft" && amountPaid === 0
+      ? "draft"
+      : paymentStatusFor(existing.amount, amountPaid);
+
+  await prisma.invoice.update({
+    where: { id },
+    data: {
+      amountPaid,
+      status,
+      lineItems: JSON.stringify(lineItems),
+    },
+  });
+
+  revalidatePath("/admin/invoices");
+  revalidatePath(`/admin/invoices/${id}`);
+  revalidatePath(`/invoice/${existing.token}`);
   return { ok: true };
 }

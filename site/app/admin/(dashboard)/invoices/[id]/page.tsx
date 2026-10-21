@@ -13,11 +13,19 @@ import {
   formatMoney,
   formatWorkedOn,
   getInvoiceLineItems,
+  invoiceBalance,
   invoicePublicPath,
+  invoiceStatusLabel,
 } from "@/lib/invoices";
 import { prisma } from "@/lib/prisma";
 import { siteConfig } from "@/lib/site-config";
 import { CopyInvoiceLink } from "@/components/admin/copy-invoice-link";
+import { InvoicePaymentForm } from "@/components/admin/invoice-payment-form";
+
+const STATUS_COLOR: Record<string, string> = {
+  paid: "text-emerald-400",
+  partial: "text-amber-300",
+};
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +47,7 @@ export default async function AdminInvoiceDetailPage({
   const absoluteUrl = `${siteConfig.url}${path}`;
   const lineItems = getInvoiceLineItems(invoice);
   const worked = daysWorked(lineItems);
+  const balance = invoiceBalance(invoice);
 
   return (
     <div>
@@ -76,18 +85,22 @@ export default async function AdminInvoiceDetailPage({
           </p>
           <p className="mt-2 text-sm text-[#737373]">
             {formatInvoiceDate(invoice.createdAt)} ·{" "}
-            <span
-              className={
-                invoice.status === "paid" ? "text-emerald-400" : "text-[#a3a3a3]"
-              }
-            >
-              {invoice.status}
+            <span className={STATUS_COLOR[invoice.status] ?? "text-[#a3a3a3]"}>
+              {invoiceStatusLabel(invoice.status)}
             </span>
           </p>
         </div>
-        <p className="font-mono text-3xl text-white">
-          {formatMoney(invoice.amount)}
-        </p>
+        <div className="sm:text-right">
+          <p className="font-mono text-3xl text-white">
+            {formatMoney(invoice.amount)}
+          </p>
+          {invoice.amountPaid > 0 && balance > 0 ? (
+            <p className="mt-1 font-mono text-xs text-[#a3a3a3]">
+              {formatMoney(invoice.amountPaid)} paid ·{" "}
+              <span className="text-amber-300">{formatMoney(balance)} due</span>
+            </p>
+          ) : null}
+        </div>
       </div>
 
       <section className="mt-8 space-y-3 border border-white/10 p-6">
@@ -173,11 +186,31 @@ export default async function AdminInvoiceDetailPage({
                   ? `${formatMoney(item.rate)}/hr × ${item.hours}`
                   : formatMoney(item.rate)}{" "}
                 <span className="text-white">{formatMoney(item.amount)}</span>
+                {item.paid ? (
+                  <span className="ml-2 text-[10px] uppercase tracking-wider text-emerald-400">
+                    paid
+                  </span>
+                ) : null}
               </p>
             </li>
           ))}
         </ul>
       </section>
+
+      {invoice.status !== "draft" || invoice.amountPaid > 0 ? (
+        <section className="mt-6 border border-white/10 p-6">
+          <h2 className="mb-5 text-xs uppercase tracking-wider text-[#737373]">
+            Record payment
+          </h2>
+          <InvoicePaymentForm
+            key={`${invoice.amountPaid}-${invoice.lineItems}`}
+            invoiceId={invoice.id}
+            total={invoice.amount}
+            amountPaid={invoice.amountPaid}
+            lineItems={lineItems}
+          />
+        </section>
+      ) : null}
 
       <div className="mt-8 flex flex-wrap gap-3">
         <Link
@@ -206,7 +239,7 @@ export default async function AdminInvoiceDetailPage({
             alwaysEnableSubmit
           >
             <input type="hidden" name="id" value={invoice.id} />
-            <AdminSubmit label="Mark paid" pendingLabel="Updating…" />
+            <AdminSubmit label="Mark paid in full" pendingLabel="Updating…" />
           </AdminForm>
         ) : null}
         <AdminForm

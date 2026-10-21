@@ -7,6 +7,7 @@ import {
   formatMoney,
   formatWorkedOn,
   getInvoiceLineItems,
+  invoiceBalance,
   INVOICE_ISSUER,
   INVOICE_PAYMENT_OPTIONS,
   INVOICE_W9_FILENAME,
@@ -36,7 +37,10 @@ export async function generateMetadata({
   }
 
   const title = `Invoice ${invoice.number}`;
-  const description = `Invoice for ${invoice.clientName} — ${formatMoney(invoice.amount)} due to ${INVOICE_ISSUER.name}.`;
+  const description =
+    invoice.status === "paid"
+      ? `Invoice for ${invoice.clientName} — ${formatMoney(invoice.amount)}, paid.`
+      : `Invoice for ${invoice.clientName} — ${formatMoney(invoiceBalance(invoice))} due to ${INVOICE_ISSUER.name}.`;
   const path = `/invoice/${token}`;
 
   return {
@@ -67,6 +71,10 @@ export default async function PublicInvoicePage({ params }: PageProps) {
   const showHours = lineItemsHaveHours(lineItems);
   const worked = daysWorked(lineItems);
   const showDays = worked.length > 0;
+  const isPaid = invoice.status === "paid";
+  const isPartial = !isPaid && invoice.amountPaid > 0;
+  const balance = invoiceBalance(invoice);
+  const labelColSpan = (showHours ? 3 : 2) + (showDays ? 1 : 0);
   const jobFacts = [
     invoice.jobNumber
       ? { label: "Job number", value: invoice.jobNumber }
@@ -109,16 +117,20 @@ export default async function PublicInvoicePage({ params }: PageProps) {
             <div className="sm:text-right">
               <p
                 className={`inline-block text-[10px] font-medium uppercase tracking-[0.16em] ${
-                  invoice.status === "paid"
-                    ? "text-emerald-700"
-                    : "text-[#71717a]"
+                  isPaid ? "text-emerald-700" : "text-[#71717a]"
                 }`}
               >
-                {invoice.status === "paid" ? "Paid" : "Amount due"}
+                {isPaid ? "Paid" : isPartial ? "Balance due" : "Amount due"}
               </p>
               <p className="mt-1 font-mono text-3xl font-medium tracking-tight sm:text-4xl">
-                {formatMoney(invoice.amount)}
+                {formatMoney(isPartial ? balance : invoice.amount)}
               </p>
+              {isPartial ? (
+                <p className="mt-1 font-mono text-xs text-[#71717a]">
+                  {formatMoney(invoice.amountPaid)} of{" "}
+                  {formatMoney(invoice.amount)} paid
+                </p>
+              ) : null}
             </div>
           </header>
 
@@ -204,20 +216,51 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                       ) : null}
                       <td className="px-3 py-3 text-right font-mono align-top whitespace-nowrap sm:px-4">
                         {formatMoney(item.amount)}
+                        {item.paid && !isPaid ? (
+                          <span className="mt-0.5 block font-sans text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-700">
+                            Paid
+                          </span>
+                        ) : null}
                       </td>
                     </tr>
                   ))}
                 </tbody>
                 <tfoot>
+                  {isPartial ? (
+                    <>
+                      <tr className="border-t border-[#e4e4e7]">
+                        <td
+                          colSpan={labelColSpan}
+                          className="px-3 py-2.5 text-right text-[10px] font-medium uppercase tracking-[0.14em] text-[#71717a] sm:px-4"
+                        >
+                          Total
+                        </td>
+                        <td className="px-3 py-2.5 text-right font-mono whitespace-nowrap sm:px-4">
+                          {formatMoney(invoice.amount)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          colSpan={labelColSpan}
+                          className="px-3 py-2.5 text-right text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-700 sm:px-4"
+                        >
+                          Paid
+                        </td>
+                        <td className="px-3 py-2.5 text-right font-mono whitespace-nowrap text-emerald-700 sm:px-4">
+                          −{formatMoney(invoice.amountPaid)}
+                        </td>
+                      </tr>
+                    </>
+                  ) : null}
                   <tr className="border-t border-[#e4e4e7] bg-[#fafafa]">
                     <td
-                      colSpan={(showHours ? 3 : 2) + (showDays ? 1 : 0)}
+                      colSpan={labelColSpan}
                       className="px-3 py-3 text-right text-[10px] font-medium uppercase tracking-[0.14em] text-[#71717a] sm:px-4"
                     >
-                      Total due
+                      {isPaid ? "Total paid" : isPartial ? "Balance due" : "Total due"}
                     </td>
-                    <td className="px-3 py-3 text-right font-mono text-base font-medium sm:px-4">
-                      {formatMoney(invoice.amount)}
+                    <td className="px-3 py-3 text-right font-mono text-base font-medium whitespace-nowrap sm:px-4">
+                      {formatMoney(isPartial ? balance : invoice.amount)}
                     </td>
                   </tr>
                 </tfoot>
