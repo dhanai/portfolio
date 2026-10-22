@@ -31,6 +31,6 @@ export const defaultCreativeShowcase: CreativeShowcaseData = {
   eyebrow: "Generative",
   title: "Generative AI",
   subtitle:
-    "Directed generative campaigns, stills, and motion — taste as the production system.",
+    "Directed generative campaigns, stills, and motion - taste as the production system.",
   items: [],
 };

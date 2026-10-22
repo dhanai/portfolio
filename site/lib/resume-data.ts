@@ -30,7 +30,7 @@ export const resumeData = {
     {
       company: "Takeout Order",
       role: "Founder · Creative & Product Lead",
-      period: "2020 — Present",
+      period: "2020 - Present",
       bullets: [
         "Built the brand end to end, from identity and voice to a hand-drawn catalog, and grew it to $3.8M in lifetime sales.",
         "Wrote and art-directed campaigns across paid social, web, email, and packaging. New concepts were the main growth lever, so I tested them constantly.",
@@ -41,7 +41,7 @@ export const resumeData = {
     {
       company: "Doomsy",
       role: "Founder · Product Design & Creative Direction",
-      period: "2026 — Present",
+      period: "2026 - Present",
       bullets: [
         "Designing and building an iOS app for directing short AI films: previs, cast, scenes, takes, voices, music, and a phone-sized editor.",
         "Modeled it on a real production. Ask, the built-in assistant, can fill in any step, but the director still presses Generate.",
@@ -51,7 +51,7 @@ export const resumeData = {
     {
       company: "DJcity",
       role: "Creative Director",
-      period: "2013 — 2019",
+      period: "2013 - 2019",
       bullets: [
         "Ran brand, campaign, and product creative for a DJ music platform for six years, building the creative function in-house.",
         "Directed the DJcity TV on-air identity and worked daily with engineering to ship product surfaces.",
@@ -60,7 +60,7 @@ export const resumeData = {
     {
       company: "Ciplex",
       role: "Creative Director",
-      period: "2010 — 2013",
+      period: "2010 - 2013",
       bullets: [
         "Designed and art-directed web experiences for ArcLight Cinemas and Grauman's Chinese Theatre, plus brand and campaign work for small businesses.",
       ],
@@ -69,11 +69,11 @@ export const resumeData = {
   earlierCareerIntro:
     "Agency and studio work across interactive, brand, and editorial design during the Flash-to-web transition.",
   earlierCareer: [
-    { company: "Mego", role: "Creative Director", period: "2009 — 2010" },
-    { company: "Getback", role: "Art Director", period: "2008 — 2009" },
-    { company: "Hello Design", role: "Lead Designer", period: "2007 — 2008" },
-    { company: "Cytek Studios", role: "Lead Designer", period: "2005 — 2007" },
-    { company: "Resultz", role: "Interactive Designer", period: "2003 — 2005" },
+    { company: "Mego", role: "Creative Director", period: "2009 - 2010" },
+    { company: "Getback", role: "Art Director", period: "2008 - 2009" },
+    { company: "Hello Design", role: "Lead Designer", period: "2007 - 2008" },
+    { company: "Cytek Studios", role: "Lead Designer", period: "2005 - 2007" },
+    { company: "Resultz", role: "Interactive Designer", period: "2003 - 2005" },
   ] satisfies EarlierJob[],
   skills: {
     "Art direction":

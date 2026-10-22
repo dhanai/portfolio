@@ -25,7 +25,7 @@ async function main() {
     },
   });
 
-  console.log("Studio case study published — card opens /work/studio");
+  console.log("Studio case study published - card opens /work/studio");
 }
 
 main()

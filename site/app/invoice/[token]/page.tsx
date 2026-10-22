@@ -39,8 +39,8 @@ export async function generateMetadata({
   const title = `Invoice ${invoice.number}`;
   const description =
     invoice.status === "paid"
-      ? `Invoice for ${invoice.clientName} — ${formatMoney(invoice.amount)}, paid.`
-      : `Invoice for ${invoice.clientName} — ${formatMoney(invoiceBalance(invoice))} due to ${INVOICE_ISSUER.name}.`;
+      ? `Invoice for ${invoice.clientName} - ${formatMoney(invoice.amount)}, paid.`
+      : `Invoice for ${invoice.clientName} - ${formatMoney(invoiceBalance(invoice))} due to ${INVOICE_ISSUER.name}.`;
   const path = `/invoice/${token}`;
 
   return {
@@ -199,7 +199,7 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                     <tr key={item.id} className="border-t border-[#e4e4e7]">
                       {showDays ? (
                         <td className="px-3 py-3 align-top whitespace-nowrap text-[#27272a] sm:px-4">
-                          {item.workedOn ? formatWorkedOn(item.workedOn) : "—"}
+                          {item.workedOn ? formatWorkedOn(item.workedOn) : "-"}
                         </td>
                       ) : null}
                       <td className="max-w-[12rem] px-3 py-3 align-top whitespace-pre-wrap text-[#27272a] sm:max-w-none sm:px-4">
@@ -211,7 +211,7 @@ export default async function PublicInvoicePage({ params }: PageProps) {
                       </td>
                       {showHours ? (
                         <td className="px-3 py-3 text-right font-mono align-top sm:px-4">
-                          {item.rateType === "hourly" ? item.hours : "—"}
+                          {item.rateType === "hourly" ? item.hours : "-"}
                         </td>
                       ) : null}
                       <td className="px-3 py-3 text-right font-mono align-top whitespace-nowrap sm:px-4">
@@ -312,7 +312,7 @@ export default async function PublicInvoicePage({ params }: PageProps) {
           </section>
 
           <footer className="border-t border-[#e4e4e7] px-5 py-4 text-center text-[11px] text-[#a1a1aa] sm:px-8">
-            Thank you — please include invoice {invoice.number} with your
+            Thank you - please include invoice {invoice.number} with your
             payment.
           </footer>
         </article>

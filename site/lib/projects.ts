@@ -30,7 +30,7 @@ export const projects: Project[] = [
   {
     slug: "undeniable",
     title: "Undeniable",
-    subtitle: "AI generative video studio — brand + landing",
+    subtitle: "AI generative video studio - brand + landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
     image: `${BLOB}/undeniable-cover.webp`,
@@ -39,7 +39,7 @@ export const projects: Project[] = [
   {
     slug: "north-of-real",
     title: "North of Real",
-    subtitle: "Hybrid AI production studio — brand + landing",
+    subtitle: "Hybrid AI production studio - brand + landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
     image: `${BLOB}/north-of-real-cover-v2.webp`,
@@ -48,7 +48,7 @@ export const projects: Project[] = [
   {
     slug: "arden",
     title: "Arden",
-    subtitle: "Spec · concierge primary care — brand + landing",
+    subtitle: "Spec · concierge primary care - brand + landing",
     tags: ["Spec", "Brand", "Web"],
     year: "2026",
     image: `${BLOB}/arden.webp`,
@@ -57,7 +57,7 @@ export const projects: Project[] = [
   {
     slug: "trestle",
     title: "Trestle",
-    subtitle: "Spec · freight + cold chain — brand + landing",
+    subtitle: "Spec · freight + cold chain - brand + landing",
     tags: ["Spec", "Brand", "Web"],
     year: "2026",
     image: `${BLOB}/trestle.webp`,
@@ -66,7 +66,7 @@ export const projects: Project[] = [
   {
     slug: "wedge",
     title: "Wedge",
-    subtitle: "Spec · crew payroll fintech — brand + landing",
+    subtitle: "Spec · crew payroll fintech - brand + landing",
     tags: ["Spec", "Brand", "Web"],
     year: "2026",
     image: `${BLOB}/wedge.webp`,
@@ -75,7 +75,7 @@ export const projects: Project[] = [
   {
     slug: "vesper",
     title: "Vesper",
-    subtitle: "Spec · red-light beauty tech — brand + landing",
+    subtitle: "Spec · red-light beauty tech - brand + landing",
     tags: ["Spec", "Brand", "Web"],
     year: "2026",
     image: `${BLOB}/vesper.webp`,
@@ -93,7 +93,7 @@ export const projects: Project[] = [
   {
     slug: "studio",
     title: "Studio",
-    subtitle: "AI production system — consistency as a product problem",
+    subtitle: "AI production system - consistency as a product problem",
     tags: ["Product", "Brand", "AI", "Direction"],
     year: "2026–present",
     image: `${BLOB}/studio.webp`,

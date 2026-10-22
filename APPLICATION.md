@@ -1,4 +1,4 @@
-# Application checklist — Anthropic Design Engineer, Web
+# Application checklist - Anthropic Design Engineer, Web
 
 **Job posting:** https://job-boards.greenhouse.io/anthropic/jobs/5223916008  
 **Greenhouse apply URL:** https://job-boards.greenhouse.io/anthropic/jobs/5223916008 (click Apply)
@@ -10,7 +10,7 @@
 - [ ] Portfolio site live with preview URL (Vercel recommended)
 - [ ] Resume PDF finalized (`content/RESUME.md` → export)
 - [ ] LinkedIn profile matches resume
-- [ ] Why Anthropic drafted (`content/WHY-ANTHROPIC.md`) — **200–400 words**, user voice pass
+- [ ] Why Anthropic drafted (`content/WHY-ANTHROPIC.md`) - **200–400 words**, user voice pass
 - [ ] Read Anthropic’s **AI partnership policy for candidates** and confirm in form
 - [ ] Case studies readable without login (Margenie: sanitized screenshots only)
 
@@ -38,7 +38,7 @@
 
 ## Anthropic-specific notes
 
-**Why Anthropic is weighted heavily** — don’t genericize. Tie to:
+**Why Anthropic is weighted heavily** - don’t genericize. Tie to:
 - Steerable AI (approval flows in Margenie)
 - Brand + research integrity
 - Building tools that change how creative teams work

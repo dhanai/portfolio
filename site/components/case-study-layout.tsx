@@ -269,7 +269,7 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
             href={`/work/${nextProject.slug}`}
             className="text-sm text-foreground transition-colors hover:text-accent"
           >
-            Next — {nextProject.title} →
+            Next - {nextProject.title} →
           </Link>
         </div>
       </nav>

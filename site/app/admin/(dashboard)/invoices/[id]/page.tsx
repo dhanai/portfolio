@@ -110,7 +110,7 @@ export default async function AdminInvoiceDetailPage({
         <CopyInvoiceLink url={absoluteUrl} path={path} />
         <p className="text-xs text-[#525252]">
           Desktop and mobile responsive. Anyone with the link can view the
-          invoice — no login required.
+          invoice - no login required.
         </p>
       </section>
 

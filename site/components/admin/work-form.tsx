@@ -71,7 +71,7 @@ export function WorkForm({
           label="Year (optional)"
           name="year"
           defaultValue={work?.year ?? ""}
-          hint="Leave blank for freelance / undated work — year won’t show on the card"
+          hint="Leave blank for freelance / undated work - year won’t show on the card"
         />
         <AccentColorPicker defaultValue={work?.color ?? "#FF453A"} />
         <WorkCardActionFields

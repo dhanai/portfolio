@@ -28,7 +28,7 @@ export default async function AdminEditProposalPage({ params }: PageProps) {
       </div>
       <h1 className="text-2xl font-medium">Edit proposal</h1>
       <p className="mt-2 text-sm text-[#737373]">
-        Changes update the same client link — no new URL.
+        Changes update the same client link - no new URL.
       </p>
       <ProposalForm
         action={updateProposalAction}

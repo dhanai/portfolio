@@ -15,7 +15,7 @@ const PRESETS = {
     minQuality: 78,
     maxOutputBytes: 5 * 1024 * 1024,
   },
-  /** Tall marketing screenshots — preserve width, allow long height */
+  /** Tall marketing screenshots - preserve width, allow long height */
   fullpage: {
     maxWidth: 1920,
     maxHeight: 12000,

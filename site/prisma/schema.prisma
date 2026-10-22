@@ -37,7 +37,7 @@ model ContentBlock {
   updatedAt DateTime @updatedAt
 }
 
-/** Client-facing invoices — create/edit behind admin; public via /invoice/[token] */
+/** Client-facing invoices - create/edit behind admin; public via /invoice/[token] */
 model Invoice {
   id            String   @id @default(cuid())
   token         String   @unique
@@ -70,7 +70,7 @@ model Invoice {
   updatedAt     DateTime @updatedAt
 }
 
-/** Client-facing proposals — create/edit behind admin; public via /proposal/[token] */
+/** Client-facing proposals - create/edit behind admin; public via /proposal/[token] */
 model Proposal {
   id               String   @id @default(cuid())
   token            String   @unique

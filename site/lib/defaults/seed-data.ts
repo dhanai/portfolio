@@ -63,7 +63,7 @@ export const defaultSiteContent: SiteContentData = {
   now: {
     label: "Now",
     title: "Building Doomsy",
-    body: "An AI film studio on your phone — one idea in, a finished film out, cut in a real editor.",
+    body: "An AI film studio on your phone - one idea in, a finished film out, cut in a real editor.",
     linkUrl: "https://doomsy.ai",
     linkLabel: "doomsy.ai",
   },
@@ -72,7 +72,7 @@ export const defaultSiteContent: SiteContentData = {
 export const defaultAboutContent: AboutContentData = {
   paragraphs: [
     "Art director and product designer in Los Angeles. Twenty years across broadcast, advertising, web, and product. I built a hand-drawn apparel brand to $3.8M and the fulfillment software behind it.",
-    "I take work from the first idea to the shipped thing — brand, product, and AI creative. Right now that's Doomsy, an iOS app for directing short films.",
+    "I take work from the first idea to the shipped thing - brand, product, and AI creative. Right now that's Doomsy, an iOS app for directing short films.",
   ],
   skills: [
     { area: "Art direction / brand", level: "Expert", accent: "#FF453A" },
@@ -84,7 +84,7 @@ export const defaultAboutContent: AboutContentData = {
   ],
   ctaTitle: "Open to opportunities",
   ctaBody:
-    "Art direction, brand, and product design roles — craft and systems. Based in LA, open across North America.",
+    "Art direction, brand, and product design roles - craft and systems. Based in LA, open across North America.",
 };
 
 export const defaultResumeContent = resumeData;

@@ -111,7 +111,7 @@ export async function saveWorkPreviewImage(
   );
 
   if (buffer.length > MAX_OUTPUT_BYTES[variant]) {
-    throw new Error("Image is still too large after compression — try a smaller file");
+    throw new Error("Image is still too large after compression - try a smaller file");
   }
 
   const safeSlug = slugify(slug || "preview") || "preview";

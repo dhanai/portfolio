@@ -1,4 +1,4 @@
-# Project facts — confirmed with user (2026-06-22)
+# Project facts - confirmed with user (2026-06-22)
 
 ---
 
@@ -25,10 +25,10 @@
 | Years active | Jan 2020 – present |
 | Revenue | **$3,788,518.88 gross sales since Jan 1, 2020** |
 | Role | Founder, designer, marketer, operator |
-| Still active? | **Yes** — still running |
+| Still active? | **Yes** - still running |
 | Design count | (TBD) |
-| Primary channels | (TBD — Meta, email, organic, etc.) |
-| Storefront codebase | `../takeout-next` (Next.js — confirm) |
+| Primary channels | (TBD - Meta, email, organic, etc.) |
+| Storefront codebase | `../takeout-next` (Next.js - confirm) |
 
 ---
 
@@ -42,7 +42,7 @@
 | Years in production | 2020 – present |
 | # of printer partners | (TBD) |
 | Orders fulfilled (rough) | (TBD) |
-| Still running? | **Yes** — print partners use it daily |
+| Still running? | **Yes** - print partners use it daily |
 
 ---
 
@@ -51,9 +51,9 @@
 | Field | Value |
 |-------|-------|
 | Live URL | https://www.margenie.co |
-| Status | **Work in progress** — active development, production SaaS |
-| Demo store slug | (TBD — sanitized) |
-| Generative creative | fal.ai — Nano Banana 2 (image), Seedance 2 (video); in-app, approval-first |
+| Status | **Work in progress** - active development, production SaaS |
+| Demo store slug | (TBD - sanitized) |
+| Generative creative | fal.ai - Nano Banana 2 (image), Seedance 2 (video); in-app, approval-first |
 
 ---
 
@@ -65,7 +65,7 @@
 | Domain | parfade.com |
 | Stack | Expo/RN mobile, Next.js API, Drizzle, Neon, Ably |
 | Launched | 2026 |
-| Still active? | **Yes** — live on the App Store |
+| Still active? | **Yes** - live on the App Store |
 
 ---
 
@@ -73,7 +73,7 @@
 
 | Field | Value |
 |-------|-------|
-| Open to 25% hybrid SF/NYC? | **Yes — prefer SF** |
+| Open to 25% hybrid SF/NYC? | **Yes - prefer SF** |
 | Visa sponsorship needed? | **No** |
 | Earliest start | (TBD) |
 | Site tone | Bold / playful (Takeout Order energy) |

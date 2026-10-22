@@ -26,7 +26,7 @@ export default async function AdminResumePage() {
         Web resume content (JSON below). The downloadable PDF is a separate file
         at{" "}
         <code className="text-[#ff453a]">public/assets/resume/{RESUME_PDF_FILENAME}</code>
-        — replace that file when you update the designed PDF.
+        - replace that file when you update the designed PDF.
       </p>
       <AdminForm action={action} successMessage="Resume saved" className="mt-8 space-y-6">
         <AdminSection title="Resume JSON">

@@ -21,7 +21,7 @@ async function main() {
   const height = meta.height ?? 0;
   if (!width || !height) throw new Error("Could not read screenshot dimensions");
 
-  // Card uses aspect-[5/4] — crop top-weighted for hero
+  // Card uses aspect-[5/4] - crop top-weighted for hero
   const targetRatio = 5 / 4;
   let cropW = width;
   let cropH = Math.round(width / targetRatio);
@@ -57,7 +57,7 @@ async function main() {
     imageUrl = blob.url;
     console.log(`Uploaded blob ${imageUrl}`);
   } else {
-    console.log("No blob token — using local public path");
+    console.log("No blob token - using local public path");
   }
 
   await prisma.work.update({

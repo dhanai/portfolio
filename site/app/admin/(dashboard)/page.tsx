@@ -13,7 +13,7 @@ export default async function AdminDashboardPage() {
     <div>
       <h1 className="text-2xl font-medium">Dashboard</h1>
       <p className="mt-2 text-sm text-[#737373]">
-        One-pager CMS — edits publish immediately on dhanai.net.
+        One-pager CMS - edits publish immediately on dhanai.net.
       </p>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-3">

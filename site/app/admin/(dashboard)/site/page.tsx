@@ -45,7 +45,7 @@ export default async function AdminSitePage() {
         return Math.min(24, Math.max(1, Math.round(n)));
       })(),
       workSectionTitle: current.workSectionTitle,
-      // Homepage no longer renders "Now" — preserve existing CMS values.
+      // Homepage no longer renders "Now" - preserve existing CMS values.
       now: current.now,
     });
   }

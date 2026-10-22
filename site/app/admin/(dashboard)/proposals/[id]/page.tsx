@@ -86,7 +86,7 @@ export default async function AdminProposalDetailPage({
         </h2>
         <CopyShareLink url={absoluteUrl} path={path} />
         <p className="text-xs text-[#525252]">
-          Anyone with the link can view the proposal — no login required.
+          Anyone with the link can view the proposal - no login required.
         </p>
       </section>
 

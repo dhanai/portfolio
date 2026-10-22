@@ -28,7 +28,7 @@ export default async function AdminEditInvoicePage({ params }: PageProps) {
       </div>
       <h1 className="text-2xl font-medium">Edit invoice</h1>
       <p className="mt-2 text-sm text-[#737373]">
-        Changes update the same client link — no new URL. Drag line items to
+        Changes update the same client link - no new URL. Drag line items to
         reorder.
       </p>
       <InvoiceForm

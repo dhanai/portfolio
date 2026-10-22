@@ -13,14 +13,14 @@ Expand each section into portfolio page copy. Target **800–1200 words** per ca
 ### Sections
 
 **Hook**  
-Hand-drawn apparel brand I founded and scaled to $3.6M over six years — every design mine, every campaign mine.
+Hand-drawn apparel brand I founded and scaled to $3.6M over six years - every design mine, every campaign mine.
 
 **Problem**  
 Differentiate in a crowded DTC market without a agency or corporate team; keep creative fresh as ad performance evolved.
 
 **Process**
 - Hand-drew full catalog; owned visual identity
-- Ran performance marketing (Meta, etc. — confirm channels)
+- Ran performance marketing (Meta, etc. - confirm channels)
 - Iterated on winners, managed catalog lifecycle
 - Built ops tooling when scale broke manual workflows (link to case study 2)
 
@@ -29,7 +29,7 @@ Differentiate in a crowded DTC market without a agency or corporate team; keep c
 - (TBD: orders, AOV, channels)
 
 **Reflection / Anthropic angle**  
-Brand is performance under pressure — creative fatigue, trust, conversion. Informed how I think about Margenie’s Ad Ops and refresh recommendations.
+Brand is performance under pressure - creative fatigue, trust, conversion. Informed how I think about Margenie’s Ad Ops and refresh recommendations.
 
 **Assets needed**
 - Design process shots (sketch → final)
@@ -50,7 +50,7 @@ Brand is performance under pressure — creative fatigue, trust, conversion. Inf
 When Takeout Order outgrew email chains, I built the tool my print partners actually used every day.
 
 **Problem**  
-Third-party printers needed one place to receive jobs, print, pack, and ship — without spreadsheet chaos.
+Third-party printers needed one place to receive jobs, print, pack, and ship - without spreadsheet chaos.
 
 **Architecture (diagram recommended)**
 ```
@@ -65,13 +65,13 @@ Shopify orders → Firebase/Functions → Printer portal (AngularJS)
 - Shopify + EasyPost integration details (user to validate)
 
 **Stack honesty**  
-AngularJS + Firebase — production for (TBD) years. Maintained while building modern Next.js products.
+AngularJS + Firebase - production for (TBD) years. Maintained while building modern Next.js products.
 
 **Outcome**
 - (TBD: printers, order volume, time saved)
 
 **Reflection / Anthropic angle**  
-Internal tools that non-engineers depend on; structured data; partner workflows — same shape as CMS ops and creative tooling.
+Internal tools that non-engineers depend on; structured data; partner workflows - same shape as CMS ops and creative tooling.
 
 **Assets needed**
 - 3–4 app screenshots
@@ -89,16 +89,16 @@ Internal tools that non-engineers depend on; structured data; partner workflows 
 ### Sections
 
 **Hook**  
-The ops brain I wished I had running Takeout Order — agent-native, approval-first, design-system driven.
+The ops brain I wished I had running Takeout Order - agent-native, approval-first, design-system driven.
 
 **Problem**  
 Shopify brands juggle profit, Meta ads, creative refresh, and shipping in scattered tools; AI assistants suggest changes but don’t integrate with real workflows.
 
 **Solution pillars**
-1. **Ops design system** — OpsCard, checklists, todo lists, mechanic pills
-2. **Supercomputer** — playbooks, ranked fixes, streaming tools
-3. **Ad Ops** — pause/scale/refresh with Meta mechanics (learning, overlap, breakdown)
-4. **Integrations** — Shopify, Meta sync, EasyPost, creative studio
+1. **Ops design system** - OpsCard, checklists, todo lists, mechanic pills
+2. **Supercomputer** - playbooks, ranked fixes, streaming tools
+3. **Ad Ops** - pause/scale/refresh with Meta mechanics (learning, overlap, breakdown)
+4. **Integrations** - Shopify, Meta sync, EasyPost, creative studio
 
 **Process highlights**
 - Human-in-the-loop: propose → approve → execute
@@ -157,7 +157,7 @@ Expo / React Native; Next.js API at `../partee`
 (TBD: App Store link, metrics)
 
 **Reflection / Anthropic angle**  
-Consumer interaction design; modular features; rapid prototype → ship — relevant to interactive marketing surfaces.
+Consumer interaction design; modular features; rapid prototype → ship - relevant to interactive marketing surfaces.
 
 **Assets needed**
 - 4–6 iPhone frames (Figma or device mockups)

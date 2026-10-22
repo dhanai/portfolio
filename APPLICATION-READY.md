@@ -1,4 +1,4 @@
-# Application ready — Anthropic Design Engineer, Web
+# Application ready - Anthropic Design Engineer, Web
 
 **Job:** https://job-boards.greenhouse.io/anthropic/jobs/5223916008  
 **Portfolio (local):** `cd site && npm run dev` → http://localhost:3000  
@@ -10,7 +10,7 @@
 
 ### Why Anthropic? (350 words)
 
-Copy from [`content/WHY-ANTHROPIC.md`](./WHY-ANTHROPIC.md) — review for voice before submitting.
+Copy from [`content/WHY-ANTHROPIC.md`](./WHY-ANTHROPIC.md) - review for voice before submitting.
 
 ### Website field
 
@@ -35,7 +35,7 @@ Deploy site to Vercel, then use preview URL or `dhanai.net` if configured.
 - [ ] Why Anthropic edited in your voice
 - [ ] Read [Anthropic AI partnership policy for candidates](https://www.anthropic.com/candidate-ai-policy) → confirm in form
 - [ ] Answer logistics: hybrid 25%, visa, start date, relocation
-- [ ] Add screenshots to `assets/` (see `assets/README.md`) — optional for v1 submit if case study copy is strong
+- [ ] Add screenshots to `assets/` (see `assets/README.md`) - optional for v1 submit if case study copy is strong
 
 ---
 
@@ -43,7 +43,7 @@ Deploy site to Vercel, then use preview URL or `dhanai.net` if configured.
 
 | Field | Your answer |
 |-------|-------------|
-| Open to 25% hybrid SF/NYC? | Yes — prefer SF |
+| Open to 25% hybrid SF/NYC? | Yes - prefer SF |
 | Visa sponsorship needed? | No |
 | Earliest start date | (TBD) |
 | Work address / relocating | Los Angeles, CA (open to SF hybrid) |
@@ -56,10 +56,10 @@ Deploy site to Vercel, then use preview URL or `dhanai.net` if configured.
 
 See [`content/POSITIONING.md`](./POSITIONING.md):
 
-1. Takeout Order — creative fatigue meets revenue
-2. Printer portal — B2B ops architecture
-3. Margenie — steerable AI
-4. Parfade — consumer social loop
+1. Takeout Order - creative fatigue meets revenue
+2. Printer portal - B2B ops architecture
+3. Margenie - steerable AI
+4. Parfade - consumer social loop
 5. Legacy AngularJS → modern Next.js
 
 ---

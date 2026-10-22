@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const config = await getSiteConfigFromCms();
   return {
     title: "Work",
-    description: `Case studies and art direction — ${config.fullName}`,
+    description: `Case studies and art direction - ${config.fullName}`,
   };
 }
 
@@ -29,7 +29,7 @@ export default async function WorkPage() {
             Work
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
-            Founder-led projects — from hand-drawn apparel to agent-native ops and
+            Founder-led projects - from hand-drawn apparel to agent-native ops and
             consumer mobile.
           </p>
         </header>

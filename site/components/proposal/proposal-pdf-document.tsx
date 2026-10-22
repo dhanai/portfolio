@@ -317,7 +317,7 @@ export function ProposalPdfDocument({
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>Quote — flat rate</Text>
+          <Text style={styles.label}>Quote - flat rate</Text>
           <View style={styles.quoteRow}>
             <Text style={styles.quoteLabel}>{quoteLabel}</Text>
             <Text style={styles.quoteAmount}>{formatMoney(amount)}</Text>

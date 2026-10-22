@@ -1,4 +1,4 @@
-# Resume — Dhanai Holtzclaw
+# Resume - Dhanai Holtzclaw
 
 **Web:** full experience at `/resume`  
 **PDF:** static export from Figma at `site/public/assets/resume/Dhanai-Holtzclaw-Resume-Art-Product.pdf`  

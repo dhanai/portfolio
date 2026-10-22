@@ -24,7 +24,7 @@ export function WorkPreviewUpload({
   textInputName = "image",
   clearInputName = "clearImage",
   compressPreset = "preview",
-  hint = "Large images are compressed before upload (max 1920px, WebP). Production uses Vercel Blob; local dev saves to public/assets/work/. Paste a URL below — upload overrides the text field.",
+  hint = "Large images are compressed before upload (max 1920px, WebP). Production uses Vercel Blob; local dev saves to public/assets/work/. Paste a URL below - upload overrides the text field.",
 }: {
   defaultImage?: string | null;
   label?: string;

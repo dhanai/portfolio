@@ -85,7 +85,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "takeout-order",
     title: "Takeout Order",
-    subtitle: "Brand system, growth creative, and fulfillment product — $3.8M",
+    subtitle: "Brand system, growth creative, and fulfillment product - $3.8M",
     tags: ["Brand", "Product", "DTC", "Growth"],
     year: "2020–present",
     role: "Founder · Art Direction · Product Design",
@@ -93,20 +93,20 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Takeout Order is a direct-to-consumer apparel brand I founded and still run end-to-end. Every design in the catalog is hand-drawn by me. I own brand, paid social, email, and the product surfaces that keep the business running — including a B2B fulfillment portal print partners use every day. Gross sales since January 2020: $3,788,518.88.",
+          "Takeout Order is a direct-to-consumer apparel brand I founded and still run end-to-end. Every design in the catalog is hand-drawn by me. I own brand, paid social, email, and the product surfaces that keep the business running - including a B2B fulfillment portal print partners use every day. Gross sales since January 2020: $3,788,518.88.",
           "The work sits where art direction and product design meet: creative that has to convert, systems operators can trust, and a visual language that stays coherent under performance pressure.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Differentiate without a corporate team. Keep creative fresh as ads fatigued. Scale fulfillment without losing coordination — email chains and spreadsheets broke first.",
+          "Differentiate without a corporate team. Keep creative fresh as ads fatigued. Scale fulfillment without losing coordination - email chains and spreadsheets broke first.",
         ],
       },
       {
         heading: "Brand approach",
         paragraphs: [
-          "Built the brand around hand-drawn illustration as the moat — identity, catalog, packaging, and campaign craft owned in one seat.",
+          "Built the brand around hand-drawn illustration as the moat - identity, catalog, packaging, and campaign craft owned in one seat.",
         ],
         bullets: [
           "Hand-drew the full catalog and directed brand identity across web, paid social, and email",
@@ -117,7 +117,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Product approach",
         paragraphs: [
-          "When ops broke at scale, I designed and built the fulfillment product instead of forcing off-the-shelf tools to fit — Shopify ingest, EasyPost labels, and an order state machine operators run unattended.",
+          "When ops broke at scale, I designed and built the fulfillment product instead of forcing off-the-shelf tools to fit - Shopify ingest, EasyPost labels, and an order state machine operators run unattended.",
         ],
         bullets: [
           "Mapped partner workflows and edge cases with real operators",
@@ -128,7 +128,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Outcome",
         paragraphs: [
-          "$3.8M+ lifetime sales and a brand still running. Proof that craft, campaign systems, and product UX can live in the same founder seat — and that taste without operable systems doesn't scale.",
+          "$3.8M+ lifetime sales and a brand still running. Proof that craft, campaign systems, and product UX can live in the same founder seat - and that taste without operable systems doesn't scale.",
         ],
       },
     ],
@@ -138,7 +138,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "doomsy",
     title: "Doomsy",
-    subtitle: "An AI film studio on your phone — one idea in, a finished film out",
+    subtitle: "An AI film studio on your phone - one idea in, a finished film out",
     tags: ["Product", "AI", "Film", "Mobile"],
     year: "2026–present",
     role: "Founder · Product Design · Creative Direction",
@@ -149,32 +149,32 @@ export const caseStudies: CaseStudy[] = [
       {
         src: `${WORK_BLOB}/doomsy/film/generate-2026-10.webp`,
         alt: "New video form with the previs clip, cast, place, dialogue, and the generate cost",
-        caption: "New video — the previs, the cast, and the cost",
+        caption: "New video - the previs, the cast, and the cost",
       },
       {
         src: `${WORK_BLOB}/doomsy/film/previs.webp`,
         alt: "Previs blocking a conversation: two stand-ins at a table, with the camera, lens, and timeline",
-        caption: "Previs — block the shot, then export the move",
+        caption: "Previs - block the shot, then export the move",
       },
       {
         src: `${WORK_BLOB}/doomsy/film/project-2026-10.webp`,
         alt: "Train Wreck project with the edit, the elements, and the scenes",
-        caption: "Project — the edit, the cast, and the scenes",
+        caption: "Project - the edit, the cast, and the scenes",
       },
       {
         src: `${WORK_BLOB}/doomsy/film/assets-2026-10.webp`,
         alt: "Assets, with the film's shots and previs blockouts",
-        caption: "Assets — the film's videos and previs",
+        caption: "Assets - the film's videos and previs",
       },
       {
         src: `${WORK_BLOB}/doomsy/film/music-2026-10.webp`,
         alt: "Crooked Moon playing in Doomsy, with the cover, the prompt, and the model",
-        caption: "Music — the score, ready for the edit",
+        caption: "Music - the score, ready for the edit",
       },
       {
         src: `${WORK_BLOB}/doomsy/film/editor-2026-10.webp`,
         alt: "The Train Wreck edit in the Doomsy editor, with the scene in the player and the cut on the timeline",
-        caption: "Editor — a real timeline, sized for a phone",
+        caption: "Editor - a real timeline, sized for a phone",
       },
     ],
     process: {
@@ -277,7 +277,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "studio",
     title: "Studio",
     subtitle:
-      "AI production system for animated series — consistency as a product problem",
+      "AI production system for animated series - consistency as a product problem",
     tags: ["Product", "Brand", "AI", "Direction"],
     year: "2026–present",
     role: "Creator · Product Design · Creative Direction",
@@ -287,25 +287,25 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Studio is a production workspace for DNA-driven AI animation — not a timeline editor. I cut a finished one-minute clip from about eight hours of thrash down to roughly two by treating cast continuity as a product problem, not a prompting habit.",
-          "I designed and built it end to end (Next.js, Runware for Nano Banana / Seedance, agent chat) while directing original series work through it — including Felt The Music, visible in the workspace screenshot.",
+          "Studio is a production workspace for DNA-driven AI animation - not a timeline editor. I cut a finished one-minute clip from about eight hours of thrash down to roughly two by treating cast continuity as a product problem, not a prompting habit.",
+          "I designed and built it end to end (Next.js, Runware for Nano Banana / Seedance, agent chat) while directing original series work through it - including Felt The Music, visible in the workspace screenshot.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
           "Saving and reusing good prompts helps a little, then falls apart when the same character needs a different outfit, or the same location at night. A template doesn’t carry visual identity. Fal playgrounds made the gap obvious: every one-off restarted from scratch.",
-          "For a series you need characters and locations as entities with variants, a composer that locks references, and a path from cheap drafts to final clips — without reinventing the cast every take.",
+          "For a series you need characters and locations as entities with variants, a composer that locks references, and a path from cheap drafts to final clips - without reinventing the cast every take.",
         ],
       },
       {
         heading: "Product design",
         paragraphs: [
-          "Landed on entities with variants as first-class assets. Characters, locations, and props sit in the library; Fred can have a default look and a cowboy variant. Drop him into Composer, switch the variant — don’t hunt for the still. Character sheets lock the look.",
-          "Studio stays hands-on for building: pick assets, send to Composer, generate. The agent sits beside that path for questions, planning, and drafting — “group this cast at the park,” or “Fred skydiving with a parachute” — with the same library and show bible underneath. Two models, one ecosystem.",
+          "Landed on entities with variants as first-class assets. Characters, locations, and props sit in the library; Fred can have a default look and a cowboy variant. Drop him into Composer, switch the variant - don’t hunt for the still. Character sheets lock the look.",
+          "Studio stays hands-on for building: pick assets, send to Composer, generate. The agent sits beside that path for questions, planning, and drafting - “group this cast at the park,” or “Fred skydiving with a parachute” - with the same library and show bible underneath. Two models, one ecosystem.",
         ],
         bullets: [
-          "Hierarchy: Episodes · Clips · Characters · Locations · Props · Frames — same underlying asset model, separated to lower friction when assembling a clip",
+          "Hierarchy: Episodes · Clips · Characters · Locations · Props · Frames - same underlying asset model, separated to lower friction when assembling a clip",
           "Soft nested folders (leads vs side characters, Episode 1 vs Episode 2 locations)",
           "Reference slots so Seedance clips lock to approved stills, not free-floating prompts",
           "Model tiers for prototype → production; agent ops are structured and reversible",
@@ -314,13 +314,13 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Art direction",
         paragraphs: [
-          "Taste lives as data: show DNA and asset DNA are the style bible. Felt The Music keeps a coherent felted-character world across the library — direction becomes a system you browse and reuse, not only a prompt skill.",
+          "Taste lives as data: show DNA and asset DNA are the style bible. Felt The Music keeps a coherent felted-character world across the library - direction becomes a system you browse and reuse, not only a prompt skill.",
         ],
       },
       {
         heading: "Outcome & honesty",
         paragraphs: [
-          "An internal tool I’m running to ship a YouTube series faster. Validation is thin on purpose: it’s me grinding the workflow to get episodes out. The IA is the risk I’d watch closest with a new user — if they hesitate or take a wrong path, the fix is restructuring, not hover tips.",
+          "An internal tool I’m running to ship a YouTube series faster. Validation is thin on purpose: it’s me grinding the workflow to get episodes out. The IA is the risk I’d watch closest with a new user - if they hesitate or take a wrong path, the fix is restructuring, not hover tips.",
         ],
       },
     ],
@@ -339,42 +339,42 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "When Takeout Order outgrew email chains and spreadsheets, I built the tool my print partners use every day — a B2B web portal for receiving jobs, printing, packing, and shipping order volume without engineering support.",
+          "When Takeout Order outgrew email chains and spreadsheets, I built the tool my print partners use every day - a B2B web portal for receiving jobs, printing, packing, and shipping order volume without engineering support.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Third-party printers needed one place to receive jobs, print, pack, and ship — without spreadsheet chaos or constant back-and-forth with the brand. Non-technical operators had to run daily fulfillment reliably.",
+          "Third-party printers needed one place to receive jobs, print, pack, and ship - without spreadsheet chaos or constant back-and-forth with the brand. Non-technical operators had to run daily fulfillment reliably.",
         ],
       },
       {
         heading: "Architecture",
         paragraphs: [
-          "Shopify orders flow through Firebase Cloud Functions into the printer portal. Operators move orders through a clear state machine — received → in production → shipped or exception — and generate EasyPost shipping labels from the same interface.",
+          "Shopify orders flow through Firebase Cloud Functions into the printer portal. Operators move orders through a clear state machine - received → in production → shipped or exception - and generate EasyPost shipping labels from the same interface.",
         ],
         bullets: [
           "Order state machine with exception handling for production issues",
           "Shopify order ingest and status sync",
           "EasyPost label generation and carrier tracking",
-          "UX designed for non-engineers — large actions, clear status, minimal cognitive load",
+          "UX designed for non-engineers - large actions, clear status, minimal cognitive load",
         ],
       },
       {
         heading: "Stack & honesty",
         paragraphs: [
-          "The portal runs in production on AngularJS and Firebase because it is reliable and I can maintain it solo. My greenfield work is TypeScript and Next.js — I'm not precious about frameworks, I'm precise about systems that don't break when an operator misses a click.",
+          "The portal runs in production on AngularJS and Firebase because it is reliable and I can maintain it solo. My greenfield work is TypeScript and Next.js - I'm not precious about frameworks, I'm precise about systems that don't break when an operator misses a click.",
         ],
       },
       {
         heading: "Outcome",
         paragraphs: [
-          "Print partners use the portal daily for fulfillment. It reduces manual coordination between brand, printers, and carriers — unglamorous, load-bearing software shaped around how people actually work.",
+          "Print partners use the portal daily for fulfillment. It reduces manual coordination between brand, printers, and carriers - unglamorous, load-bearing software shaped around how people actually work.",
         ],
       },
     ],
     reflection:
-      "Internal tools that non-engineers depend on; structured data; partner workflows — the same shape as CMS ops and creative tooling at scale.",
+      "Internal tools that non-engineers depend on; structured data; partner workflows - the same shape as CMS ops and creative tooling at scale.",
   },
   {
     slug: "margenie",
@@ -389,7 +389,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Margenie is the ops brain I wished I had running Takeout Order — agent-native, approval-first, and design-system driven. I'm building it as a Next.js platform for Shopify brands juggling profit metrics, Meta ad diagnostics, creative refresh, and shipping across scattered tools.",
+          "Margenie is the ops brain I wished I had running Takeout Order - agent-native, approval-first, and design-system driven. I'm building it as a Next.js platform for Shopify brands juggling profit metrics, Meta ad diagnostics, creative refresh, and shipping across scattered tools.",
         ],
       },
       {
@@ -401,11 +401,11 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Solution",
         paragraphs: [
-          "Four pillars define the product: an Ops design system (OpsCard, checklists, mechanic pills), Supercomputer agent layer (playbooks, ranked fixes, streaming tool execution), Ad Ops with Meta mechanics (learning phase, overlap, breakdown insights), generative creative for ad refresh (fal.ai — Nano Banana 2 for image, Seedance 2 for video), and deep integrations with Shopify, Meta, and EasyPost.",
+          "Four pillars define the product: an Ops design system (OpsCard, checklists, mechanic pills), Supercomputer agent layer (playbooks, ranked fixes, streaming tool execution), Ad Ops with Meta mechanics (learning phase, overlap, breakdown insights), generative creative for ad refresh (fal.ai - Nano Banana 2 for image, Seedance 2 for video), and deep integrations with Shopify, Meta, and EasyPost.",
         ],
         bullets: [
           "Human-in-the-loop: propose → explain mechanic → approve → execute",
-          "Generative creative pipeline (fal.ai) for image and video refresh — same approval gate before publish",
+          "Generative creative pipeline (fal.ai) for image and video refresh - same approval gate before publish",
           "declare_work_plan / checklist UX for visible agent progress",
           "Meta delivery diagnostics module with learning-stage sync",
           "Shared style guide and components across Ad Ops and chat surfaces",
@@ -414,23 +414,23 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Stack",
         paragraphs: [
-          "Next.js, React, TypeScript, Prisma, Meta Graph API, Shopify API — deployed on Vercel. I own architecture, design, and implementation; AI tools accelerate coding but every production decision and craft choice is mine.",
+          "Next.js, React, TypeScript, Prisma, Meta Graph API, Shopify API - deployed on Vercel. I own architecture, design, and implementation; AI tools accelerate coding but every production decision and craft choice is mine.",
         ],
       },
       {
         heading: "Outcome",
         paragraphs: [
-          "Active development at margenie.co — production SaaS with more surface area shipping regularly. Closest analog to Claude-powered workflows + design system code + MCP-style tools — steerable automation where humans stay accountable.",
+          "Active development at margenie.co - production SaaS with more surface area shipping regularly. Closest analog to Claude-powered workflows + design system code + MCP-style tools - steerable automation where humans stay accountable.",
         ],
       },
     ],
     reflection:
-      "Margenie never auto-pauses a Meta campaign — it proposes, explains the mechanic, and waits for approval. That's the kind of AI I want to help express on the web.",
+      "Margenie never auto-pauses a Meta campaign - it proposes, explains the mechanic, and waits for approval. That's the kind of AI I want to help express on the web.",
   },
   {
     slug: "parfade",
     title: "Parfade",
-    subtitle: "Product design for golf social — plan rounds, side games, groups",
+    subtitle: "Product design for golf social - plan rounds, side games, groups",
     tags: ["Product", "iOS", "Social"],
     year: "2026–present",
     role: "Founder · Product Design · Mobile",
@@ -441,48 +441,48 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/landing.webp",
-        alt: "Parfade splash — Golf plans without the group text chaos",
-        caption: "Positioning — plans without group-text chaos",
+        alt: "Parfade splash - Golf plans without the group text chaos",
+        caption: "Positioning - plans without group-text chaos",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/discover.webp",
         alt: "Parfade Discover feed with planning and instant rounds",
-        caption: "Discover — open rounds looking for players",
+        caption: "Discover - open rounds looking for players",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/my-rounds.webp",
-        alt: "Parfade My Rounds — planning and confirmed tee times",
-        caption: "My rounds — planning vs locked tee times",
+        alt: "Parfade My Rounds - planning and confirmed tee times",
+        caption: "My rounds - planning vs locked tee times",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/create-round.webp",
         alt: "Parfade Planning Round form with time, visibility, and join policy",
-        caption: "Create — find players first, lock details later",
+        caption: "Create - find players first, lock details later",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/invite.webp",
         alt: "Parfade Invite Friends bottom sheet",
-        caption: "Invites — search and add friends in-flow",
+        caption: "Invites - search and add friends in-flow",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/games.webp",
         alt: "Parfade Games hub with Skins, Wolf, Nassau, and more",
-        caption: "Games — Skins, Wolf, Nassau, Sixes…",
+        caption: "Games - Skins, Wolf, Nassau, Sixes…",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/activity.webp",
         alt: "Parfade activity feed with Wolf standings",
-        caption: "Activity — game results and standings",
+        caption: "Activity - game results and standings",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/groups.webp",
-        alt: "Parfade Groups — My Groups list",
-        caption: "Groups — communities for regular play",
+        alt: "Parfade Groups - My Groups list",
+        caption: "Groups - communities for regular play",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/parfade/profile.webp",
         alt: "Parfade profile with handicap, followers, and activity",
-        caption: "Profile — handicap, social graph, hosting",
+        caption: "Profile - handicap, social graph, hosting",
       },
     ],
     process: {
@@ -554,8 +554,8 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "Parfade is a consumer iOS app for golfers who already have a network — Saturday regulars, the “who’s free Thursday” crowd. Getting a round together was eating more energy than the round: three group chats, half the people don’t see it, maybes pile up, and the tee time’s gone. The work isn’t golf. It’s logistics.",
-          "I own product design and the full stack. The product only works if other people tap Accept — I feel the pain as a player, but I’m not the customer.",
+          "Parfade is a consumer iOS app for golfers who already have a network - Saturday regulars, the “who’s free Thursday” crowd. Getting a round together was eating more energy than the round: three group chats, half the people don’t see it, maybes pile up, and the tee time’s gone. The work isn’t golf. It’s logistics.",
+          "I own product design and the full stack. The product only works if other people tap Accept - I feel the pain as a player, but I’m not the customer.",
         ],
       },
       {
@@ -567,11 +567,11 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Product decisions",
         paragraphs: [
-          "First I tried the timid version: a link or poll dropped into the group thread — keep iMessage as home base, make the app a helper. It failed. People answered in the thread, the poll went stale, and the host was back to juggling.",
+          "First I tried the timid version: a link or poll dropped into the group thread - keep iMessage as home base, make the app a helper. It failed. People answered in the thread, the poll went stale, and the host was back to juggling.",
           "So availability became a first-class action. Pick friends or a group; Parfade pushes; first to accept are in. In-app chat stays for people already in the round. What I refused to keep was three outside chats as the booking system.",
         ],
         bullets: [
-          "Invite → push → accept/decline — host sees who’s in without chasing threads",
+          "Invite → push → accept/decline - host sees who’s in without chasing threads",
           "Planning vs locked tee time as clear states; course and time on the notification and accept screen (after a friend accepted then texted “which course?”)",
           "Games, scoring, and recaps so the app isn’t only useful for five minutes of RSVP",
           "Groups and profiles so regular foursomes stick around after the round",
@@ -598,8 +598,8 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Outcome & honesty",
         paragraphs: [
-          "Shipped loop at parfade.com — build your people, invite, accept, play. Traction is early on purpose: no marketing yet; me and two friends is enough to feel the product break in real rounds, not enough to claim PMF.",
-          "The real constraint is habit. Group chat is still the default. I don’t win by building a better messenger — I win when a host trusts a Parfade invite to fill a tee time faster than three threads.",
+          "Shipped loop at parfade.com - build your people, invite, accept, play. Traction is early on purpose: no marketing yet; me and two friends is enough to feel the product break in real rounds, not enough to claim PMF.",
+          "The real constraint is habit. Group chat is still the default. I don’t win by building a better messenger - I win when a host trusts a Parfade invite to fill a tee time faster than three threads.",
         ],
       },
     ],
@@ -610,7 +610,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "petshirts",
     title: "Petshirts",
     subtitle:
-      "AI pet art → print-ready apparel — photo to Shopify checkout",
+      "AI pet art → print-ready apparel - photo to Shopify checkout",
     tags: ["Product", "Brand", "AI", "E-commerce"],
     year: "2026–present",
     role: "Founder · Product Design · Brand",
@@ -620,33 +620,33 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/petshirts/landing-mobile.webp",
-        alt: "Petshirts mobile landing — Your pet deserves to be on a t-shirt",
-        caption: "Landing — CTA and social proof",
+        alt: "Petshirts mobile landing - Your pet deserves to be on a t-shirt",
+        caption: "Landing - CTA and social proof",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/petshirts/styles.webp",
-        alt: "Petshirts Pick a style — Howling, Victorian, and more",
-        caption: "Styles — browse the art library",
+        alt: "Petshirts Pick a style - Howling, Victorian, and more",
+        caption: "Styles - browse the art library",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/petshirts/upload.webp",
         alt: "Petshirts Start with your pet upload modal",
-        caption: "Upload — start with a pet photo",
+        caption: "Upload - start with a pet photo",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/petshirts/preview-howling.webp",
         alt: "Petshirts Howling design preview on black tee",
-        caption: "Preview — design on garment",
+        caption: "Preview - design on garment",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/petshirts/preview-rap.webp",
         alt: "Petshirts Rap Tee collage with Regenerate and Add to cart",
-        caption: "Generate — regenerate until it hits",
+        caption: "Generate - regenerate until it hits",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/petshirts/cart.webp",
-        alt: "Petshirts cart — Howling T-Shirt Black checkout",
-        caption: "Cart — checkout via Shopify",
+        alt: "Petshirts cart - Howling T-Shirt Black checkout",
+        caption: "Cart - checkout via Shopify",
       },
     ],
     process: {
@@ -721,7 +721,7 @@ export const caseStudies: CaseStudy[] = [
         heading: "Overview",
         paragraphs: [
           "Petshirts turns a phone photo of your pet into wearable art: pick an AI style, preview it on a real garment, choose sizes, and check out through Shopify. Tagline energy: your pet deserves to be on a t-shirt.",
-          "I designed and built the storefront, brand system, style/prompt library, admin CMS, and print pipeline end to end — Next.js, Runware, Neon, Vercel Blob, Shopify.",
+          "I designed and built the storefront, brand system, style/prompt library, admin CMS, and print pipeline end to end - Next.js, Runware, Neon, Vercel Blob, Shopify.",
         ],
       },
       {
@@ -745,7 +745,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Key flow",
         paragraphs: [
-          "Three lanes: the customer, the system, and what happens after payment. The customer only makes taste calls — style, love it or regenerate, garment and size. Abuse guards, preview generation, the 4K print file, and the handoff to the operator all happen out of view.",
+          "Three lanes: the customer, the system, and what happens after payment. The customer only makes taste calls - style, love it or regenerate, garment and size. Abuse guards, preview generation, the 4K print file, and the handoff to the operator all happen out of view.",
         ],
       },
       {
@@ -769,7 +769,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Outcome",
         paragraphs: [
-          "Production-ready private build at petshirts.co — launch-gated while catalog and print ops lock. Portfolio proof of DTC product design where brand, generative craft, and checkout share one seat.",
+          "Production-ready private build at petshirts.co - launch-gated while catalog and print ops lock. Portfolio proof of DTC product design where brand, generative craft, and checkout share one seat.",
         ],
       },
     ],
@@ -780,7 +780,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "undeniable",
     title: "Undeniable",
     subtitle:
-      "AI-native video studio branding and landing — commercials, social, creators",
+      "AI-native video studio branding and landing - commercials, social, creators",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
     role: "Brand · Product Design · Art Direction",
@@ -791,42 +791,42 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/desktop-layout.webp",
-        alt: "Undeniable desktop landing — full 1440 layout from Figma",
+        alt: "Undeniable desktop landing - full 1440 layout from Figma",
         caption: "Desktop 1440",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/mobile-layout.webp",
-        alt: "Undeniable mobile landing — full 390 layout from Figma",
+        alt: "Undeniable mobile landing - full 390 layout from Figma",
         caption: "Mobile 390",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/still-porsche.webp",
         alt: "Cinematic Porsche coastal night still for Undeniable placement",
-        caption: "Placement still — automotive film",
+        caption: "Placement still - automotive film",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/still-tower38.webp",
-        alt: "Tower 38 beauty commercial still — dewy skin golden hour",
-        caption: "Placement still — beauty spot",
+        alt: "Tower 38 beauty commercial still - dewy skin golden hour",
+        caption: "Placement still - beauty spot",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/undeniable/still-skims.webp",
-        alt: "Skims fashion commercial still — nude bodysuit loft light",
-        caption: "Placement still — fashion film",
+        alt: "Skims fashion commercial still - nude bodysuit loft light",
+        caption: "Placement still - fashion film",
       },
     ],
     sections: [
       {
         heading: "Overview",
         paragraphs: [
-          "Undeniable is a speculative brand and desktop/mobile landing for an AI generative video studio — commercials, social, and creator work with a director’s bar for craft.",
+          "Undeniable is a speculative brand and desktop/mobile landing for an AI generative video studio - commercials, social, and creator work with a director’s bar for craft.",
           "The brief was studio-site energy, not SaaS dashboard: one cinematic composition, brand as the hero signal, and placement stills that read as production, not stock.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Most AI studio sites either look like purple SaaS or bury the brand under feature grids. The portfolio needed a site that could sit next to entertainment studios — showreel-first, work-first — while still naming three production lanes without repeating them on every block.",
+          "Most AI studio sites either look like purple SaaS or bury the brand under feature grids. The portfolio needed a site that could sit next to entertainment studios - showreel-first, work-first - while still naming three production lanes without repeating them on every block.",
         ],
       },
       {
@@ -844,13 +844,13 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Product design",
         paragraphs: [
-          "Information architecture mirrors a production house: showreel CTA, capabilities, selected work as full-bleed panels, process as Brief → Generate → Edit → Ship, then a single closing ask. Mobile stacks the same system — menu chrome, full-width CTAs, thumbs parked at the bottom of the first viewport.",
+          "Information architecture mirrors a production house: showreel CTA, capabilities, selected work as full-bleed panels, process as Brief → Generate → Edit → Ship, then a single closing ask. Mobile stacks the same system - menu chrome, full-width CTAs, thumbs parked at the bottom of the first viewport.",
         ],
       },
       {
         heading: "Outcome",
         paragraphs: [
-          "A coherent brand-and-landing kit ready to hand to engineering or keep as speculative portfolio craft — proof I can art-direct generative media and ship a studio site that doesn’t read like every other AI landing.",
+          "A coherent brand-and-landing kit ready to hand to engineering or keep as speculative portfolio craft - proof I can art-direct generative media and ship a studio site that doesn’t read like every other AI landing.",
         ],
       },
     ],
@@ -861,7 +861,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "north-of-real",
     title: "North of Real",
     subtitle:
-      "Hybrid live-action × AI production studio — bold editorial landing",
+      "Hybrid live-action × AI production studio - bold editorial landing",
     tags: ["Brand", "Product", "AI"],
     year: "2026",
     role: "Brand · Product Design · Art Direction",
@@ -872,42 +872,42 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/desktop-layout-v2.webp",
-        alt: "North of Real desktop landing — full 1440 layout from Figma",
+        alt: "North of Real desktop landing - full 1440 layout from Figma",
         caption: "Desktop 1440",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/mobile-layout-v2.webp",
-        alt: "North of Real mobile landing — full 390 layout from Figma",
+        alt: "North of Real mobile landing - full 390 layout from Figma",
         caption: "Mobile 390",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-lost-years.webp",
-        alt: "The Last of Us: THE LOST YEARS — North of Real work still",
-        caption: "Work still — THE LOST YEARS",
+        alt: "The Last of Us: THE LOST YEARS - North of Real work still",
+        caption: "Work still - THE LOST YEARS",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-superbowl.webp",
-        alt: "Super Bowl LX Hype Trailer — North of Real work still",
-        caption: "Work still — Super Bowl LX",
+        alt: "Super Bowl LX Hype Trailer - North of Real work still",
+        caption: "Work still - Super Bowl LX",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-jeep.webp",
-        alt: "UNBOUND Jeep spec ad — North of Real work still",
-        caption: "Work still — UNBOUND",
+        alt: "UNBOUND Jeep spec ad - North of Real work still",
+        caption: "Work still - UNBOUND",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-nike.webp",
-        alt: "Nike Giannis Freak 7 — North of Real work still",
-        caption: "Work still — Giannis Freak 7",
+        alt: "Nike Giannis Freak 7 - North of Real work still",
+        caption: "Work still - Giannis Freak 7",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-set-shift.webp",
-        alt: "Set SHIFT pipeline breakdown — North of Real",
+        alt: "Set SHIFT pipeline breakdown - North of Real",
         caption: "Set SHIFT",
       },
       {
         src: "https://xafmoppw6xwvpa6r.public.blob.vercel-storage.com/work/north-of-real/still-ivy.webp",
-        alt: "Ivy-wrapped fist — North of Real ethos still",
+        alt: "Ivy-wrapped fist - North of Real ethos still",
         caption: "Ethos still",
       },
     ],
@@ -915,14 +915,14 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Overview",
         paragraphs: [
-          "North of Real is a speculative brand and desktop/mobile landing for a Los Angeles hybrid studio — live-action craft fused with AI pipelines like Set SHIFT. Built as a bold, film-poster production-house site rather than another dark AI SaaS landing.",
+          "North of Real is a speculative brand and desktop/mobile landing for a Los Angeles hybrid studio - live-action craft fused with AI pipelines like Set SHIFT. Built as a bold, film-poster production-house site rather than another dark AI SaaS landing.",
           "Their own copy and work titles lead: THE LOST YEARS, Nike Giannis, Super Bowl LX, Jeep UNBOUND, plus the Set SHIFT product story.",
         ],
       },
       {
         heading: "Problem",
         paragraphs: [
-          "Hybrid production houses need a site that reads as prestige filmmaking first — confident type, cinematic frames, work that sells itself — while still explaining an AI-assisted pipeline without looking like every other generative studio.",
+          "Hybrid production houses need a site that reads as prestige filmmaking first - confident type, cinematic frames, work that sells itself - while still explaining an AI-assisted pipeline without looking like every other generative studio.",
         ],
       },
       {
@@ -946,7 +946,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "Outcome",
         paragraphs: [
-          "A coherent alternate studio-site system — proof I can art-direct the same category as Undeniable in a completely different visual register when the brief calls for warm editorial paper, not signal-color dark.",
+          "A coherent alternate studio-site system - proof I can art-direct the same category as Undeniable in a completely different visual register when the brief calls for warm editorial paper, not signal-color dark.",
         ],
       },
     ],
@@ -966,23 +966,23 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${SPEC_BLOB}/arden/desktop-layout.webp`,
-        alt: "Arden desktop landing — full 1440 layout from Figma",
+        alt: "Arden desktop landing - full 1440 layout from Figma",
         caption: "Desktop 1440",
       },
       {
         src: `${SPEC_BLOB}/arden/mobile-layout.webp`,
-        alt: "Arden mobile landing — full 390 layout from Figma",
+        alt: "Arden mobile landing - full 390 layout from Figma",
         caption: "Mobile 390",
       },
       {
         src: `${SPEC_BLOB}/arden/still-visit.webp`,
         alt: "Clinician and patient laughing at a wooden table in a sunlit room",
-        caption: "Art direction — the visit",
+        caption: "Art direction - the visit",
       },
       {
         src: `${SPEC_BLOB}/arden/still-labs.webp`,
         alt: "Three blood draw tubes on a steel tray over linen by a window",
-        caption: "Art direction — labs at home",
+        caption: "Art direction - labs at home",
       },
     ],
     sections: [
@@ -1032,23 +1032,23 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${SPEC_BLOB}/trestle/desktop-layout.webp`,
-        alt: "Trestle desktop landing — full 1440 layout from Figma",
+        alt: "Trestle desktop landing - full 1440 layout from Figma",
         caption: "Desktop 1440",
       },
       {
         src: `${SPEC_BLOB}/trestle/mobile-layout.webp`,
-        alt: "Trestle mobile landing — full 390 layout from Figma",
+        alt: "Trestle mobile landing - full 390 layout from Figma",
         caption: "Mobile 390",
       },
       {
         src: `${SPEC_BLOB}/trestle/still-highway.webp`,
         alt: "Aerial of a red semi on a canyon highway at sunrise",
-        caption: "Art direction — the lane",
+        caption: "Art direction - the lane",
       },
       {
         src: `${SPEC_BLOB}/trestle/still-reefer.webp`,
         alt: "Frosted refrigerated trailer interior with produce crates",
-        caption: "Art direction — cold chain",
+        caption: "Art direction - cold chain",
       },
     ],
     sections: [
@@ -1098,23 +1098,23 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${SPEC_BLOB}/wedge/desktop-layout.webp`,
-        alt: "Wedge desktop landing — full 1440 layout from Figma",
+        alt: "Wedge desktop landing - full 1440 layout from Figma",
         caption: "Desktop 1440",
       },
       {
         src: `${SPEC_BLOB}/wedge/mobile-layout.webp`,
-        alt: "Wedge mobile landing — full 390 layout from Figma",
+        alt: "Wedge mobile landing - full 390 layout from Figma",
         caption: "Mobile 390",
       },
       {
         src: `${SPEC_BLOB}/wedge/still-crew.webp`,
         alt: "Flash photo of a laughing film crew around a camera dolly",
-        caption: "Art direction — wrap day",
+        caption: "Art direction - wrap day",
       },
       {
         src: `${SPEC_BLOB}/wedge/still-card.webp`,
         alt: "Black payment card on a craft services table with coffee and a donut",
-        caption: "Art direction — the card",
+        caption: "Art direction - the card",
       },
     ],
     sections: [
@@ -1164,23 +1164,23 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${SPEC_BLOB}/vesper/desktop-layout.webp`,
-        alt: "Vesper desktop landing — full 1440 layout from Figma",
+        alt: "Vesper desktop landing - full 1440 layout from Figma",
         caption: "Desktop 1440",
       },
       {
         src: `${SPEC_BLOB}/vesper/mobile-layout.webp`,
-        alt: "Vesper mobile landing — full 390 layout from Figma",
+        alt: "Vesper mobile landing - full 390 layout from Figma",
         caption: "Mobile 390",
       },
       {
         src: `${SPEC_BLOB}/vesper/still-skin.webp`,
         alt: "Close-up profile of skin lit in soft red light",
-        caption: "Art direction — 630 nm",
+        caption: "Art direction - 630 nm",
       },
       {
         src: `${SPEC_BLOB}/vesper/still-studio.webp`,
         alt: "Arched plaster treatment room with a cream chair under a skylight",
-        caption: "Art direction — the studio",
+        caption: "Art direction - the studio",
       },
     ],
     sections: [
@@ -1220,7 +1220,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "uav",
     title: "UAV",
-    subtitle: "Redesign — a Swiss-grid site for an aerial cinematography crew",
+    subtitle: "Redesign - a Swiss-grid site for an aerial cinematography crew",
     tags: ["Redesign", "Brand", "Web"],
     year: "2026",
     role: "Web Design · Art Direction",
@@ -1231,13 +1231,13 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${REFRESH_BLOB}/uav/desktop-layout.webp`,
-        alt: "UAVantage desktop redesign — full 1440 layout from Figma",
-        caption: "Redesign — desktop 1440",
+        alt: "UAVantage desktop redesign - full 1440 layout from Figma",
+        caption: "Redesign - desktop 1440",
       },
       {
         src: `${REFRESH_BLOB}/uav/mobile-layout.webp`,
-        alt: "UAVantage mobile redesign — full 390 layout from Figma",
-        caption: "Redesign — mobile 390",
+        alt: "UAVantage mobile redesign - full 390 layout from Figma",
+        caption: "Redesign - mobile 390",
       },
       {
         src: `${WORK_BLOB}/uav.webp`,
@@ -1283,7 +1283,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "sunworld",
     title: "Sunworld",
-    subtitle: "Redesign — desert landscape care in sand, terracotta, and agave",
+    subtitle: "Redesign - desert landscape care in sand, terracotta, and agave",
     tags: ["Redesign", "Brand", "Web"],
     year: "2026",
     role: "Web Design · Art Direction",
@@ -1294,13 +1294,13 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${REFRESH_BLOB}/sunworld/desktop-layout.webp`,
-        alt: "Sunworld desktop redesign — full 1440 layout from Figma",
-        caption: "Redesign — desktop 1440",
+        alt: "Sunworld desktop redesign - full 1440 layout from Figma",
+        caption: "Redesign - desktop 1440",
       },
       {
         src: `${REFRESH_BLOB}/sunworld/mobile-layout.webp`,
-        alt: "Sunworld mobile redesign — full 390 layout from Figma",
-        caption: "Redesign — mobile 390",
+        alt: "Sunworld mobile redesign - full 390 layout from Figma",
+        caption: "Redesign - mobile 390",
       },
       {
         src: `${WORK_BLOB}/sunworld.webp`,
@@ -1346,7 +1346,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "pacific-mattress",
     title: "Pacific Mattress",
-    subtitle: "Redesign — a mattress site that scrolls from midnight to sunrise",
+    subtitle: "Redesign - a mattress site that scrolls from midnight to sunrise",
     tags: ["Redesign", "Brand", "E-commerce"],
     year: "2026",
     role: "Web Design · Art Direction",
@@ -1357,13 +1357,13 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${REFRESH_BLOB}/pacific-mattress/desktop-layout.webp`,
-        alt: "Pacific Mattress desktop redesign — full 1440 layout from Figma",
-        caption: "Redesign — desktop 1440",
+        alt: "Pacific Mattress desktop redesign - full 1440 layout from Figma",
+        caption: "Redesign - desktop 1440",
       },
       {
         src: `${REFRESH_BLOB}/pacific-mattress/mobile-layout.webp`,
-        alt: "Pacific Mattress mobile redesign — full 390 layout from Figma",
-        caption: "Redesign — mobile 390",
+        alt: "Pacific Mattress mobile redesign - full 390 layout from Figma",
+        caption: "Redesign - mobile 390",
       },
       {
         src: `${WORK_BLOB}/pacific-mattress.webp`,
@@ -1409,7 +1409,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "strumly",
     title: "Strumly",
-    subtitle: "Redesign — a neon collage landing for local live music",
+    subtitle: "Redesign - a neon collage landing for local live music",
     tags: ["Redesign", "Brand", "Product"],
     year: "2026",
     role: "Web Design · Art Direction",
@@ -1420,13 +1420,13 @@ export const caseStudies: CaseStudy[] = [
     gallery: [
       {
         src: `${REFRESH_BLOB}/strumly/desktop-layout.webp`,
-        alt: "Strumly desktop redesign — full 1440 layout from Figma",
-        caption: "Redesign — desktop 1440",
+        alt: "Strumly desktop redesign - full 1440 layout from Figma",
+        caption: "Redesign - desktop 1440",
       },
       {
         src: `${REFRESH_BLOB}/strumly/mobile-layout.webp`,
-        alt: "Strumly mobile redesign — full 390 layout from Figma",
-        caption: "Redesign — mobile 390",
+        alt: "Strumly mobile redesign - full 390 layout from Figma",
+        caption: "Redesign - mobile 390",
       },
       {
         src: `${WORK_BLOB}/strumly.webp`,

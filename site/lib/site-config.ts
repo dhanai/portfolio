@@ -21,12 +21,12 @@ export type SiteConfigView = {
 export const siteConfig: SiteConfigView = {
   name: "Dhanai",
   fullName: "Dhanai Holtzclaw",
-  title: "Dhanai Holtzclaw — Art Direction & Product Design",
+  title: "Dhanai Holtzclaw - Art Direction & Product Design",
   description:
-    "Art direction and product design. Brand systems, campaign craft, product UX, and AI generative creative — concept to shipped.",
+    "Art direction and product design. Brand systems, campaign craft, product UX, and AI generative creative - concept to shipped.",
   url: "https://dhanai.net",
   oneLiner:
-    "Creative lead who owns how it looks and how it works — art direction, product design, and the build when it helps.",
+    "Creative lead who owns how it looks and how it works - art direction, product design, and the build when it helps.",
   links: {
     email: "DhanaiH@gmail.com",
     phone: "702.321.1971",

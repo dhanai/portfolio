@@ -39,7 +39,7 @@ export async function generateMetadata({
 
   const title = `Proposal ${proposal.number}`;
   const clientLabel = proposal.clientCompany || proposal.clientName;
-  const description = `${proposal.title} for ${clientLabel} — ${formatMoney(proposal.amount)}. Prepared by ${PROPOSAL_ISSUER.name}.`;
+  const description = `${proposal.title} for ${clientLabel} - ${formatMoney(proposal.amount)}. Prepared by ${PROPOSAL_ISSUER.name}.`;
   const path = `/proposal/${token}`;
 
   return {

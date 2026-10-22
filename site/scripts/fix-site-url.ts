@@ -9,7 +9,7 @@ const TARGET = "https://dhanai.net";
 async function main() {
   const block = await prisma.contentBlock.findUnique({ where: { key: "site" } });
   if (!block) {
-    console.log("No site content block found — seed may not have run.");
+    console.log("No site content block found - seed may not have run.");
     return;
   }
 

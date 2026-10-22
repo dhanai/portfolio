@@ -98,7 +98,7 @@ export async function ResumeWeb({ data }: { data?: ResumeContentData }) {
             >
               <span className="text-xs text-foreground md:text-sm">
                 {job.company}
-                <span className="text-muted"> — {job.role}</span>
+                <span className="text-muted"> - {job.role}</span>
               </span>
               <span className="text-xs text-muted">{job.period}</span>
             </li>

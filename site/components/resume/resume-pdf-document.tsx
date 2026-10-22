@@ -158,7 +158,7 @@ export function ResumePdfDocument({ data }: { data: ResumeContentData }) {
   const lastJobIndex = d.experience.length - 1;
 
   return (
-    <Document title={`${d.name} — Resume`} author={d.name}>
+    <Document title={`${d.name} - Resume`} author={d.name}>
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
           <View style={styles.accentBar} />
@@ -185,7 +185,7 @@ export function ResumePdfDocument({ data }: { data: ResumeContentData }) {
                 <View style={styles.jobRow}>
                   <Text style={styles.jobTitle}>
                     {job.company}
-                    <Text style={styles.jobRole}> — {job.role}</Text>
+                    <Text style={styles.jobRole}> - {job.role}</Text>
                   </Text>
                   <Text style={styles.jobPeriod}>{job.period}</Text>
                 </View>
@@ -208,7 +208,7 @@ export function ResumePdfDocument({ data }: { data: ResumeContentData }) {
                 <View key={job.company} style={styles.earlierRow}>
                   <Text style={styles.earlierCompany}>
                     {job.company}
-                    <Text style={styles.earlierRole}> — {job.role}</Text>
+                    <Text style={styles.earlierRole}> - {job.role}</Text>
                   </Text>
                   <Text style={styles.earlierPeriod}>{job.period}</Text>
                 </View>

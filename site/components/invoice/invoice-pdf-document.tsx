@@ -335,7 +335,7 @@ export function InvoicePdfDocument({
             <View key={item.id} style={styles.tableRow} wrap={false}>
               {showDays ? (
                 <Text style={[styles.td, styles.colDay]}>
-                  {item.workedOn ? formatWorkedOn(item.workedOn) : "—"}
+                  {item.workedOn ? formatWorkedOn(item.workedOn) : "-"}
                 </Text>
               ) : null}
               <Text style={[styles.td, styles.colDesc]}>{item.description}</Text>
@@ -345,7 +345,7 @@ export function InvoicePdfDocument({
               </Text>
               {showHours ? (
                 <Text style={[styles.td, styles.colHours, styles.mono]}>
-                  {item.rateType === "hourly" ? String(item.hours ?? "") : "—"}
+                  {item.rateType === "hourly" ? String(item.hours ?? "") : "-"}
                 </Text>
               ) : null}
               <View style={[styles.td, styles.colAmount]}>
@@ -395,7 +395,7 @@ export function InvoicePdfDocument({
         {notes ? <Text style={styles.notes}>{notes}</Text> : null}
 
         <Text style={styles.footer}>
-          Thank you — please include invoice {number} with your payment.
+          Thank you - please include invoice {number} with your payment.
         </Text>
       </Page>
     </Document>

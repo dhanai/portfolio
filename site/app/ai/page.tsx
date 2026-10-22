@@ -22,7 +22,7 @@ export async function generateMetadata({
   const pageTitle = showcase.title || "AI creative";
   const pageDescription =
     showcase.subtitle ||
-    `Generative art direction and campaign craft — ${config.fullName}`;
+    `Generative art direction and campaign craft - ${config.fullName}`;
   const collectionImage = {
     url: "/ai/og",
     width: 1200,
