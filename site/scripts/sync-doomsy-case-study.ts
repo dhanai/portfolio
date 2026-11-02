@@ -1,63 +1,33 @@
+/** Sync only Doomsy's case-study copy; preserve other work and site content. */
+import { writeFile } from "node:fs/promises";
 import { prisma } from "@/lib/prisma";
 import { caseStudies } from "@/lib/case-studies";
-import { projects } from "@/lib/projects";
-import { defaultSiteContent } from "@/lib/defaults/seed-data";
-import { resumeData } from "@/lib/resume-data";
 
 async function main() {
-  const study = caseStudies.find((c) => c.slug === "doomsy");
-  const project = projects.find((p) => p.slug === "doomsy");
-  if (!study || !project) throw new Error("missing doomsy");
-
-  await prisma.work.update({
-    where: { slug: "doomsy" },
-    data: {
-      subtitle: study.subtitle,
-      role: study.role,
-      year: study.year,
-      image: project.image,
-      reflection: study.reflection,
-      sections: JSON.stringify(study.sections),
-      tags: JSON.stringify(study.tags),
-      cardAction: "caseStudy",
-      externalUrl: "https://doomsy.ai",
-    },
+  const study = caseStudies.find((item) => item.slug === "doomsy");
+  if (!study) throw new Error("Missing Doomsy case study");
+  const before = await prisma.work.findUniqueOrThrow({ where: { slug: "doomsy" } });
+  const data = {
+    subtitle: study.subtitle,
+    role: study.role,
+    reflection: study.reflection,
+    sections: JSON.stringify(study.sections),
+  };
+  if (!process.argv.includes("--apply")) {
+    console.log(JSON.stringify({ slug: before.slug, fields: Object.keys(data), headings: study.sections.map((s) => s.heading) }, null, 2));
+    return;
+  }
+  const backupPath = process.env.DOOMSY_BACKUP_PATH;
+  if (!backupPath) throw new Error("Set DOOMSY_BACKUP_PATH before applying");
+  await writeFile(backupPath, JSON.stringify(before, null, 2), { flag: "wx" });
+  const result = await prisma.work.updateMany({
+    where: { id: before.id, updatedAt: before.updatedAt },
+    data,
   });
-
-  const site = await prisma.contentBlock.findUnique({ where: { key: "site" } });
-  if (site) {
-    const data = JSON.parse(site.data);
-    if (data.now?.title === "Building Doomsy") {
-      data.now.body = defaultSiteContent.now.body;
-      await prisma.contentBlock.update({
-        where: { key: "site" },
-        data: { data: JSON.stringify(data) },
-      });
-    }
-  }
-
-  const resume = await prisma.contentBlock.findUnique({ where: { key: "resume" } });
-  if (resume) {
-    const data = JSON.parse(resume.data);
-    const doomsy = resumeData.experience.find((e) => e.company === "Doomsy");
-    const row = data.experience?.find((e: { company: string }) => e.company === "Doomsy");
-    if (doomsy && row) {
-      row.bullets = doomsy.bullets;
-      await prisma.contentBlock.update({
-        where: { key: "resume" },
-        data: { data: JSON.stringify(data) },
-      });
-    }
-  }
-
-  console.log("doomsy case study synced");
+  if (result.count !== 1) throw new Error("Doomsy changed during sync; review before retrying");
+  console.log("Updated Doomsy copy only; prior row saved for recovery.");
 }
-
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch(() => {
+  console.error("Doomsy sync failed; inspect the database connection, backup path, and current row before retrying.");
+  process.exitCode = 1;
+}).finally(() => prisma.$disconnect());

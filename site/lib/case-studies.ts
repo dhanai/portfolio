@@ -52,10 +52,13 @@ export type CaseStudy = {
   year?: string;
   role: string;
   externalUrl?: string;
+  /** Short introduction before the product screens. */
+  intro?: string[];
   /** Optional architecture diagram (SVG/URL) */
   diagram?: string;
   /** Optional hero screenshot shown under the header */
   heroImage?: string;
+  heroCaption?: string;
   /** Optional product screens (phone / UI gallery) */
   gallery?: CaseStudyGalleryItem[];
   /** How to render gallery: device thumbs (default) or full page frames */
@@ -138,140 +141,116 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "doomsy",
     title: "Doomsy",
-    subtitle: "An AI film studio on your phone - one idea in, a finished film out",
+    subtitle: "An AI film studio for directing shots, generating takes, and building an edit",
     tags: ["Product", "AI", "Film", "Mobile"],
     year: "2026–present",
-    role: "Founder · Product Design · Creative Direction",
+    role: "Founder · Product Design · Engineering · Creative Direction",
     externalUrl: "https://doomsy.ai",
-    heroImage: `${WORK_BLOB}/doomsy/film/hero-2026-10.webp`,
-    galleryTitle: "From idea to edit",
+    intro: [
+      "I design and build Doomsy, and I use it to direct films including Clean Glass and Train Wreck. I own the product direction, interaction design, visual design, and implementation across the iOS app and web studio.",
+      "The hard part is connecting the work between generations: keeping a cast consistent, planning camera moves, comparing takes, and deciding what makes the cut. Doomsy started as a feed of on-brand posts. In October, I rebuilt it around film production.",
+    ],
+    heroImage: "/assets/work/doomsy/current/project-2026-11-01.webp",
+    heroCaption: "Train Wreck in the web studio · captured November 1, 2026",
+    galleryTitle: "From references to the cut · current iOS app",
     gallery: [
       {
-        src: `${WORK_BLOB}/doomsy/film/generate-2026-10.webp`,
-        alt: "New video form with the previs clip, cast, place, dialogue, and the generate cost",
-        caption: "New video - the previs, the cast, and the cost",
+        src: "/assets/work/doomsy/current/project-ios-2026-11-01.webp",
+        alt: "Gift shop project containing video clips, sound effects, and music, with an Editor entry point",
+        caption: "Gift shop keeps video and audio in one project, with a direct route into the edit.",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/previs.webp`,
-        alt: "Previs blocking a conversation: two stand-ins at a table, with the camera, lens, and timeline",
-        caption: "Previs - block the shot, then export the move",
+        src: "/assets/work/doomsy/current/generate-ios-2026-11-01.webp",
+        alt: "New video form showing reference attachments, a written prompt, Seedance 2.5, aspect ratio, and a 375-credit generation button",
+        caption: "References, prompt, model, and cost stay together before generation.",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/project-2026-10.webp`,
-        alt: "Train Wreck project with the edit, the elements, and the scenes",
-        caption: "Project - the edit, the cast, and the scenes",
+        src: "/assets/work/doomsy/current/previs-ios-2026-11-01.webp",
+        alt: "Static lunar standoff in the iOS previs workspace, with stand-ins, a camera preview, and keyframes",
+        caption: "Block the shot with stand-ins, check the camera view, and keyframe the move.",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/assets-2026-10.webp`,
-        alt: "Assets, with the film's shots and previs blockouts",
-        caption: "Assets - the film's videos and previs",
+        src: "/assets/work/doomsy/current/editor-ios-2026-11-01.webp",
+        alt: "Gift shop in the iOS editor, with a video preview, picture track, audio waveforms, and Image, Video, Audio, and Captions tools",
+        caption: "The Gift shop cut: picture, production sound, and a separate audio bed on a phone.",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/music-2026-10.webp`,
-        alt: "Crooked Moon playing in Doomsy, with the cover, the prompt, and the model",
-        caption: "Music - the score, ready for the edit",
+        src: "/assets/work/doomsy/current/assets-ios-2026-11-01.webp",
+        alt: "Doomsy asset library with video and image thumbnails, media filters, and favorites",
+        caption: "A shared library keeps reference images and generated clips available across the workflow.",
       },
       {
-        src: `${WORK_BLOB}/doomsy/film/editor-2026-10.webp`,
-        alt: "The Train Wreck edit in the Doomsy editor, with the scene in the player and the cut on the timeline",
-        caption: "Editor - a real timeline, sized for a phone",
+        src: "/assets/work/doomsy/current/music-ios-2026-11-01.webp",
+        alt: "Music detail and player for a modern horror score, showing its prompt and Suno v6 model",
+        caption: "Listen to a generated score and keep its prompt and model with it.",
       },
     ],
     process: {
       decision: {
-        kicker: "Key decision",
-        title: "Swap shot turned into an editor, and the editor reorganized the app",
+        kicker: "Design decision · October 2026",
+        title: "A swap-shot feature became a timeline editor",
         before: {
-          label: "Before",
+          label: "Starting point",
           title: "The video page did the editing",
-          body: "Tap a shot to regenerate it, edit it, swap in another take, download it, or delete it. Every fix lived on one screen.",
+          body: "I could regenerate a shot or swap in another take, but playback was crude. Each fix happened on the video page, away from the rest of the cut.",
           points: ["Regenerate", "Edit", "Swap shot", "Download", "Delete shot"],
         },
         notes: {
-          when: "Oct 8",
+          when: "From my build notes · Oct 8",
           lines: [
             "“We're essentially building a very simple NLE, where each cut is split into its own clips and we can drop in different versions.”",
-            "“If we have our editor, our current video screen doesn't need so many edit options. That will be handled in the edit.”",
-            "“Current projects are basically video takes if the editor holds the full project.”",
           ],
         },
         after: {
-          label: "After",
-          title: "Projects open on a bin. The editor holds the cut.",
-          body: "A project houses scenes. Scenes house takes. Fixes happen in the edit, where you can see the whole film.",
+          label: "Decision",
+          title: "Give editing its own workspace",
+          body: "I built a timeline editor for the phone, with three picture tracks, three audio tracks, trim, split, and captions. The video page could return to reviewing and generating takes.",
         },
         changes: [
           {
-            title: "Data model",
-            body: "Project, then scenes, then takes. Renamed in code too, so the words match the screen.",
+            title: "The tradeoff",
+            body: "A separate editor meant more to build and another workspace to learn. I kept its scope smaller than a desktop editor: assemble the cut, work with audio, and replace shots.",
           },
           {
-            title: "Video page",
-            body: "It sheds the edit menu and goes back to watching takes and generating again.",
+            title: "The structure",
+            body: "I separated projects, scenes, and takes, and renamed them in code too. A generated take was no longer treated as the whole project.",
           },
           {
-            title: "Navigation",
-            body: "Projects, Assets, Create, Audio, More. Create opens a sheet, so it doesn't fight the old button.",
+            title: "Keep the alternatives",
+            body: "Regeneration keeps the original take. I wanted to use shot 1 from one take and another shot from a different take, rather than accept or reject a whole generation.",
           },
           {
-            title: "Reach",
-            body: "A polished editor is what lets a film run longer than a single clip.",
+            title: "Where it is now",
+            body: "The web studio has since moved to a project canvas. The current Train Wreck screen above brings its clips and reference images together; the editor decision here describes the October mobile iteration.",
           },
         ],
       },
     },
     sections: [
       {
-        heading: "Overview",
+        heading: "Plan the shot before spending on it",
         paragraphs: [
-          "Doomsy turns one idea into a short film on your phone. It casts the film, writes the shots, voices them, scores them, and renders the takes. You cut it yourself.",
-          "I design and build the iOS app, and I direct the films in it, including Clean Glass and Train Wreck. It started as a feed of on-brand posts. When image models made that easy for everyone, I dropped it and rebuilt around how a film actually gets made.",
+          "A prompt leaves a lot of room for the model to guess. Previs lets me place stand-ins, choose a lens, and work out the camera move on a timeline before exporting it as a reference.",
+          "That adds a planning step. For shots where blocking matters, I want that control before paying for another generation.",
         ],
       },
       {
-        heading: "Problem",
+        heading: "Let AI prepare the work. Keep the decision with the person.",
         paragraphs: [
-          "AI video tools hand you a clip. A film needs a cast that holds from shot to shot, shots that cut together, voices, music, and an edit. That work usually lives across several tools and a desktop editor.",
+          "An earlier assistant sometimes said it had changed something without saving it. I changed the interaction: Ask should open the form with the prompt filled in, and the person should still submit it.",
+          "I applied the same thinking to generation costs: show the cost and ask for confirmation before spending credits. These were design constraints, not reasons to hide every setting behind an assistant.",
         ],
       },
       {
-        heading: "Product design",
+        heading: "What I can show so far",
         paragraphs: [
-          "I modeled the app on a real production, so every piece has an obvious home.",
-        ],
-        bullets: [
-          "Previs blocks the shot before you generate: stand-ins, a camera you can walk, a lens, and a horizon. Then you export the move.",
-          "A project holds the brief, the look, the cast, and the scenes.",
-          "Characters, places, and props live in Assets, each with variants.",
-          "Voices and music live in Audio, then land in the edit.",
-          "Ask can fill in a step. You still press Generate.",
-        ],
-      },
-      {
-        heading: "The key decision",
-        paragraphs: [
-          "Editing first lived on the video page: regenerate a shot, swap a take, download it, or delete it. Getting swap to work, I wrote in my notes: “We're essentially building a very simple NLE.”",
-          "So I built one for a phone. Three picture tracks, three audio tracks, trim, split, and captions. Ask can describe a change, and one undo takes it back. Then I let the editor reorganize the app. A project opens on its scenes, and fixes happen in the edit, where you can see the whole film.",
-        ],
-      },
-      {
-        heading: "How I decided",
-        paragraphs: ["Three rules kept settling the arguments:"],
-        bullets: [
-          "You stay in control. Ask fills the form. You press Generate.",
-          "Nothing gets thrown away. Every take, edit, and regeneration stays.",
-          "Show the cost, then confirm, before anything spends credits.",
-        ],
-      },
-      {
-        heading: "Outcome",
-        paragraphs: [
-          "A working iOS app and a landing at doomsy.ai. Product design, art direction, and the build in one seat.",
+          "Doomsy is a working iOS app and web studio. I've used it to make Clean Glass and Train Wreck, so I can check the workflow against the films I'm trying to direct, from references and shots through takes and editing.",
+          "My own use has driven these iterations. It has not yet established how easily a new filmmaker can finish a first film; that needs testing beyond my own projects.",
         ],
       },
     ],
     reflection:
-      "AI makes the footage. The product still has to make it a film. Doomsy is how I'd want to run a production as a creative director, designed for the phone in my pocket.",
+      "Building films in Doomsy keeps finding the gaps for me. Swap shot looked like a small feature until I tried to use it in a cut. That changed what I built next.",
   },
   {
     slug: "studio",

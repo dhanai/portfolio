@@ -40,6 +40,11 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
           <p className="mt-4 text-sm leading-relaxed text-muted md:text-[0.9375rem]">
             {study.subtitle}
           </p>
+          {study.intro?.map((paragraph) => (
+            <p key={paragraph} className="mt-5 leading-relaxed text-muted">
+              {paragraph}
+            </p>
+          ))}
           <ul className="mt-8 flex flex-wrap gap-2">
             {study.tags.map((tag) => (
               <li
@@ -74,6 +79,9 @@ export function CaseStudyLayout({ study, projects }: CaseStudyLayoutProps) {
               alt={`${study.title} product screenshot`}
               className="w-full border border-border"
             />
+            {study.heroCaption ? (
+              <p className="mt-3 text-sm text-muted">{study.heroCaption}</p>
+            ) : null}
           </div>
         </div>
       ) : null}
