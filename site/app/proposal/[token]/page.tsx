@@ -81,6 +81,40 @@ function SectionHeading({
   );
 }
 
+function SignatureCard({
+  role,
+  name,
+  image,
+  caption,
+  pending = false,
+}: {
+  role: string;
+  name: string;
+  image: string | null;
+  caption: string;
+  pending?: boolean;
+}) {
+  return (
+    <div className="border border-[#1a2229]/12 bg-white/50 px-6 py-6">
+      <p className="text-xs uppercase tracking-wider text-[#6b7c8a]">{role}</p>
+      <div className="mt-2 flex h-20 items-end border-b border-[#1a2229]/25 pb-2">
+        {pending ? null : image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={image}
+            alt={`Signature of ${name}`}
+            className="h-full w-auto max-w-full object-contain object-left"
+          />
+        ) : (
+          <p className="font-serif text-3xl italic text-[#12181e]">{name}</p>
+        )}
+      </div>
+      <p className={`${p} mt-3 text-[#1a2229]`}>{name}</p>
+      <p className={p}>{caption}</p>
+    </div>
+  );
+}
+
 export default async function PublicProposalPage({ params }: PageProps) {
   const { token } = await params;
   const proposal = await prisma.proposal.findUnique({ where: { token } });
@@ -275,46 +309,49 @@ export default async function PublicProposalPage({ params }: PageProps) {
             ) : null}
           </section>
 
-          {proposal.signedAt || canSign ? (
-            <section id="sign" className="scroll-mt-10">
-              <SectionHeading index={nextIndex()}>Acceptance</SectionHeading>
+          <section id="sign" className="scroll-mt-10">
+            <SectionHeading index={nextIndex()}>Signatures</SectionHeading>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <SignatureCard
+                role="Provider"
+                name={PROPOSAL_ISSUER.name}
+                image={null}
+                caption={`Signed electronically on ${formatProposalDate(proposal.createdAt)}`}
+              />
               {proposal.signedAt ? (
-                <div className="border border-[#1a2229]/12 bg-white/50 px-6 py-6">
-                  <div className="flex h-24 items-end border-b border-[#1a2229]/25 pb-2">
-                    {proposal.signatureImage ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={proposal.signatureImage}
-                        alt={`Signature of ${proposal.signerName}`}
-                        className="h-full w-auto max-w-full object-contain object-left"
-                      />
-                    ) : (
-                      <p className="font-serif text-3xl italic text-[#12181e]">
-                        {proposal.signerName}
-                      </p>
-                    )}
-                  </div>
-                  <p className={`${p} mt-3 text-[#1a2229]`}>
-                    {proposal.signerName}
-                  </p>
-                  <p className={p}>
-                    Signed electronically on {formatSignedAt(proposal.signedAt)}
-                  </p>
-                </div>
+                <SignatureCard
+                  role="Client"
+                  name={proposal.signerName ?? proposal.clientName}
+                  image={proposal.signatureImage}
+                  caption={`Signed electronically on ${formatSignedAt(proposal.signedAt)}`}
+                />
               ) : (
-                <>
-                  <p className={`${p} mb-6 max-w-2xl`}>
-                    Sign below to accept this proposal for {formatMoney(proposal.amount)}.
-                  </p>
-                  <ProposalSignForm
-                    token={proposal.token}
-                    defaultName={proposal.clientName}
-                    consentText={SIGNATURE_CONSENT_TEXT}
-                  />
-                </>
+                <SignatureCard
+                  role="Client"
+                  name={proposal.clientName}
+                  image={null}
+                  pending
+                  caption={
+                    proposal.status === "declined"
+                      ? "Declined"
+                      : "Awaiting signature"
+                  }
+                />
               )}
-            </section>
-          ) : null}
+            </div>
+            {canSign ? (
+              <div className="mt-10">
+                <p className={`${p} mb-6 max-w-2xl`}>
+                  Sign below to accept this proposal for {formatMoney(proposal.amount)}.
+                </p>
+                <ProposalSignForm
+                  token={proposal.token}
+                  defaultName={proposal.clientName}
+                  consentText={SIGNATURE_CONSENT_TEXT}
+                />
+              </div>
+            ) : null}
+          </section>
         </div>
 
         <footer className="mt-14 flex flex-col gap-1 border-t border-[#1a2229]/12 pt-5 sm:flex-row sm:items-center sm:justify-between">

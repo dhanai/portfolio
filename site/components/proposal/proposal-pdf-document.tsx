@@ -172,14 +172,26 @@ const styles = StyleSheet.create({
     lineHeight: 1.45,
     color: muted,
   },
+  signatureRow: {
+    flexDirection: "row",
+    gap: 24,
+    marginTop: 6,
+  },
+  signatureCol: {
+    flex: 1,
+  },
+  signatureRole: {
+    marginTop: 4,
+    fontSize: 8,
+    color: light,
+  },
   signatureBox: {
-    marginTop: 10,
+    marginTop: 4,
     height: 56,
     justifyContent: "flex-end",
     borderBottomWidth: 1,
     borderBottomColor: muted,
     paddingBottom: 4,
-    width: 260,
   },
   signatureImage: {
     height: 50,
@@ -376,22 +388,37 @@ export function ProposalPdfDocument({
           {notes ? <Text style={styles.terms}>{notes}</Text> : null}
         </View>
 
-        {signedAt && signerName ? (
-          <View style={styles.section} wrap={false}>
-            <Text style={styles.label}>Acceptance</Text>
-            <View style={styles.signatureBox}>
-              {signatureImage ? (
-                // eslint-disable-next-line jsx-a11y/alt-text
-                <Image src={signatureImage} style={styles.signatureImage} />
-              ) : (
-                <Text style={styles.signatureTyped}>{signerName}</Text>
-              )}
+        <View style={styles.section} wrap={false}>
+          <Text style={styles.label}>Signatures</Text>
+          <View style={styles.signatureRow}>
+            <View style={styles.signatureCol}>
+              <Text style={styles.signatureRole}>Provider</Text>
+              <View style={styles.signatureBox}>
+                <Text style={styles.signatureTyped}>{PROPOSAL_ISSUER.name}</Text>
+              </View>
+              <Text style={styles.signatureMeta}>
+                {PROPOSAL_ISSUER.name} · Signed electronically on{" "}
+                {formatProposalDate(createdAt)}
+              </Text>
             </View>
-            <Text style={styles.signatureMeta}>
-              {signerName} · Signed electronically on {formatSignedAt(signedAt)}
-            </Text>
+            <View style={styles.signatureCol}>
+              <Text style={styles.signatureRole}>Client</Text>
+              <View style={styles.signatureBox}>
+                {signedAt && signatureImage ? (
+                  // eslint-disable-next-line jsx-a11y/alt-text
+                  <Image src={signatureImage} style={styles.signatureImage} />
+                ) : signedAt && signerName ? (
+                  <Text style={styles.signatureTyped}>{signerName}</Text>
+                ) : null}
+              </View>
+              <Text style={styles.signatureMeta}>
+                {signedAt
+                  ? `${signerName ?? clientName} · Signed electronically on ${formatSignedAt(signedAt)}`
+                  : `${clientName} · ${status === "declined" ? "Declined" : "Awaiting signature"}`}
+              </Text>
+            </View>
           </View>
-        ) : null}
+        </View>
 
         <Text style={styles.footer}>
           Prepared by {PROPOSAL_ISSUER.name} · {number}
