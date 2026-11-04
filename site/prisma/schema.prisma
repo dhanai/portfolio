@@ -92,6 +92,15 @@ model Proposal {
   notes            String?
   /** sent | accepted | declined */
   status           String   @default("sent")
+  /** Electronic signature (client acceptance) */
+  signerName       String?
+  /** PNG data URL when drawn; null when the typed name is the signature */
+  signatureImage   String?
+  signedAt         DateTime?
+  signerIp         String?
+  signerUserAgent  String?
+  /** SHA-256 of the proposal terms at signing, to detect later edits */
+  signedHash       String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }

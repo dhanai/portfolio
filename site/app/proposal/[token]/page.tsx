@@ -13,6 +13,11 @@ import {
   proposalStatusLabel,
 } from "@/lib/proposals";
 import { richTextIsEmpty, sanitizeRichText } from "@/lib/rich-text";
+import {
+  formatSignedAt,
+  SIGNATURE_CONSENT_TEXT,
+} from "@/lib/proposal-signature";
+import { ProposalSignForm } from "@/components/proposal/proposal-sign-form";
 
 export const dynamic = "force-dynamic";
 
@@ -90,6 +95,8 @@ export default async function PublicProposalPage({ params }: PageProps) {
     .map((line) => line.trim())
     .filter(Boolean);
 
+  const canSign = !proposal.signedAt && proposal.status !== "declined";
+
   let section = 1;
   const nextIndex = () => String(section++).padStart(2, "0");
 
@@ -119,6 +126,14 @@ export default async function PublicProposalPage({ params }: PageProps) {
             <span className="font-mono text-[#1a2229]">{proposal.number}</span>
           </p>
           <div className="flex items-center gap-4">
+            {canSign ? (
+              <a
+                href="#sign"
+                className={`${p} border-b border-[#1fa89a] pb-0.5 text-[#1a2229] transition-opacity hover:opacity-60`}
+              >
+                Sign
+              </a>
+            ) : null}
             <p
               className={`${p} ${
                 proposal.status === "accepted"
@@ -259,6 +274,47 @@ export default async function PublicProposalPage({ params }: PageProps) {
               <p className={`${p} mt-4 whitespace-pre-wrap`}>{proposal.notes}</p>
             ) : null}
           </section>
+
+          {proposal.signedAt || canSign ? (
+            <section id="sign" className="scroll-mt-10">
+              <SectionHeading index={nextIndex()}>Acceptance</SectionHeading>
+              {proposal.signedAt ? (
+                <div className="border border-[#1a2229]/12 bg-white/50 px-6 py-6">
+                  <div className="flex h-24 items-end border-b border-[#1a2229]/25 pb-2">
+                    {proposal.signatureImage ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={proposal.signatureImage}
+                        alt={`Signature of ${proposal.signerName}`}
+                        className="h-full w-auto max-w-full object-contain object-left"
+                      />
+                    ) : (
+                      <p className="font-serif text-3xl italic text-[#12181e]">
+                        {proposal.signerName}
+                      </p>
+                    )}
+                  </div>
+                  <p className={`${p} mt-3 text-[#1a2229]`}>
+                    {proposal.signerName}
+                  </p>
+                  <p className={p}>
+                    Signed electronically on {formatSignedAt(proposal.signedAt)}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <p className={`${p} mb-6 max-w-2xl`}>
+                    Sign below to accept this proposal for {formatMoney(proposal.amount)}.
+                  </p>
+                  <ProposalSignForm
+                    token={proposal.token}
+                    defaultName={proposal.clientName}
+                    consentText={SIGNATURE_CONSENT_TEXT}
+                  />
+                </>
+              )}
+            </section>
+          ) : null}
         </div>
 
         <footer className="mt-14 flex flex-col gap-1 border-t border-[#1a2229]/12 pt-5 sm:flex-row sm:items-center sm:justify-between">

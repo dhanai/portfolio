@@ -1,5 +1,6 @@
 import {
   Document,
+  Image,
   Page,
   Text,
   View,
@@ -17,6 +18,7 @@ import {
   richTextToBlocks,
   type RichTextSegment,
 } from "@/lib/rich-text";
+import { formatSignedAt } from "@/lib/proposal-signature";
 
 const ink = "#18181b";
 const muted = "#52525b";
@@ -170,6 +172,29 @@ const styles = StyleSheet.create({
     lineHeight: 1.45,
     color: muted,
   },
+  signatureBox: {
+    marginTop: 10,
+    height: 56,
+    justifyContent: "flex-end",
+    borderBottomWidth: 1,
+    borderBottomColor: muted,
+    paddingBottom: 4,
+    width: 260,
+  },
+  signatureImage: {
+    height: 50,
+    objectFit: "contain",
+    objectPosition: "left",
+  },
+  signatureTyped: {
+    fontFamily: "Times-Italic",
+    fontSize: 22,
+  },
+  signatureMeta: {
+    marginTop: 4,
+    fontSize: 8.5,
+    color: muted,
+  },
   footer: {
     marginTop: 20,
     paddingTop: 12,
@@ -198,6 +223,9 @@ export type ProposalPdfProps = {
   notes: string | null;
   status: string;
   createdAt: Date;
+  signerName?: string | null;
+  signatureImage?: string | null;
+  signedAt?: Date | null;
 };
 
 function segmentStyle(segment: RichTextSegment) {
@@ -246,6 +274,9 @@ export function ProposalPdfDocument({
   notes,
   status,
   createdAt,
+  signerName,
+  signatureImage,
+  signedAt,
 }: ProposalPdfProps) {
   const clientLabel = clientCompany || clientName;
   const paymentLines = paymentSchedule
@@ -344,6 +375,23 @@ export function ProposalPdfDocument({
           <Text style={styles.terms}>{terms}</Text>
           {notes ? <Text style={styles.terms}>{notes}</Text> : null}
         </View>
+
+        {signedAt && signerName ? (
+          <View style={styles.section} wrap={false}>
+            <Text style={styles.label}>Acceptance</Text>
+            <View style={styles.signatureBox}>
+              {signatureImage ? (
+                // eslint-disable-next-line jsx-a11y/alt-text
+                <Image src={signatureImage} style={styles.signatureImage} />
+              ) : (
+                <Text style={styles.signatureTyped}>{signerName}</Text>
+              )}
+            </View>
+            <Text style={styles.signatureMeta}>
+              {signerName} · Signed electronically on {formatSignedAt(signedAt)}
+            </Text>
+          </View>
+        ) : null}
 
         <Text style={styles.footer}>
           Prepared by {PROPOSAL_ISSUER.name} · {number}

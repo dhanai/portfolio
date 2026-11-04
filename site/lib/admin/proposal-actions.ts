@@ -178,3 +178,33 @@ export async function markProposalDeclinedAction(
   revalidatePath(`/proposal/${existing.token}`);
   return { ok: true };
 }
+
+/** Remove a client's signature (e.g. after revising the proposal) and reopen it. */
+export async function clearProposalSignatureAction(
+  formData: FormData,
+): Promise<ActionResult> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return { error: "Missing proposal id" };
+
+  const existing = await prisma.proposal.findUnique({ where: { id } });
+  if (!existing) return { error: "Proposal not found" };
+
+  await prisma.proposal.update({
+    where: { id },
+    data: {
+      signerName: null,
+      signatureImage: null,
+      signedAt: null,
+      signerIp: null,
+      signerUserAgent: null,
+      signedHash: null,
+      status: "sent",
+    },
+  });
+
+  revalidatePath("/admin/proposals");
+  revalidatePath(`/admin/proposals/${id}`);
+  revalidatePath(`/proposal/${existing.token}`);
+  return { ok: true };
+}

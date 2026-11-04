@@ -22,6 +22,9 @@ export type ProposalPdfSource = {
   notes: string | null;
   status: string;
   createdAt: Date;
+  signerName: string | null;
+  signatureImage: string | null;
+  signedAt: Date | null;
 };
 
 export async function generateProposalPdf(
@@ -45,6 +48,9 @@ export async function generateProposalPdf(
       notes={proposal.notes}
       status={proposal.status}
       createdAt={proposal.createdAt}
+      signerName={proposal.signerName}
+      signatureImage={proposal.signatureImage}
+      signedAt={proposal.signedAt}
     />,
   );
   return { buffer, filename: proposalPdfFilename(proposal.number) };
